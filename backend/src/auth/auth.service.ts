@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
@@ -41,10 +45,28 @@ export class AuthService {
     };
   }
 
-  login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto) {
+    const user = this.prisma.users.findFirst({
+      where: { UserName: loginDto.userName },
+    });
+    if (!user) {
+      throw new UnauthorizedException('Invalid username or password');
+    }
+    if (!user.IsActive) {
+      throw new UnauthorizedException('User account is inactive');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      user.PasswordHash,
+    );
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid username or password');
+    }
+
     return {
-      message: 'Login endpoint works',
-      data: loginDto,
+      message: 'Login successful',
+      user,
     };
   }
 }
