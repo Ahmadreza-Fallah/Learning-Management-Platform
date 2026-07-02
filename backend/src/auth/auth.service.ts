@@ -8,6 +8,8 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { randomUUID } from 'crypto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -73,9 +75,19 @@ export class AuthService {
     };
 
     const accessToken = await this.jwtService.signAsync(payload);
+    const refreshToken = randomUUID();
+
+    await this.prisma.refreshTokens.create({
+      data: {
+        User_Id: user.Id,
+        Token: refreshToken,
+        ExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      },
+    });
 
     return {
       accessToken,
+      refreshToken,
       user: {
         id: user.Id,
         firstName: user.FirstName,
@@ -84,6 +96,35 @@ export class AuthService {
         email: user.Email,
         roleId: user.Role_Id,
       },
+    };
+  }
+  async refresh(dto: RefreshTokenDto) {
+    const token = await this.prisma.refreshTokens.findFirst({
+      where: {
+        Token: dto.refreshToken,
+      },
+    });
+
+    if (!token) {
+      throw new UnauthorizedException('Invalid refresh Token');
+    }
+    if (token.RevokedAt) {
+      throw new UnauthorizedException('Refresh token revoked');
+    }
+    if (token.ExpiresAt < new Date()) {
+      throw new UnauthorizedException('Refresh token expired');
+    }
+    const user = await this.prisma.users.findUnique({
+      where: {
+        Id: token.User_Id,
+      },
+    });
+    if (!user || !user.IsActive) {
+      throw new UnauthorizedException();
+    }
+    return {
+      message: 'Refresh token is valid',
+      user,
     };
   }
 }
