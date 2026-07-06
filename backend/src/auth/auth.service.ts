@@ -10,6 +10,7 @@ import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { randomUUID } from 'crypto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { LogoutDto } from './dto/logout.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,24 +18,26 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
   async register(registerDto: RegisterDto) {
+    console.log(registerDto);
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
     const existingUser = await this.prisma.users.findFirst({
       where: {
-        OR: [{ Email: registerDto.email }, { UserName: registerDto.username }],
+        OR: [{ Email: registerDto.email }, { UserName: registerDto.userName }],
       },
     });
     if (existingUser) {
       throw new ConflictException('Email or Username already exists.');
     }
+    console.log('test');
     const user = await this.prisma.users.create({
       data: {
         FirstName: registerDto.firstName,
         LastName: registerDto.lastName,
-        UserName: registerDto.username,
+        UserName: registerDto.userName,
         Email: registerDto.email,
         Mobile: registerDto.mobile,
         PasswordHash: hashedPassword,
-        Role_Id: 3,
+        Role_Id: 1,
       },
     });
 
@@ -81,7 +84,7 @@ export class AuthService {
       data: {
         User_Id: user.Id,
         Token: refreshToken,
-        ExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+        ExpiresAt: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 7 days
       },
     });
 
@@ -122,9 +125,68 @@ export class AuthService {
     if (!user || !user.IsActive) {
       throw new UnauthorizedException();
     }
+
+    await this.prisma.refreshTokens.update({
+      where: { Id: token.Id },
+      data: { RevokedAt: new Date() },
+    });
+
+    const payload = {
+      sub: user.Id,
+      username: user.UserName,
+      role: user.Role_Id,
+    };
+
+    const accessToken = await this.jwtService.signAsync(payload);
+    const newRefreshToken = randomUUID();
+
+    await this.prisma.refreshTokens.create({
+      data: {
+        User_Id: user.Id,
+        Token: newRefreshToken,
+        ExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      },
+    });
+
     return {
-      message: 'Refresh token is valid',
-      user,
+      accessToken,
+      refreshToken: newRefreshToken,
+      user: {
+        id: user.Id,
+        firstName: user.FirstName,
+        lastName: user.LastName,
+        userName: user.UserName,
+        email: user.Email,
+        roleId: user.Role_Id,
+      },
+    };
+  }
+  async logout(logoutDto: LogoutDto) {
+    const token = await this.prisma.refreshTokens.findFirst({
+      where: {
+        Token: logoutDto.refreshToken,
+      },
+    });
+
+    if (!token) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    if (token.RevokedAt) {
+      throw new UnauthorizedException('Refresh token already revoked');
+    }
+
+    await this.prisma.refreshTokens.update({
+      where: {
+        Id: token.Id,
+      },
+      data: {
+        RevokedAt: new Date(),
+      },
+    });
+
+    return {
+      message: 'Logout successful',
     };
   }
 }

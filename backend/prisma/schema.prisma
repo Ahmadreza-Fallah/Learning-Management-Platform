@@ -159,7 +159,7 @@ model Users {
   FirstName      String?          @db.NVarChar(50)
   LastName       String?          @db.NVarChar(50)
   UserName       String?          @unique(map: "UQ__Users__C9F2845634423FCD") @db.NVarChar(50)
-  NationalCode   String?          @unique(map: "UQ__Users__3DFA4106A5098678") @db.NVarChar(10)
+  NationalCode   String?          @db.NVarChar(10)
   Sex_Id         Int?
   PasswordHash   String           @db.NVarChar(500)
   Role_Id        Int
