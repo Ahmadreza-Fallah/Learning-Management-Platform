@@ -84,7 +84,7 @@ export class AuthService {
       data: {
         User_Id: user.Id,
         Token: refreshToken,
-        ExpiresAt: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 7 days
+        ExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       },
     });
 

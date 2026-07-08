@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import api from '../services/api';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import authService from "../services/auth.service";
+import toast from "react-hot-toast";
 
 interface User {
   id: number;
@@ -13,56 +20,117 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (userName: string, password: string) => Promise<void>;
+  login: (data: LoginData) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   loading: boolean;
 }
 
 interface RegisterData {
   firstName: string;
   lastName: string;
-  username: string;
+  userName: string;
   email: string;
   mobile: string;
   password: string;
 }
 
+interface LoginData {
+  userName: string;
+  password: string;
+}
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const isTokenExpired = (token: string): boolean => {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    return payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+};
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const storedToken = localStorage.getItem('accessToken');
-    if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    const initializeAuth = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+      const refreshToken = localStorage.getItem("refreshToken");
+      const storedUser = localStorage.getItem("user");
+
+      if (!accessToken || !refreshToken || !storedUser) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        if (!isTokenExpired(accessToken)) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          const response = await authService.refresh(refreshToken);
+
+          const {
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+            user,
+          } = response;
+
+          localStorage.setItem("accessToken", newAccessToken);
+          localStorage.setItem("refreshToken", newRefreshToken);
+          localStorage.setItem("user", JSON.stringify(user));
+
+          setUser(user);
+        }
+      } catch {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
+
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
   }, []);
 
-  const login = useCallback(async (userName: string, password: string) => {
-    const response = await api.post('/auth/login', { userName, password });
-    const { accessToken, refreshToken, user: userData } = response.data;
+  const login = useCallback(async (data: LoginData) => {
+    const response = await authService.login(data);
+    const { accessToken, refreshToken, user: userData } = response;
 
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("user", JSON.stringify(userData));
 
     setUser(userData);
   }, []);
 
   const register = useCallback(async (data: RegisterData) => {
-    await api.post('/auth/register', data);
+    await authService.register(data);
   }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
-    setUser(null);
+  const logout = useCallback(async () => {
+    try {
+      const refreshToken = localStorage.getItem("refreshToken");
+
+      if (refreshToken) {
+        await authService.logout(refreshToken);
+      }
+    } catch (error) {
+      toast.error("Logout failed.");
+    } finally {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
+
+      setUser(null);
+    }
   }, []);
 
   return (
@@ -84,7 +152,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
