@@ -51,13 +51,12 @@ const Register: React.FC = () => {
   const [mobile, setMobile] = useState("");
 
   const route = all_routes;
-
   const handleSubmit = async (event: React.FormEvent) => {
     debugger;
     event.preventDefault();
     setError("");
     try {
-      const res = await authService.register({
+      const res = register({
         firstName,
         lastName,
         userName,
@@ -65,7 +64,7 @@ const Register: React.FC = () => {
         email,
         password,
       });
-      if (res) {
+      if (res !== null) {
         debugger;
         navigate(route.login);
       }
