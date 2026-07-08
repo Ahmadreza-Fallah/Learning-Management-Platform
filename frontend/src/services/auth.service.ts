@@ -22,9 +22,11 @@ class AuthService {
     try {
       const response = await api.post("/auth/register", data);
       toast.success("Successfully saved!");
+      //add notification
       return response.data;
     } catch (ex) {
       debugger;
+      //add notification
     }
   }
 

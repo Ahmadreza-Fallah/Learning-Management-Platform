@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import { all_routes } from "../../router/all_routes";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 import { useAuth } from "../../../context/AuthContext";
+import toast from "react-hot-toast";
 type PasswordField = "password" | "confirmPassword";
-
+export interface LoginRequest {
+  userName: string;
+  password: string;
+}
 const Login = () => {
   const { login, isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated) {
       navigate(all_routes.homeone);
     }
@@ -31,7 +36,6 @@ const Login = () => {
 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const togglePasswordVisibility = (field: PasswordField) => {
     setPasswordVisibility((prevState) => ({
@@ -42,14 +46,23 @@ const Login = () => {
 
   const route = all_routes;
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setError("");
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    debugger;
+    e.preventDefault();
+    setLoading(true);
+
     try {
-      await login(userName, password);
-      navigate(route.homeone);
+      await login({ userName, password });
+      if (isAuthenticated) {
+        navigate(route.homeone, { replace: true });
+      }
     } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+      debugger;
+      toast.error(
+        err.response?.data?.message || "Invalid username or password.",
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -148,11 +161,7 @@ const Login = () => {
                     <h1 className="fs-32 fw-bold topic">
                       Sign into Your Account
                     </h1>
-                    {error && (
-                      <div className="alert alert-danger" role="alert">
-                        {error}
-                      </div>
-                    )}
+
                     <form onSubmit={handleSubmit} className="mb-3 pb-3">
                       <div className="mb-3 position-relative">
                         <label className="form-label">
@@ -219,8 +228,9 @@ const Login = () => {
                         <button
                           className="btn btn-secondary btn-lg"
                           type="submit"
+                          disabled={loading}
                         >
-                          Login <i className="isax isax-arrow-right-3 ms-1" />
+                          {loading ? "Signing in..." : "Login"}
                         </button>
                       </div>
                     </form>
