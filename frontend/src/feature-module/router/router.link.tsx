@@ -1,11 +1,6 @@
 import { Navigate, Route } from "react-router";
 import { all_routes } from "./all_routes";
 import HomeOne from "../HomePages/home-one/homeone";
-import HomeTwo from "../HomePages/home-two/homeTwo";
-import HomeThree from "../HomePages/home-three/homeThree";
-import HomeFour from "../HomePages/home-four/homeFour";
-import HomeFive from "../HomePages/home-five/homeFive";
-import HomeSix from "../HomePages/home-six/homeSix";
 import CourseGrid from "../Courses/courses-grid/courseGrid";
 import CourseList from "../Courses/course-list/courseList";
 import CourseCategory from "../Courses/course-category/courseCategory";
@@ -41,15 +36,6 @@ import CourseDetails from "../Courses/course-details/courseDetails";
 import CourseDetailsTwo from "../Courses/course-details-2/courseDetailsTwo";
 import CourseCategoryTwo from "../Courses/course-category-two/courseCategoryTwo";
 import StudentDashboard from "../student/dashboard/studentDashboard";
-import BlogGrid from "../blog/blog-layouts/blogGrid";
-import BlogGrid2 from "../blog/blog-layouts/blogGrid2";
-import BlogGrid3 from "../blog/blog-layouts/blogGrid3";
-import BlogCarousal from "../blog/blog-layouts/blogCarousal";
-import BlogMasonry from "../blog/blog-layouts/blogMasonry";
-import BlogLeftSidebar from "../blog/blog-layouts/blogLeftSidebar";
-import BlogRightSidebar from "../blog/blog-layouts/blogRightSidebar";
-import BlogDetailsLeftSidebar from "../blog/blog-details/blogDetailsLeftSidebar";
-import BlogDetailsRightSidebar from "../blog/blog-details/blogDetailsRightSidebar";
 import InstructorGrid from "../Pages/instructor/instructor-grid/instructorGrid";
 import InstructorList from "../Pages/instructor/instructor-list/instructorList";
 import InstructorDetails from "../Pages/instructor/instructor-details/instructor-details";
@@ -94,6 +80,9 @@ import StudentNotification from "../student/student-settings/student-notificatio
 import StudentBillingAddress from "../student/student-settings/student-billing-address/studentBillingAddress";
 import StudentQuizQuestion from "../student/student-quiz-question/studentQuizQuestion";
 import InstructorProfileSettings from "../Instructor/instructor-settings/instructor-profile-settings/instructorProfile";
+import ProtectedRoute from "./protectedRoutes";
+import PublicRoute from "./publicRoute";
+import RoleRoute from "./roleRoutes";
 
 const routes = all_routes;
 
@@ -107,31 +96,6 @@ export const publicRoutes = [
   {
     path: routes.homeone,
     element: <HomeOne />,
-    route: Route,
-  },
-  {
-    path: routes.hometwo,
-    element: <HomeTwo />,
-    route: Route,
-  },
-  {
-    path: routes.homethree,
-    element: <HomeThree />,
-    route: Route,
-  },
-  {
-    path: routes.homefour,
-    element: <HomeFour />,
-    route: Route,
-  },
-  {
-    path: routes.homefive,
-    element: <HomeFive />,
-    route: Route,
-  },
-  {
-    path: routes.homesix,
-    element: <HomeSix />,
     route: Route,
   },
   {
@@ -181,17 +145,29 @@ export const publicRoutes = [
   },
   {
     path: routes.addNewCourse,
-    element: <AddNewCourse />,
+    element: (
+      <ProtectedRoute>
+        <AddNewCourse />
+      </ProtectedRoute>
+    ),
     route: Route,
   },
   {
     path: routes.instructorDashboard,
-    element: <InstructorDashboard />,
+    element: (
+      <RoleRoute roles={[1]}>
+        <InstructorDashboard />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.instructorProfile,
-    element: <InstructorProfile />,
+    element: (
+      <ProtectedRoute>
+        <InstructorProfile />
+      </ProtectedRoute>
+    ),
     route: Route,
   },
   {
@@ -311,52 +287,11 @@ export const publicRoutes = [
   },
   {
     path: routes.studentDashboard,
-    element: <StudentDashboard />,
-    route: Route,
-  },
-  {
-    path: routes.blogGrid,
-    element: <BlogGrid />,
-    route: Route,
-  },
-  {
-    path: routes.blogGrid2,
-    element: <BlogGrid2 />,
-    route: Route,
-  },
-  {
-    path: routes.blogGrid3,
-    element: <BlogGrid3 />,
-    route: Route,
-  },
-  {
-    path: routes.blogCarousal,
-    element: <BlogCarousal />,
-    route: Route,
-  },
-  {
-    path: routes.blogMasonry,
-    element: <BlogMasonry />,
-    route: Route,
-  },
-  {
-    path: routes.blogLeftSidebar,
-    element: <BlogLeftSidebar />,
-    route: Route,
-  },
-  {
-    path: routes.blogRightSidebar,
-    element: <BlogRightSidebar />,
-    route: Route,
-  },
-  {
-    path: routes.blogDetailsLeftSidebar,
-    element: <BlogDetailsLeftSidebar />,
-    route: Route,
-  },
-  {
-    path: routes.blogDetailsRightSidebar,
-    element: <BlogDetailsRightSidebar />,
+    element: (
+      <RoleRoute roles={[1]}>
+        <StudentDashboard />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
@@ -529,12 +464,21 @@ export const publicRoutes = [
 export const authRoutes = [
   {
     path: routes.login,
-    element: <Login />,
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
     route: Route,
   },
   {
     path: routes.register,
-    element: <Register />,
+    element: (
+      <PublicRoute>
+        {" "}
+        <Register />
+      </PublicRoute>
+    ),
     route: Route,
   },
   {
