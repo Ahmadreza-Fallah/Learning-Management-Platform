@@ -56,6 +56,7 @@ const Login = () => {
       if (isAuthenticated) {
         navigate(route.homeone, { replace: true });
       }
+      toast.success("login successfull !");
     } catch (err: any) {
       debugger;
       toast.error(
