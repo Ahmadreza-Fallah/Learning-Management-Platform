@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ImageWithBasePath from "../imageWithBasePath";
-import { header } from "../data/json/header";
+import { getHeader } from "../data/json/header";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { all_routes } from "../../../feature-module/router/all_routes";
 import { setDataTheme } from "../../redux/themeSettingSlice";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../../../context/AuthContext";
 const Header = () => {
   const { user, logout } = useAuth();
+  const header = getHeader(user?.roleId ?? 1);
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [isMegaMenu, setIsMegaMenu] = useState(false);
@@ -110,6 +111,148 @@ const Header = () => {
   };
   return (
     <>
+      {/* Header Topbar*/}
+      {location.pathname === "/index" ||
+      location.pathname === "/index-3" ||
+      location.pathname === "/index-4" ||
+      location.pathname === "/index-5" ||
+      location.pathname === "/index-6" ? (
+        <></>
+      ) : (
+        <div className="header-topbar text-center">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-6">
+                <div className="d-flex align-items-center justify-content-center justify-content-lg-start">
+                  <p className="d-flex align-items-center fw-medium fs-14 mb-2 me-3">
+                    <i className="isax isax-location5 me-2" />
+                    1442 Crosswind Drive Madisonville
+                  </p>
+                  <p className="d-flex align-items-center fw-medium fs-14 mb-2">
+                    <i className="isax isax-call-calling5 me-2" />
+                    +1 45887 77874
+                  </p>
+                </div>
+              </div>
+              <div className="col-lg-6">
+                <div className="d-flex align-items-center justify-content-center justify-content-lg-end">
+                  <div className="dropdown flag-dropdown mb-2 me-3">
+                    <Link
+                      to="#"
+                      className="dropdown-toggle d-inline-flex align-items-center"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <ImageWithBasePath
+                        src="assets/img/flags/us-flag.svg"
+                        className="me-2"
+                        alt="flag"
+                      />
+                      ENG
+                    </Link>
+                    <ul className="dropdown-menu p-2 mt-2">
+                      <li>
+                        <Link
+                          className="dropdown-item rounded d-flex align-items-center"
+                          to="#"
+                        >
+                          <ImageWithBasePath
+                            src="assets/img/flags/us-flag.svg"
+                            className="me-2"
+                            alt="flag"
+                          />
+                          ENG
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item rounded d-flex align-items-center"
+                          to="#"
+                        >
+                          <ImageWithBasePath
+                            src="assets/img/flags/arab-flag.svg"
+                            className="me-2"
+                            alt="flag"
+                          />
+                          ARA
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item rounded d-flex align-items-center"
+                          to="#"
+                        >
+                          <ImageWithBasePath
+                            src="assets/img/flags/france-flag.svg"
+                            className="me-2"
+                            alt="flag"
+                          />
+                          FRE
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="dropdown mb-2 me-3">
+                    <Link
+                      to="#"
+                      className="dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      USD
+                    </Link>
+                    <ul className="dropdown-menu p-2 mt-2">
+                      <li>
+                        <Link className="dropdown-item rounded" to="#">
+                          USD
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item rounded" to="#">
+                          YEN
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item rounded" to="#">
+                          EURO
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <ul className="social-icon d-flex align-items-center mb-2">
+                    <li className="me-2">
+                      <Link to="#">
+                        <i className="fa-brands fa-facebook-f" />
+                      </Link>
+                    </li>
+                    <li className="me-2">
+                      <Link to="#">
+                        <i className="fa-brands fa-instagram" />
+                      </Link>
+                    </li>
+                    <li className="me-2">
+                      <Link to="#">
+                        <i className="fa-brands fa-x-twitter" />
+                      </Link>
+                    </li>
+                    <li className="me-2">
+                      <Link to="#">
+                        <i className="fa-brands fa-youtube" />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="#">
+                        <i className="fa-brands fa-linkedin" />
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* /Header Topbar*/}
       {/* Header */}
       <header
@@ -141,13 +284,15 @@ const Header = () => {
                 >
                   {location.pathname === "/index" ? (
                     <ImageWithBasePath
-                      src="assets/img/logo-white.svg"
+                      width={200}
+                      src="assets/img/logo-side.png"
                       className="logo"
                       alt="Logo"
                     />
                   ) : (
                     <ImageWithBasePath
-                      src="assets/img/logo.svg"
+                      width={200}
+                      src="assets/img/logo-side.png"
                       className="logo"
                       alt="Logo"
                     />
@@ -155,7 +300,8 @@ const Header = () => {
                 </Link>
                 <Link className="logo-dark header-logo" to={all_routes.homeone}>
                   <ImageWithBasePath
-                    src="assets/img/logo-white.svg"
+                    width={200}
+                    src="assets/img/logo-side.png"
                     className="logo"
                     alt="Logo"
                   />
@@ -166,7 +312,8 @@ const Header = () => {
               <div className="menu-header">
                 <Link to={all_routes.homeone} className="menu-logo">
                   <ImageWithBasePath
-                    src="assets/img/logo.svg"
+                    width={200}
+                    src="assets/img/logo-side.png"
                     className="img-fluid"
                     alt="Logo"
                   />
@@ -181,7 +328,7 @@ const Header = () => {
                 </Link>
               </div>
               <ul className={`main-nav ${isMegaMenu ? "active" : ""}`}>
-                {header.map((mainMenus: any, mainIndex) => (
+                {header?.map((mainMenus: any, mainIndex) => (
                   <React.Fragment key={mainIndex}>
                     {mainMenus.separateRoute ? (
                       <li
@@ -692,7 +839,115 @@ const Header = () => {
                 </div>
               </div>
             ) : (
-              ""
+              <div className="header-btn d-flex align-items-center">
+                {location.pathname === "/index-2" && (
+                  <>
+                    <div className="dropdown flag-dropdown icon-btn">
+                      <Link
+                        to="#"
+                        className="d-inline-flex align-items-center"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <ImageWithBasePath
+                          src="assets/img/flags/us-flag.svg"
+                          alt="flag"
+                        />
+                      </Link>
+                      <ul className="dropdown-menu p-2 mt-2">
+                        <li>
+                          <Link
+                            className="dropdown-item rounded d-flex align-items-center"
+                            to="#"
+                          >
+                            <ImageWithBasePath
+                              src="assets/img/flags/us-flag.svg"
+                              className="me-2"
+                              alt="flag"
+                            />
+                            ENG
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="dropdown-item rounded d-flex align-items-center"
+                            to="#"
+                          >
+                            <ImageWithBasePath
+                              src="assets/img/flags/arab-flag.svg"
+                              className="me-2"
+                              alt="flag"
+                            />
+                            ARA
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="dropdown-item rounded d-flex align-items-center"
+                            to="#"
+                          >
+                            <ImageWithBasePath
+                              src="assets/img/flags/france-flag.svg"
+                              className="me-2"
+                              alt="flag"
+                            />
+                            FRE
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="dropdown icon-btn">
+                      <Link
+                        to="#"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <i className="isax isax-dollar-circle4" />
+                      </Link>
+                      <ul className="dropdown-menu p-2 mt-2">
+                        <li>
+                          <Link className="dropdown-item rounded" to="#">
+                            USD
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-item rounded" to="#">
+                            YEN
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-item rounded" to="#">
+                            EURO
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                )}
+                <DarkButton />
+                <div className="icon-btn me-3">
+                  <Link to={all_routes.cart} className="position-relative">
+                    <i className="isax isax-shopping-cart5" />
+                    <span className="count-icon bg-success p-1 rounded-pill text-white fs-10 fw-bold">
+                      1
+                    </span>
+                  </Link>
+                </div>
+                <Link
+                  to={all_routes.login}
+                  className="btn btn-light d-inline-flex align-items-center me-2"
+                >
+                  <i className="isax isax-lock-circle me-2" />
+                  Sign In
+                </Link>
+                <Link
+                  to={all_routes.register}
+                  className="btn btn-secondary me-0"
+                >
+                  <i className="isax isax-user-edit me-2" />
+                  Register
+                </Link>
+              </div>
             )}
           </div>
         </div>
