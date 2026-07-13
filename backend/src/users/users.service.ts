@@ -1,5 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -42,5 +50,116 @@ export class UsersService {
         CreatedAt: true,
       },
     });
+  }
+
+  async updateProfile(userId: number, dto: UpdateProfileDto) {
+    const user = await this.prisma.users.findUnique({
+      where: {
+        Id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const duplicate = await this.prisma.users.findFirst({
+      where: {
+        Id: {
+          not: userId,
+        },
+        OR: [
+          dto.userName
+            ? {
+                UserName: dto.userName,
+              }
+            : undefined,
+
+          dto.email
+            ? {
+                Email: dto.email,
+              }
+            : undefined,
+
+          dto.mobile
+            ? {
+                Mobile: dto.mobile,
+              }
+            : undefined,
+        ].filter(Boolean) as any,
+      },
+    });
+
+    if (duplicate) {
+      throw new ConflictException('Username, Email or Mobile already exists.');
+    }
+
+    const updatedUser = await this.prisma.users.update({
+      where: {
+        Id: userId,
+      },
+      data: {
+        FirstName: dto.firstName,
+        LastName: dto.lastName,
+        UserName: dto.userName,
+        Email: dto.email,
+        Mobile: dto.mobile,
+        Sex_Id: dto.sexId,
+        Avatar: dto.avatar,
+        UpdatedAt: new Date(),
+      },
+      select: {
+        Id: true,
+        FirstName: true,
+        LastName: true,
+        UserName: true,
+        Email: true,
+        Mobile: true,
+        Avatar: true,
+        Sex_Id: true,
+        Role_Id: true,
+      },
+    });
+
+    return {
+      message: 'Profile updated successfully.',
+      user: updatedUser,
+    };
+  }
+  async changePassword(userId: number, dto: ChangePasswordDto) {
+    const user = await this.prisma.users.findUnique({
+      where: {
+        Id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(
+      dto.currentPassword,
+      user.PasswordHash,
+    );
+
+    if (!isPasswordCorrect) {
+      throw new UnauthorizedException('Current password is incorrect.');
+    }
+
+    const hashedPassword = await bcrypt.hash(dto.newPassword, 10);
+
+    await this.prisma.users.update({
+      where: {
+        Id: userId,
+      },
+      data: {
+        PasswordHash: hashedPassword,
+        UpdatedAt: new Date(),
+      },
+    });
+
+    return {
+      message: 'Password changed successfully.',
+    };
   }
 }
