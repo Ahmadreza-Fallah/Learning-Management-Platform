@@ -146,16 +146,16 @@ export const publicRoutes = [
   {
     path: routes.addNewCourse,
     element: (
-      <ProtectedRoute>
+      <RoleRoute roles={[2, 3]}>
         <AddNewCourse />
-      </ProtectedRoute>
+      </RoleRoute>
     ),
     route: Route,
   },
   {
     path: routes.instructorDashboard,
     element: (
-      <RoleRoute roles={[1]}>
+      <RoleRoute roles={[2]}>
         <InstructorDashboard />
       </RoleRoute>
     ),
@@ -164,25 +164,37 @@ export const publicRoutes = [
   {
     path: routes.instructorProfile,
     element: (
-      <ProtectedRoute>
+      <RoleRoute roles={[2]}>
         <InstructorProfile />
-      </ProtectedRoute>
+      </RoleRoute>
     ),
     route: Route,
   },
   {
     path: routes.instructorCourse,
-    element: <InstructorCourse />,
+    element: (
+      <RoleRoute roles={[2]}>
+        <InstructorCourse />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.instructorAnnouncements,
-    element: <InstructorAnnouncements />,
+    element: (
+      <RoleRoute roles={[2]}>
+        <InstructorAnnouncements />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.instructorAssignment,
-    element: <InstructorAssignment />,
+    element: (
+      <RoleRoute roles={[2]}>
+        <InstructorAssignment />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
@@ -356,52 +368,94 @@ export const publicRoutes = [
   },
   {
     path: routes.studentProfile,
-    element: <StudentProfile />,
+    element: (
+      <RoleRoute roles={[1]}>
+        <StudentProfile />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.studentCourses,
-    element: <StudentCourse />,
+    element: (
+      <RoleRoute roles={[1]}>
+        <StudentCourse />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.studentCertificates,
-    element: <StudentCertificates />,
+    element: (
+      <RoleRoute roles={[1]}>
+        <StudentCertificates />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.studentWishlist,
-    element: <StudentWishlist />,
+    element: (
+      <RoleRoute roles={[1]}>
+        {" "}
+        <StudentWishlist />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.studentReviews,
-    element: <StudentReviews />,
+    element: (
+      <RoleRoute roles={[1]}>
+        {" "}
+        <StudentReviews />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.studentQuiz,
-    element: <StudentQuiz />,
+    element: (
+      <RoleRoute roles={[1]}>
+        <StudentQuiz />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.studentOrderHistory,
-    element: <StudentOrder />,
+    element: (
+      <RoleRoute roles={[1]}>
+        <StudentOrder />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.studentReferral,
-    element: <StudentRefferal />,
+    element: (
+      <RoleRoute roles={[1]}>
+        <StudentRefferal />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.studentMessage,
-    element: <StudentMessage />,
+    element: (
+      <RoleRoute roles={[1]}>
+        <StudentMessage />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
     path: routes.instructorCourseGrid,
-    element: <InstructorCourseGrid />,
+    element: (
+      <RoleRoute roles={[2]}>
+        <InstructorCourseGrid />
+      </RoleRoute>
+    ),
     route: Route,
   },
   {
@@ -442,11 +496,6 @@ export const publicRoutes = [
   {
     path: routes.studentNotification,
     element: <StudentNotification />,
-    route: Route,
-  },
-  {
-    path: routes.studentBillingAddress,
-    element: <StudentBillingAddress />,
     route: Route,
   },
   {

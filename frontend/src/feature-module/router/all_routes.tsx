@@ -1,11 +1,6 @@
 export const all_routes = {
   //Home Modules
   homeone: "/index",
-  hometwo: "/index-2",
-  homethree: "/index-3",
-  homefour: "/index-4",
-  homefive: "/index-5",
-  homesix: "/index-6",
 
   //Course Modules
   courseGrid: "/course/course-grid",
@@ -72,7 +67,6 @@ export const all_routes = {
   studentSocialProfile: "/student/student-social-profile",
   studentLinkedAccounts: "/student/student-linked-accounts",
   studentNotification: "/student/student-notifications",
-  studentBillingAddress: "/student/student-billing-address",
 
   cart: "/cart",
   login: "/login",
