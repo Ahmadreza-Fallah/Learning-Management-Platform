@@ -25,13 +25,6 @@ export const getHeader = (roleId: number) => {
             subMenus: [],
           },
           {
-            menuValue: "My Profile",
-            route: all_routes.studentProfile,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-          {
             menuValue: "Enrolled Course",
             route: all_routes.studentCourses,
             hasSubRoute: false,
@@ -137,35 +130,6 @@ export const getHeader = (roleId: number) => {
               },
             ],
           },
-          {
-            menuValue: "Course Category",
-            hasSubRoute: true,
-            showSubRoute: true,
-            showAsTab2: false,
-            subMenus: [
-              {
-                menuValue: "Course Category",
-                route: all_routes.courseCategory,
-                hasSubRoute: false,
-                showSubRoute: false,
-                subMenus: [],
-              },
-              {
-                menuValue: "Course Category 2",
-                route: all_routes.courseCategory2,
-                hasSubRoute: false,
-                showSubRoute: false,
-                subMenus: [],
-              },
-              {
-                menuValue: "Course Category 3",
-                route: all_routes.courseCategory3,
-                hasSubRoute: false,
-                showSubRoute: false,
-                subMenus: [],
-              },
-            ],
-          },
         ],
       },
       {
@@ -178,13 +142,6 @@ export const getHeader = (roleId: number) => {
           {
             menuValue: "Dashboard",
             route: all_routes.instructorDashboard,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-          {
-            menuValue: "My Profile",
-            route: all_routes.instructorProfile,
             hasSubRoute: false,
             showSubRoute: false,
             subMenus: [],
@@ -279,6 +236,56 @@ export const getHeader = (roleId: number) => {
           {
             menuValue: "Settings",
             route: all_routes.instructorsettings,
+            hasSubRoute: false,
+            showSubRoute: false,
+            subMenus: [],
+          },
+        ],
+      },
+    ];
+  }
+  if (roleId === 3) {
+    return [
+      {
+        tittle: "Courses",
+        base: "course",
+        showAsTab: false,
+        separateRoute: false,
+        menu: [
+          {
+            menuValue: "Course",
+            hasSubRoute: true,
+            showSubRoute: true,
+            showAsTab2: false,
+            subMenus: [
+              {
+                menuValue: "Course Grid",
+                route: all_routes.courseGrid,
+                hasSubRoute: false,
+                showSubRoute: false,
+                subMenus: [],
+              },
+              {
+                menuValue: "Course List",
+                route: all_routes.courseList,
+                hasSubRoute: false,
+                showSubRoute: false,
+                subMenus: [],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        tittle: "Dashboard",
+        base: "instructor",
+        base2: "student",
+        showAsTab: false,
+        separateRoute: false,
+        menu: [
+          {
+            menuValue: "user management",
+            route: all_routes.adminDashboard,
             hasSubRoute: false,
             showSubRoute: false,
             subMenus: [],

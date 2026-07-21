@@ -12,6 +12,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @ApiTags('Courses')
 @Controller('courses')
@@ -31,5 +32,13 @@ export class CoursesController {
   @ApiOperation({ summary: 'Get all courses' })
   async findAll() {
     return this.coursesService.findAll();
+  }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(2)
+  @Get('my')
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Get current teacher courses' })
+  async getMyCourses(@CurrentUser() user: any) {
+    return this.coursesService.findByTeacher(user.id);
   }
 }

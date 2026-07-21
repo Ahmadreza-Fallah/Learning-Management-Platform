@@ -17,17 +17,9 @@ export interface LoginRequest {
 
 class AuthService {
   async register(data: RegisterRequest) {
-    debugger;
-
-    try {
-      const response = await api.post("/auth/register", data);
-      toast.success("Successfully saved!");
-      //add notification
-      return response.data;
-    } catch (ex) {
-      debugger;
-      //add notification
-    }
+    const response = await api.post("/auth/register", data);
+    toast.success("Successfully registered!");
+    return response.data;
   }
 
   async login(data: LoginRequest) {
