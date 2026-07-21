@@ -38,7 +38,7 @@ export class UsersService {
   }
 
   async findAll() {
-    return this.prisma.users.findMany({
+    const users = await this.prisma.users.findMany({
       select: {
         Id: true,
         FirstName: true,
@@ -48,8 +48,29 @@ export class UsersService {
         Role_Id: true,
         IsActive: true,
         CreatedAt: true,
+        InstructorRequests_InstructorRequests_User_IdToUsers: {
+          orderBy: { CreatedAt: 'desc' },
+          take: 1,
+          select: {
+            Id: true,
+            Status: true,
+          },
+        },
       },
     });
+
+    return users.map((user) => ({
+      Id: user.Id,
+      FirstName: user.FirstName,
+      LastName: user.LastName,
+      UserName: user.UserName,
+      Email: user.Email,
+      Role_Id: user.Role_Id,
+      IsActive: user.IsActive,
+      CreatedAt: user.CreatedAt,
+      RequestId: user.InstructorRequests_InstructorRequests_User_IdToUsers[0]?.Id ?? null,
+      RequestStatus: user.InstructorRequests_InstructorRequests_User_IdToUsers[0]?.Status ?? null,
+    }));
   }
 
   async updateProfile(userId: number, dto: UpdateProfileDto) {

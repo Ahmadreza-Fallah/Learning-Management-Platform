@@ -52,11 +52,10 @@ const Register: React.FC = () => {
 
   const route = all_routes;
   const handleSubmit = async (event: React.FormEvent) => {
-    debugger;
     event.preventDefault();
     setError("");
     try {
-      const res = register({
+      await register({
         firstName,
         lastName,
         userName,
@@ -64,10 +63,7 @@ const Register: React.FC = () => {
         email,
         password,
       });
-      if (res !== null) {
-        debugger;
-        navigate(route.login);
-      }
+      navigate(route.login);
     } catch (err: any) {
       setError(
         err.response?.data?.message || "Registration failed. Please try again.",
@@ -282,7 +278,7 @@ const Register: React.FC = () => {
                       <div className="mb-3 position-relative">
                         <label className="form-label">
                           <span className="text-danger ms-1">*</span>
-                          نام
+                          name
                         </label>
                         <div className="position-relative">
                           <input
@@ -300,7 +296,7 @@ const Register: React.FC = () => {
                       <div className="mb-3 position-relative">
                         <label className="form-label">
                           <span className="text-danger ms-1">*</span>
-                          نام خانوادگی
+                          family
                         </label>
                         <div className="position-relative">
                           <input
@@ -317,7 +313,7 @@ const Register: React.FC = () => {
                       </div>
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          <span className="text-danger ms-1">*</span> نام کاربری
+                          <span className="text-danger ms-1">*</span> username
                         </label>
                         <div className="position-relative">
                           <input
@@ -334,7 +330,7 @@ const Register: React.FC = () => {
                       </div>
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          <span className="text-danger ms-1">*</span> موبایل
+                          <span className="text-danger ms-1">*</span> mobile
                         </label>
                         <div className="position-relative">
                           <input
@@ -351,7 +347,7 @@ const Register: React.FC = () => {
                       </div>
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          <span className="text-danger ms-1">*</span> ایمیل
+                          <span className="text-danger ms-1">*</span> email
                         </label>
                         <div className="position-relative">
                           <input
@@ -368,7 +364,7 @@ const Register: React.FC = () => {
                       </div>
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          <span className="text-danger"> *</span> رمزعبور
+                          <span className="text-danger"> *</span> password
                         </label>
                         <div className="position-relative" id="passwordInput">
                           <input

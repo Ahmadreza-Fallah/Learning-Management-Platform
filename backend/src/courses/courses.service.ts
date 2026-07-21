@@ -66,10 +66,35 @@ export class CoursesService {
 
   async findByTeacher(teacherId: number) {
     return this.prisma.courses.findMany({
-      where: { Teacher_Id: teacherId },
-      include: {
-        Category: true,
-        Level: true,
+      where: {
+        Teacher_Id: teacherId,
+      },
+      orderBy: {
+        CreatedAt: 'desc',
+      },
+      select: {
+        Id: true,
+        Title: true,
+        Thumbnail: true,
+        Price: true,
+        DiscountPrice: true,
+        IsPublished: true,
+        CreatedAt: true,
+        AverageRating: true,
+
+        Category: {
+          select: {
+            Id: true,
+            Title: true,
+          },
+        },
+
+        Level: {
+          select: {
+            Id: true,
+            LevelName: true,
+          },
+        },
       },
     });
   }

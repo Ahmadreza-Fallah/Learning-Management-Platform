@@ -83,6 +83,7 @@ import InstructorProfileSettings from "../Instructor/instructor-settings/instruc
 import ProtectedRoute from "./protectedRoutes";
 import PublicRoute from "./publicRoute";
 import RoleRoute from "./roleRoutes";
+import AdminPage from "../admin/adminPage";
 
 const routes = all_routes;
 
@@ -148,6 +149,15 @@ export const publicRoutes = [
     element: (
       <RoleRoute roles={[2, 3]}>
         <AddNewCourse />
+      </RoleRoute>
+    ),
+    route: Route,
+  },
+  {
+    path: routes.adminDashboard,
+    element: (
+      <RoleRoute roles={[3]}>
+        <AdminPage />
       </RoleRoute>
     ),
     route: Route,

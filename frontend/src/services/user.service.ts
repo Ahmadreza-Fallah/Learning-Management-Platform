@@ -15,6 +15,19 @@ export interface ChangePasswordRequest {
   newPassword: string;
 }
 
+export interface User {
+  Id: number;
+  FirstName: string;
+  LastName: string;
+  UserName: string;
+  Email: string;
+  Mobile: string;
+  Role_Id: number;
+  IsActive: boolean;
+  RequestStatus?: string;
+  RequestId?: number;
+}
+
 class UserService {
   async getProfile() {
     const response = await api.get("/users/profile");
@@ -22,13 +35,27 @@ class UserService {
   }
 
   async updateProfile(data: UpdateProfileRequest) {
-    const response: any = await api.put("/users/profile", data);
+    const response = await api.put("/users/profile", data);
     return response.data;
   }
 
   async changePassword(data: ChangePasswordRequest) {
     const response = await api.put("/users/change-password", data);
+    return response.data;
+  }
 
+  async getUsers() {
+    const response = await api.get("/users");
+    return response.data;
+  }
+
+  async approveInstructorRequest(requestId: number) {
+    const response = await api.put(`/instructor-requests/${requestId}/approve`);
+    return response.data;
+  }
+
+  async rejectInstructorRequest(requestId: number) {
+    const response = await api.put(`/instructor-requests/${requestId}/reject`);
     return response.data;
   }
 }

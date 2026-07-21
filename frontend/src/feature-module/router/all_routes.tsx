@@ -47,6 +47,7 @@ export const all_routes = {
   instructorQA: "/instructor/instructor-quiz-questions",
   instructorsettings: "/instructor/instructor-settings",
 
+  adminDashboard: "/admin/adminPage",
   studentDashboard: "/student/student-dashboard",
   studentProfile: "/student/student-profile",
   studentsGrid: "/instructor/students",

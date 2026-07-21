@@ -1,26 +1,33 @@
 import React, { useState } from "react";
-import Breadcrumb from "../../../core/common/Breadcrumb/breadcrumb";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 import { Link } from "react-router-dom";
 import CountUp from "react-countup";
-type PasswordField = "password" | "confirmPassword";
+import toast from "react-hot-toast";
+import instructorRequestService from "../../../services/instructor-requests.service";
 const BecomeInstructor = () => {
-  const [passwordVisibility, setPasswordVisibility] = useState({
-         password: false,
-         confirmPassword: false,
-       });
-     
-       const togglePasswordVisibility = (field: PasswordField) => {
-         setPasswordVisibility((prevState) => ({
-           ...prevState,
-           [field]: !prevState[field],
-         }));
-       };
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e: React.FormEvent) => {
+    debugger;
+    e.preventDefault();
+    setLoading(true);
 
+    try {
+      const response = await instructorRequestService.create({
+        description,
+      });
+
+      toast.success(response.message);
+
+      setDescription("");
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
-      <Breadcrumb title="Become an Instructor" />
-
       <>
         {/* share your knowledge */}
         <div className="share-your-knowledge">
@@ -340,98 +347,25 @@ const BecomeInstructor = () => {
               <div className="col-lg-6">
                 <div className="register-section p-4 p-sm-5 p-md-6">
                   <h5 className="mb-2">Register</h5>
-                  <p>
-                    Your email address will not be published. Required fields
-                    are marked *
-                  </p>
-                  <form>
+                  <p>it's time to be an instructure of mentorito</p>
+                  <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-lg-12">
-                        <div className="mb-3">
-                          <label className="form-label mb-1">
-                            Name<span className="ms-1 text-danger">*</span>
-                          </label>
-                          <input type="text" className="form-control" />
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="mb-3">
-                          <label className="form-label mb-1">
-                            Email<span className="ms-1 text-danger">*</span>
-                          </label>
-                          <input type="email" className="form-control" />
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="mb-3">
-                          <label className="form-label mb-1">
-                            Phone Number
-                            <span className="ms-1 text-danger">*</span>
-                          </label>
-                          <input type="tel" className="form-control" />
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="mb-3 position-relative">
-                          <label className="form-label mb-1">
-                            Password<span className="ms-1 text-danger">*</span>
-                          </label>
-                          <div className="position-relative">
-                          <input
-                        type={
-                          passwordVisibility.password
-                            ? "text"
-                            : "password"
-                        }
-                        className="form-control form-control-lg pass-input"
-                         
-                      />
-                      <span
-                        className={`isax toggle-passwords ${passwordVisibility.password
-                          ? "isax-eye"
-                          : "isax-eye-slash"
-                          }`}
-                        onClick={() =>
-                          togglePasswordVisibility("password")
-                        }
-                      ></span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="mb-4">
-                          <label className="form-label mb-1">
-                            Confirm Password
-                            <span className="ms-1 text-danger">*</span>
-                          </label>
-                          <div className="position-relative">
-                          <input
-                        type={
-                          passwordVisibility.confirmPassword
-                            ? "text"
-                            : "password"
-                        }
-                        className="form-control form-control-lg pass-input"
-                        
-                      />
-                      <span
-                        className={`isax toggle-passwords ${passwordVisibility.confirmPassword
-                            ? "isax-eye"
-                            : "isax-eye-slash"
-                          }`}
-                        onClick={() =>
-                          togglePasswordVisibility("confirmPassword")
-                        }
-                      ></span>
-                          </div>
-                        </div>
+                        <textarea
+                          className="form-control"
+                          rows={5}
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                          placeholder="Tell us why you want to become an instructor..."
+                        />
                       </div>
                       <div className="col-lg-12">
                         <button
                           type="submit"
-                          className="btn btn-secondary btn-lg w-100 justify-content-center"
+                          className="btn btn-primary mt-2"
+                          disabled={loading}
                         >
-                          Submit
+                          {loading ? "Submitting..." : "Submit Request"}
                         </button>
                       </div>
                     </div>

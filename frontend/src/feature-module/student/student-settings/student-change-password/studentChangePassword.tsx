@@ -5,6 +5,7 @@ import ProfileCard from "../../common/profileCard";
 import StudentSidebar from "../../common/studentSidebar";
 import ImageWithBasePath from "../../../../core/common/imageWithBasePath";
 import { Link } from "react-router-dom";
+import userService from "../../../../services/user.service";
 
 const hasNumber = (value: string): boolean => {
   return /[0-9]/.test(value);
@@ -27,9 +28,9 @@ const strengthColor = (count: number): string => {
 };
 
 const StudentChangePassword = () => {
-
   const [eye, setEye] = useState<boolean>(true);
   const [password, setPassword] = useState<string>("");
+  const [currentPassword, setCurrentPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [validationError, setValidationError] = useState<number>(0);
   const [strength, setStrength] = useState<string>("");
@@ -46,9 +47,24 @@ const StudentChangePassword = () => {
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    debugger;
     const newPassword = event.target.value;
     setPassword(newPassword);
     validatePassword(newPassword);
+  };
+
+  const onsubmitPasswordChange = async (e: any) => {
+    debugger;
+    const Parameters = {
+      currentPassword: currentPassword,
+      newPassword: confirmPassword,
+    };
+    try {
+      const response = await userService.changePassword(Parameters);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const validatePassword = (value: string) => {
@@ -189,7 +205,7 @@ const StudentChangePassword = () => {
                             </Link>
                           </p>
                         </div>
-                        <form >
+                        <form onSubmit={onsubmitPasswordChange}>
                           <div className="mb-3 position-relative">
                             <label className="form-label">
                               Current Password{" "}
@@ -197,9 +213,12 @@ const StudentChangePassword = () => {
                             </label>
                             <div className="position-relative">
                               <input
+                                value={currentPassword}
                                 type={isPasswordVisible ? "text" : "password"}
                                 className="form-control form-control-lg pass-input"
-                                
+                                onChange={(e) =>
+                                  setCurrentPassword(e.target.value)
+                                }
                               />
                               <span
                                 className={`input-icon-addon toggle-password fs-14`}
@@ -243,12 +262,12 @@ const StudentChangePassword = () => {
                                 strength === "poor"
                                   ? "poor-active"
                                   : strength === "weak"
-                                  ? "avg-active"
-                                  : strength === "strong"
-                                  ? "strong-active"
-                                  : strength === "heavy"
-                                  ? "heavy-active"
-                                  : ""
+                                    ? "avg-active"
+                                    : strength === "strong"
+                                      ? "strong-active"
+                                      : strength === "heavy"
+                                        ? "heavy-active"
+                                        : ""
                               }`}
                             >
                               <span id="poor" className="active"></span>
@@ -298,33 +317,6 @@ const StudentChangePassword = () => {
                           </div>
                         </form>
                       </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-8">
-                      <div className="mb-3">
-                        <h5 className="mb-1 fs-18">Change Email</h5>
-                        <p>
-                          Your current email address is&nbsp;
-                          <Link to="#" className="fw-semibold">
-                            richard@example.com
-                          </Link>
-                        </p>
-                      </div>
-                      <form>
-                        <div className="mb-3">
-                          <label className="form-label">
-                            New Email Address{" "}
-                            <span className="text-danger"> *</span>
-                          </label>
-                          <input type="text" className="form-control" />
-                        </div>
-                        <div>
-                          <button className="btn btn-secondary" type="submit">
-                            Save Changes
-                          </button>
-                        </div>
-                      </form>
                     </div>
                   </div>
                 </div>
