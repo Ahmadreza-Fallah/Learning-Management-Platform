@@ -98,20 +98,20 @@ export const getHeader = (roleId: number) => {
           },
         ],
       },
-          {
-        tittle: "درباره ما",
-        route:all_routes.about_us,
-        showSubRoute: false,
-        showAsTab: false,
-        separateRoute: false,
-      },
-       {
-        tittle: "تماس با ما",
-        route:all_routes.contactUs,
-        showSubRoute: false,
-        showAsTab: false,
-        separateRoute: false,
-      },
+   {
+  tittle: "درباره ما",
+  route: all_routes.about_us,
+  hasSubRoute: false,
+  showSubRoute: false,
+  menu: [],
+},
+{
+  tittle: "تماس با ما",
+  route: all_routes.contactUs,
+  hasSubRoute: false,
+  showSubRoute: false,
+  menu: [],
+},
     ];
   }
   if (roleId === 2) {
@@ -256,20 +256,20 @@ export const getHeader = (roleId: number) => {
           },
         ],
       },
-             {
-        tittle: "درباره ما",
-        route:all_routes.about_us,
-        showSubRoute: false,
-        showAsTab: false,
-        separateRoute: false,
-      },
-       {
-        tittle: "تماس با ما",
-        route:all_routes.contactUs,
-        showSubRoute: false,
-        showAsTab: false,
-        separateRoute: false,
-      },
+           {
+  tittle: "درباره ما",
+  route: all_routes.about_us,
+  hasSubRoute: false,
+  showSubRoute: false,
+  menu: [],
+},
+{
+  tittle: "تماس با ما",
+  route: all_routes.contactUs,
+  hasSubRoute: false,
+  showSubRoute: false,
+  menu: [],
+},
     ];
   }
   if (roleId === 3) {

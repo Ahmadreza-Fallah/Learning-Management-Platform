@@ -31,13 +31,11 @@ const AboutSection = () => {
                 <div className="ps-0 ps-lg-2 pt-4 pt-lg-0 ps-xl-5">
                   <div className="section-header">
                     <span className="fw-medium text-secondary text-decoration-underline mb-2 d-inline-block">
-                      About
+                      درباره ما
                     </span>
-                    <h2>Empowering Learning, Inspiring Growth</h2>
+                    <h2>توانمندسازی یادگیری، الهام‌بخشی به رشد</h2>
                     <p>
-                      At DreamsLMS, we make education accessible to all with
-                      interactive courses and expert-led content. Learn anytime,
-                      anywhere, and achieve your goals seamlessly.
+                      در Mentorito ما با بهره‌گیری از دوره‌های تعاملی و محتوای ارائه‌شده توسط متخصصان، آموزش را برای همگان در دسترس می‌سازیم. در هر زمان و هر مکان بیاموزید و به‌سادگی به اهداف خود دست یابید.
                     </p>
                   </div>
                   <div className="d-flex align-items-center about-us-banner">
@@ -47,10 +45,9 @@ const AboutSection = () => {
                       </span>
                     </div>
                     <div className="ps-3">
-                      <h6 className="mb-2">Learn from anywhere</h6>
+                      <h6 className="mb-2">از هر کجا که هستید، یاد بگیرید</h6>
                       <p>
-                        Learning from anywhere has become a transform aspect of
-                        modern education, allowing individuals.
+                        یادگیری از هر مکان به جنبه‌ای تحول‌آفرین در آموزش مدرن تبدیل شده و به افراد امکان می‌دهد...
                       </p>
                     </div>
                   </div>
@@ -61,10 +58,9 @@ const AboutSection = () => {
                       </span>
                     </div>
                     <div className="ps-3">
-                      <h6 className="mb-2">Expert Mentors</h6>
+                      <h6 className="mb-2">مربیان متخصص</h6>
                       <p>
-                        Expert mentors are invaluable assets in any field,
-                        providing seasoned guidance knowledge.
+                        مربیان خبره در هر حوزه‌ای سرمایه‌هایی ارزشمند محسوب می‌شوند و راهنمایی‌ها و دانشِ برخاسته از تجربه را ارائه می‌دهند.
                       </p>
                     </div>
                   </div>
