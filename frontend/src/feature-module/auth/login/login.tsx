@@ -85,14 +85,12 @@ const Login = () => {
                     </div>
                     <div className="mentor-course text-center">
                       <h3 className="mb-2">
-                        Welcome to <br />
-                        Dreams<span className="text-secondary">LMS</span>{" "}
-                        Courses.
+                        خوش آمدید به  <br />
+                       <span className="text-secondary"> منتوریتو</span>{" "}
+                        دوره های
                       </h3>
                       <p>
-                        Platform designed to help organizations, educators, and
-                        learners manage, deliver, and track learning and
-                        training activities.
+                       پلتفرمی که برای کمک به سازمان‌ها، مربیان و فراگیران جهت مدیریت، ارائه و پیگیری فعالیت‌های یادگیری و آموزشی طراحی شده است.
                       </p>
                     </div>
                   </div>
@@ -107,38 +105,13 @@ const Login = () => {
                       />
                     </div>
                     <div className="mentor-course text-center">
-                      <h3 className="mb-2">
-                        Welcome to <br />
-                        Dreams<span className="text-secondary">LMS</span>{" "}
-                        Courses.
+                        <h3 className="mb-2">
+                        خوش آمدید به  <br />
+                       <span className="text-secondary"> منتوریتو</span>{" "}
+                        دوره های
                       </h3>
                       <p>
-                        Platform designed to help organizations, educators, and
-                        learners manage, deliver, and track learning and
-                        training activities.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className="login-carousel-section mb-3">
-                    <div className="login-banner">
-                      <ImageWithBasePath
-                        src="assets/img/auth/auth-1.svg"
-                        className="img-fluid"
-                        alt="Logo"
-                      />
-                    </div>
-                    <div className="mentor-course text-center">
-                      <h3 className="mb-2">
-                        Welcome to <br />
-                        Dreams<span className="text-secondary">LMS</span>{" "}
-                        Courses.
-                      </h3>
-                      <p>
-                        Platform designed to help organizations, educators, and
-                        learners manage, deliver, and track learning and
-                        training activities.
+                        پلتفرمی که برای کمک به سازمان‌ها، مربیان و فراگیران جهت مدیریت، ارائه و پیگیری فعالیت‌های یادگیری و آموزشی طراحی شده است.
                       </p>
                     </div>
                   </div>
@@ -156,17 +129,17 @@ const Login = () => {
                         alt="Logo"
                       />
                       <Link to={route.homeone} className="link-1">
-                        Back to Home
+                        بازگشت به خانه
                       </Link>
                     </div>
                     <h1 className="fs-32 fw-bold topic">
-                      Sign into Your Account
+                     به حساب کاربری خود وارد شوید
                     </h1>
 
                     <form onSubmit={handleSubmit} className="mb-3 pb-3">
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          Username<span className="text-danger ms-1">*</span>
+                          نام کاربری<span className="text-danger ms-1">*</span>
                         </label>
                         <div className="position-relative">
                           <input
@@ -183,7 +156,7 @@ const Login = () => {
                       </div>
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          Password <span className="text-danger ms-1">*</span>
+                          رمز عبور <span className="text-danger ms-1">*</span>
                         </label>
                         <div className="position-relative" id="passwordInput">
                           <input
@@ -247,20 +220,13 @@ const Login = () => {
                         />
                         Google
                       </Link>
-                      <Link to="#" className="btn btn-light">
-                        <ImageWithBasePath
-                          src="assets/img/icons/facebook.svg"
-                          alt="img"
-                          className="me-2"
-                        />
-                        Facebook
-                      </Link>
                     </div>
                     <div className="fs-14 fw-normal d-flex align-items-center justify-content-center">
-                      Don't you have an account?
+                     آیا حساب کاربری ندارید؟
                       <Link to={route.register} className="link-2 ms-1">
                         {" "}
-                        Sign up
+                        
+                        ثبت نام
                       </Link>
                     </div>
                   </div>
