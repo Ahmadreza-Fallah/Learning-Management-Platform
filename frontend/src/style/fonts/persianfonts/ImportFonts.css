@@ -114,39 +114,39 @@
 
 /* Global base font */
 html, body {
-  font-family: 'YekanBakh', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 400;
+  font-family: 'YekanBakh', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 400 !important;
 }
 
 /* Headings */
 h1 {
-  font-family: 'YekanBakh';
-  font-weight: 900; /* Black */
+  font-family: 'YekanBakh' !important;
+  font-weight: 900 !important; /* Black */
 }
 
 h2 {
-  font-family: 'YekanBakh';
-  font-weight: 800; /* ExtraBold */
+  font-family: 'YekanBakh' !important;
+  font-weight: 800 !important; /* ExtraBold */
 }
 
 h3 {
-  font-family: 'YekanBakh';
-  font-weight: 700; /* Bold */
+  font-family: 'YekanBakh' !important;
+  font-weight: 700 !important; /* Bold */
 }
 
 h4 {
-  font-family: 'YekanBakh';
-  font-weight: 600; /* SemiBold */
+  font-family: 'YekanBakh' !important;
+  font-weight: 600 !important; /* SemiBold */
 }
 
 h5 {
-  font-family: 'YekanBakh';
-  font-weight: 500; /* Medium */
+  font-family: 'YekanBakh' !important;
+  font-weight: 500 !important; /* Medium */
 }
 
 h6 {
-  font-family: 'YekanBakh';
-  font-weight: 500; /* Medium */
+  font-family: 'YekanBakh' !important;
+  font-weight: 500 !important; /* Medium */
 }
 
 /* Text content */

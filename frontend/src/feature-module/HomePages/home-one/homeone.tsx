@@ -18,16 +18,16 @@ const HomeOne = () => {
     <div>
       <BannerSection />
       <Benefits />
-      <Institutions />
+      {/* <Institutions /> */}
       <Topcourses />
-      <Trust />
+      {/* <Trust /> */}
       <Featuredcourse />
-      <Community />
+      {/* <Community /> */}
       <Clinet />
       <Howitworks />
       <Featureinstructor />
-      <Testimonials />
-      <Faq />
+      {/* <Testimonials /> */}
+      {/* <Faq /> */}
       <Footer />
     </div>
   );

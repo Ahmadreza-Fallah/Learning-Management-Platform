@@ -48,12 +48,11 @@ const Featuredcourse = () => {
                 <div className="container">
                     <div className="section-header text-center">
                         <span className="fw-medium text-secondary text-decoration-underline mb-2 d-inline-block">
-                            Featured Courses
+                             دوره‌های منتخب
                         </span>
-                        <h2>What’s New in DreamsLMS</h2>
+                        <h2>تازه‌ترین دوره‌های منتشرشده</h2>
                         <p>
-                            Discover our featured courses, specially curated to help you gain
-                            in-demand skills
+                           مجموعه‌ای از برترین دوره‌های آموزشی را بررسی کنید و مهارت‌های موردنیاز برای موفقیت شغلی را کسب کنید.
                         </p>
                     </div>
                     <div className='feature-course-slider-22 top-courses-slider'>
