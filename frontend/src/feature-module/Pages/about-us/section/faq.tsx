@@ -26,10 +26,9 @@ const Faq = () => {
                 <span className="fw-medium text-secondary text-decoration-underline mb-2 d-inline-block">
                   FAQs
                 </span>
-                <h2>Frequently Asked Questions</h2>
+                <h2>سوالات متداول</h2>
                 <p>
-                  Explore detailed answers to the most common questions about
-                  our platform.
+               پاسخ‌های دقیق به رایج‌ترین پرسش‌ها درباره پلتفرم ما را بررسی کنید.
                 </p>
               </div>
               <div className="faq-content">
@@ -47,7 +46,7 @@ const Faq = () => {
                         aria-expanded="true"
                         aria-controls="collapsecustomicon1One"
                       >
-                        What’s DreamLMS want to give you?{" "}
+                       Mentorito می‌خواهد چه چیزی به شما ارائه دهد؟{" "}
                         <i className="isax isax-add fs-20 fw-semibold ms-1" />
                       </Link>
                     </h2>
@@ -59,9 +58,7 @@ const Faq = () => {
                     >
                       <div className="accordion-body pt-0">
                         <p>
-                          DreamLMS aims to provide you with a comprehensive and
-                          intuitive learning platform that enhances your
-                          educational experience.
+                         هدف Mentorito ارائه یک پلتفرم یادگیری جامع و بصری است که تجربه آموزشی شما را ارتقا می‌بخشد.
                         </p>
                       </div>
                     </div>
@@ -80,7 +77,7 @@ const Faq = () => {
                         aria-expanded="false"
                         aria-controls="collapsecustomicon1One"
                       >
-                        Why choose us for your education?{" "}
+                        چرا ما را برای تحصیل خود انتخاب کنید؟{" "}
                         <i className="isax isax-add fs-20 fw-semibold ms-1" />
                       </Link>
                     </h2>
@@ -92,9 +89,7 @@ const Faq = () => {
                     >
                       <div className="accordion-body pt-0">
                         <p>
-                          DreamLMS aims to provide you with a comprehensive and
-                          intuitive learning platform that enhances your
-                          educational experience.
+                         هدف DreamLMS ارائه یک پلتفرم یادگیری جامع و بصری است که تجربه آموزشی شما را ارتقا می‌بخشد.
                         </p>
                       </div>
                     </div>
@@ -116,7 +111,7 @@ const Faq = () => {
                         aria-expanded="false"
                         aria-controls="collapsecustomicon1One"
                       >
-                        How We Provide Service For you?{" "}
+                        چگونه به شما خدمات ارائه می‌دهیم؟{" "}
                         <i className="isax isax-add fs-20 fw-semibold ms-1" />
                       </Link>
                     </h2>
@@ -128,9 +123,7 @@ const Faq = () => {
                     >
                       <div className="accordion-body pt-0">
                         <p>
-                          DreamLMS aims to provide you with a comprehensive and
-                          intuitive learning platform that enhances your
-                          educational experience.
+                         هدف Mentorito ارائه یک پلتفرم یادگیری جامع و بصری است که تجربه آموزشی شما را ارتقا می‌بخشد.
                         </p>
                       </div>
                     </div>
@@ -152,7 +145,7 @@ const Faq = () => {
                         aria-expanded="false"
                         aria-controls="collapsecustomicon1One"
                       >
-                        Do you have a monthly plan?{" "}
+                       آیا طرح ماهانه دارید؟{" "}
                         <i className="isax isax-add fs-20 fw-semibold ms-1" />
                       </Link>
                     </h2>
@@ -164,9 +157,7 @@ const Faq = () => {
                     >
                       <div className="accordion-body pt-0">
                         <p>
-                          DreamLMS aims to provide you with a comprehensive and
-                          intuitive learning platform that enhances your
-                          educational experience.
+                          هدف Mentorito ارائه یک پلتفرم یادگیری جامع و بصری است که تجربه آموزشی شما را ارتقا می‌بخشد
                         </p>
                       </div>
                     </div>
@@ -188,7 +179,7 @@ const Faq = () => {
                         aria-expanded="false"
                         aria-controls="collapsecustomicon1One"
                       >
-                        Are you Affordable For Your Course{" "}
+                        آیا هزینه دوره شما مناسب و مقرون‌به‌صرفه است؟{" "}
                         <i className="isax isax-add fs-20 fw-semibold ms-1" />
                       </Link>
                     </h2>
@@ -200,9 +191,7 @@ const Faq = () => {
                     >
                       <div className="accordion-body pt-0">
                         <p>
-                          DreamLMS aims to provide you with a comprehensive and
-                          intuitive learning platform that enhances your
-                          educational experience.
+                        هدف Mentorito ارائه یک پلتفرم یادگیری جامع و بصری است که تجربه آموزشی شما را ارتقا می‌بخشد.
                         </p>
                       </div>
                     </div>

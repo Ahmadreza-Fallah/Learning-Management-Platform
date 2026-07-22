@@ -1,0 +1,182 @@
+
+@font-face {
+    font-family: IRANSans;
+    font-style: normal;
+    font-weight: 100;
+    src: url('./IRANSansWeb(FaNum)_Bold.eot');
+    src: url('./IRANSansWeb(FaNum)_Bold.eot?#iefix') 
+    format('embedded-opentype'),url('./IRANSansWeb(FaNum)_Bold.woff2') format('woff2'),url('./IRANSansWeb(FaNum)_Bold.woff') format('woff'),url('./IRANSansWeb(FaNum)_Bold.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: IRANSans;
+    font-style: normal;
+    font-weight: 100;
+    src: url('./IRANSansWeb(FaNum).eot');
+    src: url('./IRANSansWeb(FaNum).eot?#iefix') format('embedded-opentype'),url('./IRANSansWeb(FaNum).woff2') format('woff2'),url('./IRANSansWeb(FaNum).woff') format('woff'),url('./IRANSansWeb(FaNum).ttf') format('truetype')
+}
+
+
+
+
+
+/* Yekan font added completely */
+
+/* Thin — 100 */
+@font-face {
+  font-family: 'YekanBakh';
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+  src:
+    url('./YekanBakh/woff2/YekanBakhFaNum-Thin.woff2') format('woff2'),
+    url('./YekanBakh/woff/YekanBakhFaNum-Thin.woff') format('woff');
+}
+
+/* Light — 300 */
+@font-face {
+  font-family: 'YekanBakh';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src:
+    url('./YekanBakh/woff2/YekanBakhFaNum-Light.woff2') format('woff2'),
+    url('./YekanBakh/woff/YekanBakhFaNum-Light.woff') format('woff');
+}
+
+/* Regular — 400 */
+@font-face {
+  font-family: 'YekanBakh';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url('./YekanBakh/woff2/YekanBakhFaNum-Regular.woff2') format('woff2'),
+    url('./YekanBakh/woff/YekanBakhFaNum-Regular.woff') format('woff');
+}
+
+
+
+/* SemiBold — 600 */
+@font-face {
+  font-family: 'YekanBakh';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    url('./YekanBakh/woff2/YekanBakhFaNum-SemiBold.woff2') format('woff2'),
+    url('./YekanBakh/woff/YekanBakhFaNum-SemiBold.woff') format('woff');
+}
+
+/* Bold — 700 */
+@font-face {
+  font-family: 'YekanBakh';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url('./YekanBakh/woff2/YekanBakhFaNum-Bold.woff2') format('woff2'),
+    url('./YekanBakh/woff/YekanBakhFaNum-Bold.woff') format('woff');
+}
+
+/* ExtraBold — 800 */
+@font-face {
+  font-family: 'YekanBakh';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src:
+    url('./YekanBakh/woff2/YekanBakhFaNum-ExtraBold.woff2') format('woff2'),
+    url('./YekanBakh/woff/YekanBakhFaNum-ExtraBold.woff') format('woff');
+}
+
+/* Black — 900 */
+@font-face {
+  font-family: 'YekanBakh';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src:
+    url('./YekanBakh/woff2/YekanBakhFaNum-Black.woff2') format('woff2'),
+    url('./YekanBakh/woff/YekanBakhFaNum-Black.woff') format('woff');
+}
+
+/* ExtraBlack — 950 (optional, modern browsers support it) */
+@font-face {
+  font-family: 'YekanBakh';
+  font-style: normal;
+  font-weight: 950;
+  font-display: swap;
+  src:
+    url('./YekanBakh/woff2/YekanBakhFaNum-ExtraBlack.woff2') format('woff2'),
+    url('./YekanBakh/woff/YekanBakhFaNum-ExtraBlack.woff') format('woff');
+}
+
+/* Global base font */
+html, body {
+  font-family: 'YekanBakh', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+}
+
+/* Headings */
+h1 {
+  font-family: 'YekanBakh';
+  font-weight: 900; /* Black */
+}
+
+h2 {
+  font-family: 'YekanBakh';
+  font-weight: 800; /* ExtraBold */
+}
+
+h3 {
+  font-family: 'YekanBakh';
+  font-weight: 700; /* Bold */
+}
+
+h4 {
+  font-family: 'YekanBakh';
+  font-weight: 600; /* SemiBold */
+}
+
+h5 {
+  font-family: 'YekanBakh';
+  font-weight: 500; /* Medium */
+}
+
+h6 {
+  font-family: 'YekanBakh';
+  font-weight: 500; /* Medium */
+}
+
+/* Text content */
+p,
+span,
+div,
+li,
+td,
+th {
+  font-family: 'YekanBakh';
+  font-weight: 400; /* Regular */
+}
+
+/* Emphasis */
+strong,
+b {
+  font-family: 'YekanBakh';
+  font-weight: 600; /* SemiBold */
+}
+
+/* UI elements */
+button,
+label {
+  font-family: 'YekanBakh';
+  font-weight: 600;
+}
+
+input,
+textarea,
+select {
+  font-family: 'YekanBakh';
+  font-weight: 400;
+}

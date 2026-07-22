@@ -1,6 +1,6 @@
 @import "./style/css/meanmenu.css";
 @import "./style/scss/main.scss";
-
+@import "./style/fonts/persianfonts/ImportFonts.css";
 .video-modal {
   .modal-content {
     border: 0;
@@ -267,7 +267,7 @@
   }
   .ant-table-wrapper {
     overflow: hidden;
-    font-family: "Inter", sans-serif;
+    font-family: "IRANSansWeb(FaNum)", "Inter", sans-serif;
     .ant-table-tbody>tr>td {
       padding: 12px 15px;
     }
