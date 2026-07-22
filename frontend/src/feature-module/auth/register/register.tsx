@@ -183,6 +183,7 @@ const Register: React.FC = () => {
           <div className="row">
             <div className="col-md-6 login-bg d-none d-lg-flex">
               <Slider {...loginSLider} className="login-carousel">
+       
                 <div>
                   <div className="login-carousel-section mb-3">
                     <div className="login-banner">
@@ -193,15 +194,13 @@ const Register: React.FC = () => {
                       />
                     </div>
                     <div className="mentor-course text-center">
-                      <h3 className="mb-2">
-                        Welcome to <br />
-                        Dreams<span className="text-secondary">LMS</span>{" "}
-                        Courses.
+                     <h3 className="mb-2">
+                        خوش آمدید به  <br />
+                       <span className="text-secondary"> منتوریتو</span>{" "}
+                        دوره های
                       </h3>
                       <p>
-                        Platform designed to help organizations, educators, and
-                        learners manage, deliver, and track learning and
-                        training activities.
+                      پلتفرمی که برای کمک به سازمان‌ها، مربیان و فراگیران در مدیریت، ارائه و پیگیری فعالیت‌های یادگیری و آموزشی طراحی شده است.
                       </p>
                     </div>
                   </div>
@@ -217,37 +216,12 @@ const Register: React.FC = () => {
                     </div>
                     <div className="mentor-course text-center">
                       <h3 className="mb-2">
-                        Welcome to <br />
-                        Dreams<span className="text-secondary">LMS</span>{" "}
-                        Courses.
+                        خوش آمدید به  <br />
+                       <span className="text-secondary"> منتوریتو</span>{" "}
+                        دوره های
                       </h3>
                       <p>
-                        Platform designed to help organizations, educators, and
-                        learners manage, deliver, and track learning and
-                        training activities.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className="login-carousel-section mb-3">
-                    <div className="login-banner">
-                      <ImageWithBasePath
-                        src="assets/img/auth/auth-1.svg"
-                        className="img-fluid"
-                        alt="Logo"
-                      />
-                    </div>
-                    <div className="mentor-course text-center">
-                      <h3 className="mb-2">
-                        Welcome to <br />
-                        Dreams<span className="text-secondary">LMS</span>{" "}
-                        Courses.
-                      </h3>
-                      <p>
-                        Platform designed to help organizations, educators, and
-                        learners manage, deliver, and track learning and
-                        training activities.
+                      پلتفرمی که برای کمک به سازمان‌ها، مربیان و فراگیران در مدیریت، ارائه و پیگیری فعالیت‌های یادگیری و آموزشی طراحی شده است.
                       </p>
                     </div>
                   </div>
@@ -265,7 +239,7 @@ const Register: React.FC = () => {
                         alt="Logo"
                       />
                       <Link to={route.homeone} className="link-1">
-                        Back to Home
+                        بازگشت به خانه 
                       </Link>
                     </div>
                     <h1 className="fs-32 fw-bold topic">ثبت نام</h1>
@@ -278,7 +252,7 @@ const Register: React.FC = () => {
                       <div className="mb-3 position-relative">
                         <label className="form-label">
                           <span className="text-danger ms-1">*</span>
-                          name
+                          نام
                         </label>
                         <div className="position-relative">
                           <input
@@ -296,7 +270,7 @@ const Register: React.FC = () => {
                       <div className="mb-3 position-relative">
                         <label className="form-label">
                           <span className="text-danger ms-1">*</span>
-                          family
+                          نام خانودگی
                         </label>
                         <div className="position-relative">
                           <input
@@ -313,7 +287,7 @@ const Register: React.FC = () => {
                       </div>
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          <span className="text-danger ms-1">*</span> username
+                          <span className="text-danger ms-1">*</span> نام کاربری
                         </label>
                         <div className="position-relative">
                           <input
@@ -330,7 +304,7 @@ const Register: React.FC = () => {
                       </div>
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          <span className="text-danger ms-1">*</span> mobile
+                          <span className="text-danger ms-1">*</span> موبایل
                         </label>
                         <div className="position-relative">
                           <input
@@ -347,7 +321,7 @@ const Register: React.FC = () => {
                       </div>
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          <span className="text-danger ms-1">*</span> email
+                          <span className="text-danger ms-1">*</span> ایمیل
                         </label>
                         <div className="position-relative">
                           <input
@@ -409,25 +383,7 @@ const Register: React.FC = () => {
                             type="checkbox"
                             id="flexCheckDefault"
                           />
-                          <label
-                            className="form-check-label mb-0 d-inline-flex remember-me fs-14"
-                            htmlFor="flexCheckDefault"
-                          >
-                            I agree with{" "}
-                            <Link
-                              to={route.termsConditions}
-                              className="link-2 mx-2"
-                            >
-                              Terms of Service
-                            </Link>{" "}
-                            and{" "}
-                            <Link
-                              to={route.privacyPolicy}
-                              className="link-2 mx-2"
-                            >
-                              Privacy Policy
-                            </Link>
-                          </label>
+                   
                         </div>
                       </div>
                       <div className="d-grid">
@@ -439,9 +395,7 @@ const Register: React.FC = () => {
                         </button>
                       </div>
                     </form>
-                    <div className="d-flex align-items-center justify-content-center or fs-14 mb-3">
-                      Or
-                    </div>
+              
                     <div className="d-flex align-items-center justify-content-center mb-3">
                       <Link to="#" className="btn btn-light me-2">
                         <ImageWithBasePath
@@ -450,21 +404,13 @@ const Register: React.FC = () => {
                           className="me-2"
                         />
                         Google
-                      </Link>
-                      <Link to="#" className="btn btn-light">
-                        <ImageWithBasePath
-                          src="assets/img/icons/facebook.svg"
-                          alt="img"
-                          className="me-2"
-                        />
-                        Facebook
-                      </Link>
+                      </Link>          
                     </div>
                     <div className="fs-14 fw-normal d-flex align-items-center justify-content-center">
-                      Already you have an account?
+                          حساب کاربری دارید ؟
                       <Link to={route.login} className="link-2 ms-1">
                         {" "}
-                        Login
+                        ورود
                       </Link>
                     </div>
                   </div>
