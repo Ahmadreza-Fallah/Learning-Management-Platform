@@ -610,13 +610,13 @@ const Header = () => {
                   to={all_routes.login}
                   className="btn btn-primary d-inline-flex align-items-center me-2"
                 >
-                  Sign In
+                   ورود
                 </Link>
                 <Link
                   to={all_routes.register}
                   className="btn btn-secondary me-0"
                 >
-                  Register
+                  ثبت نام
                 </Link>
               </div>
             ) : location.pathname.includes("instructor") ? (
@@ -938,7 +938,7 @@ const Header = () => {
                   className="btn btn-light d-inline-flex align-items-center me-2"
                 >
                   <i className="isax isax-lock-circle me-2" />
-                  Sign In
+                 ورود
                 </Link>
                 <Link
                   to={all_routes.register}
