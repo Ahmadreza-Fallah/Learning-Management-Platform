@@ -52,14 +52,12 @@ const BannerSection = () => {
                     <div className="row align-items-center justify-content-between">
                         <div className="col-xl-7 col-lg-7">
                             <div className="banner-content pe-xxl-5">
-                                <span className="hero-title">The Leader in Online Learning</span>
+                                <span className="hero-title">پیشرو در آموزش آنلاین</span>
                                 <h1 className="mb-4 text-white">
-                                    Find the Best <span>Courses</span> from the Best{" "}
-                                    <span>Mentors</span> Around the World
+                                   بهترین <span>دوره‌ها</span> را از بهترین <span>مربیان</span>   بیابید
                                 </h1>
                                 <p className="fs-lg text-center text-md-start pb-2 pb-md-3 mb-4">
-                                    Our specialized online courses are designed to bring the classroom
-                                    experience to you, no matter where you are.
+                                    دوره‌های آنلاین تخصصی ما به گونه‌ای طراحی شده‌اند که تجربه حضور در کلاس درس را، فارغ از اینکه کجا هستید، برای شما فراهم کنند.
                                 </p>
                                 <form onSubmit={handleSubmit} className="banner-search">
                                     <div className="dropdown">
@@ -69,7 +67,7 @@ const BannerSection = () => {
                                             data-bs-toggle="dropdown"
                                             aria-expanded="false"
                                         >
-                                            Select Category <i className="isax isax-arrow-down5 fs-12" />
+                                            انتخاب دسته بندی <i className="isax isax-arrow-down5 fs-12" />
                                         </Link>
                                         <ul className="dropdown-menu p-1">
                                             <li>

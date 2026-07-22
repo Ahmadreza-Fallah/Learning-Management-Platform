@@ -11,10 +11,9 @@ const Benefits = () => {
                         <span className="fw-medium text-secondary text-decoration-underline mb-2 d-inline-block">
                             Our Benefits
                         </span>
-                        <h2>Master the Skills to Drive your Career</h2>
+                        <h2>بر مهارت‌های پیشبرد مسیر شغلی خود مسلط شوید</h2>
                         <p>
-                            The right course, guided by an expert mentor, can provide invaluable
-                            insights, practical skills.
+                        یک دوره آموزشی مناسب که توسط مربی‌ای متخصص هدایت شود، می‌تواند بینش‌ها و مهارت‌های عملی ارزشمندی را فراهم آورد.
                         </p>
                     </div>
                     <div className="row">
@@ -27,10 +26,9 @@ const Benefits = () => {
                                     <div className="p-4 rounded-pill bg-primary-transparent d-inline-flex">
                                         <i className="isax isax-book-1 fs-24" />
                                     </div>
-                                    <h5 className="mt-3 mb-1">Flexible Learning</h5>
+                                    <h5 className="mt-3 mb-1">یادگیری منعطف</h5>
                                     <p>
-                                        We believe that high-quality education should be accessible to
-                                        everyone. Our pricing form in models are designed.
+                                       ما بر این باوریم که آموزش باکیفیت باید برای همگان قابل دسترسی باشد. مدل‌های قیمت‌گذاری ما نیز با همین هدف طراحی شده‌اند.
                                     </p>
                                 </div>
                             </div>
@@ -44,10 +42,9 @@ const Benefits = () => {
                                     <div className="p-4 rounded-pill bg-secondary-transparent d-inline-flex">
                                         <i className="isax isax-bookmark5 fs-24" />
                                     </div>
-                                    <h5 className="mt-3 mb-1">Lifetime Access</h5>
+                                    <h5 className="mt-3 mb-1">دسترسی مادام‌العمر</h5>
                                     <p>
-                                        When you enroll in our courses, you’re not just signing up for a
-                                        temporary learning to experience you’re making.
+                                       وقتی در دوره‌های ما ثبت‌نام می‌کنید، صرفاً برای یک تجربه یادگیری موقت اقدام نمی‌کنید.
                                     </p>
                                 </div>
                             </div>
@@ -61,10 +58,9 @@ const Benefits = () => {
                                     <div className="p-4 rounded-pill bg-skyblue-transparent d-inline-flex">
                                         <i className="isax isax-chart-26 fs-24" />
                                     </div>
-                                    <h5 className="mt-3 mb-1">Expert Instruction</h5>
+                                    <h5 className="mt-3 mb-1">آموزش تخصصی</h5>
                                     <p>
-                                        Our instructors are seasoned professionals with years of
-                                        experience in their respective fields &amp; Experts advice
+                                     مربیان ما متخصصانی کارآزموده با سال‌ها تجربه در حوزه‌های تخصصی خود هستند و مشاوره‌هایی کارشناسانه ارائه می‌دهند.
                                     </p>
                                 </div>
                             </div>
