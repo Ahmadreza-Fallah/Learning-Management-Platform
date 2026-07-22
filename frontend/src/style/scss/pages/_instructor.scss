@@ -1,7 +1,3 @@
-
-.education-flow {
-}
-
 .timeline-flow {
     position: relative;
     z-index: 1;
@@ -11,7 +7,7 @@
         height: 100%;
         border-left: 1px dashed $gray-200;
         position: absolute;
-        left: 4px;
+        right: 4px;
         top: 18px;
         z-index: -1;
     }
@@ -22,7 +18,7 @@
         background: $success;
         border-radius: 50%;
         position: absolute;
-        left: 0;
+        right: 0;
         top: 15px;
         z-index: -1;
     }
@@ -59,7 +55,7 @@
     padding: 4px 8px;
     border-radius: 5px;
     position: absolute;
-    right: 10px;
+    left: 10px;
     bottom: 10px;
     del {
         color: $primary-500;
@@ -76,7 +72,7 @@
 .form-switch-end {
     .form-check-input {
         float: unset;
-        margin-left: 8px;
+        margin-right: 8px;
     }
 }
 .delete-item {
@@ -151,7 +147,7 @@
     }
 }
 .yearpicker{
-    padding: 4px 8px 4px 30px;
+    padding: 4px 30px 4px 8px;
 }
 .icon-form{
     position: relative;
@@ -258,12 +254,12 @@
         }
         .btn-dark{
             font-size: $font-size-12;
-            margin-left: auto;
+            margin-right: auto;
             @include respond-below(xxl){
                 padding: 5px 8px;
             }
             @include respond-below(sm){
-            margin-left: auto;
+            margin-right: auto;
             }
         }
     }
@@ -287,7 +283,7 @@
     align-items: center;
     margin-top: 4px;
     i{
-        margin-right: 4px;
+        margin-left: 4px;
     }
 }
 .page-title{
@@ -335,7 +331,7 @@
             padding: 15px 15px 0;
             .form-control{
                 color: $gray-500;
-                padding-left: 32px;
+                padding-right: 32px;
                 &::placeholder{
                     color: $gray-500;
                     opacity: 1;  
@@ -434,7 +430,7 @@
             z-index: 1;
             & > svg {
                 position: absolute;
-                left: 0;
+                right: 0;
                 top: -5px;
                 width: 100%;
                 height: 59px;
@@ -444,7 +440,7 @@
         }
         & .svg-icon {
             position: absolute;
-            right: -50px;
+            left: -50px;
             top: -50px;
             width: 61px;
             height: 68px;
@@ -635,7 +631,7 @@
                   justify-content: center;
                   border-radius: 30px;
                   bottom: 10px;
-                  right: 10px;
+                  left: 10px;
                   top: auto;
                       &:hover {
                           color: $secondary;
@@ -703,7 +699,7 @@
                     border-radius: 30px;
                     z-index: 2;
                     top: 10px;
-                    right: 10px;
+                    left: 10px;
                         &:hover {
                             color: $secondary;
                         }
@@ -782,7 +778,7 @@
                 .favourite {
                     background: $white;
                     top: 20px;
-                    right: 20px;
+                    left: 20px;
                 }
                 .instructor-content {
                     padding: 1rem;
@@ -844,8 +840,8 @@
             text-align: left;
             & .favourite {
                 background: $white;
-                left: 10px;
-                right: auto;
+                right: 10px;
+                left: auto;
             }
             & .instructor-bottom {
                 padding-top: 16px;
@@ -859,7 +855,7 @@
             }
             .instructor-content {
                 & .rating {
-                    justify-content: start;
+                    justify-content: end;
                     margin-bottom: 4px;
                 }
                 .title {
@@ -879,7 +875,7 @@
                 width: 202px;
                 height: 165px;
                 flex-shrink: 0;
-                margin-right: 20px;
+                margin-left: 20px;
                 border-radius: 10px;
                 position: relative;
                 overflow: hidden;
@@ -1315,11 +1311,11 @@
 }
 .add-card-date{
     .input-icon-addon {
-        left: auto;
-        right: 0;
+        right: auto;
+        left: 0;
     }
     .datetimepicker.form-control {
-        padding: 10px 30px 10px 10px;
+        padding: 10px 10px 10px 30px;
     }
 }
 .subscription-details{
@@ -1358,7 +1354,7 @@
             color: $gray-500;
             padding: 0;
             background-color: transparent;
-            padding-left: 23px;
+            padding-right: 23px;
             position: relative;
             &::before{
                 position: absolute;
@@ -1505,12 +1501,12 @@
         width: auto;
         box-shadow: none;
         outline: none;
-        margin-right: 10px;
+        margin-left: 10px;
         font-size: 14px;
         height: 40px;
         @include respond-below(sm){
            width: 100%;
-           margin-right: 0;
+           margin-left: 0;
            margin-bottom: 10px;
           }
     }
@@ -1546,7 +1542,7 @@
         font-size: $font-size-20;
         justify-content: center;
         text-align: center;
-        margin-right: 10px;
+        margin-left: 10px;
         width: 40px;
         height: 40px;
         &.active{
@@ -1567,7 +1563,7 @@
             position: relative;
             i {
                 position: absolute;
-                left: 15px;
+                right: 15px;
                 color: $gray-900;
                 top: 12px;
             }
@@ -1576,7 +1572,7 @@
                 color: $gray-400;
                 outline: none;
                 box-shadow: none;
-                padding: 10px 10px 10px 40px;
+                padding: 10px 40px 10px 10px;
                 height: 40px;
             }
         }
@@ -1641,7 +1637,7 @@
             position: relative;
             font-size: $font-size-14 !important;
             margin-bottom: 15px;
-            padding-left: 28px;
+            padding-right: 28px;
             cursor: pointer;
             font-weight: $font-weight-normal !important;
             -webkit-user-select: none;
@@ -1654,7 +1650,7 @@
         .custom_check .checkmark {
             position: absolute;
             top: 0;
-            left: 0;
+            right: 0;
             height: 16px;
             width: 16px;
             border: 1px solid $gray-100;
@@ -1771,7 +1767,7 @@
             width: 202px;
             height: 165px;
             flex-shrink: 0;
-            margin-right: 20px;
+            margin-left: 20px;
             border-radius: 10px;
             position: relative;
             overflow: hidden;
@@ -1791,7 +1787,7 @@
                 position: absolute;
                 background: $white;
                 top: 10px;
-                left: 10px;
+                right: 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -1898,7 +1894,7 @@
             width: 202px;
             height: 165px;
             flex-shrink: 0;
-            margin-right: 20px;
+            margin-left: 20px;
             border-radius: 10px;
             position: relative;
             img {
@@ -1920,7 +1916,7 @@
                 position: absolute;
                 background: $white;
                 top: 10px;
-                left: 10px;
+                right: 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -1960,8 +1956,8 @@
         }
         .slick-prev.slick-arrow {
                 top: -33px;
-                right: 50px;
-                left: unset;
+                left: 50px;
+                right: unset;
             &::before {
                 position: absolute;
                 font-family: "Font Awesome 5 Free";
@@ -1975,7 +1971,8 @@
         }
         .slick-next.slick-arrow {
             top: -33px;
-            right: 8px;
+            left: 8px;
+            right: unset;
             &::before {
                 position: absolute;
                 font-family: "Font Awesome 5 Free";
@@ -2042,3 +2039,34 @@
         font-weight: 500;
     }
 }
+.tickets {
+    .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+    }
+}
+.notification-head {
+    .btn {
+        display: inline-flex;
+        align-items: center;
+    }
+}
+.next-post {
+    a {
+        display: inline-flex;
+        align-items: center;
+    }
+}
+.previous-post {
+    a {
+        display: inline-flex;
+        align-items: center;
+    } 
+}
+.instructor-item-six {
+    .instructors-img {
+        img {
+            width: 100%;
+        }
+    } 
+} 

@@ -31,7 +31,7 @@
 .home-five .drop-detail-three {
     width: 164px;
     display: flex;
-    margin: 0px 15px 0 0;
+    margin: 0px 0px 0 15px;
     border-radius: 50px !important;
     border: 0;
     height: 44px;
@@ -58,7 +58,7 @@
 .search-icon5{
 	padding: 10px 10px 10px 20px;
 	font-size: 24px;
-	border-left: 1px solid $gray-100;
+	border-right: 1px solid $gray-100;
 	@include respond-below(sm){
      border: none;
 	 padding: 10px 10px 10px 1px;
@@ -90,9 +90,9 @@
     color: #000;
     font-size: 15px;
 	font-size: $font-size-14;
-    margin-right: 10px;
+    margin-left: 10px;
 	@include respond-below (sm){
-		margin-right: 0;
+		margin-left: 0;
 	}
 }
 .banner-three-content .input-group .search-icon {
@@ -131,8 +131,8 @@
 		padding: 10px 15px;
 		color: #fff;
 		width: 60px;
-		border-top-left-radius: 10px !important;
-		border-bottom-left-radius: 10px !important;
+		border-top-right-radius: 10px !important;
+		border-bottom-right-radius: 10px !important;
 		-webkit-transition: all 0.5s;
 		-moz-transition: all 0.5s;
 		-o-transition: all 0.5s;
@@ -147,9 +147,9 @@
 			padding: 10px 15px;
 			color: #fff;
 			width: 60px;
-			border-right: 1px solid #F4F4F4 !important;
-			border-top-left-radius: 10px !important;
-			border-bottom-left-radius: 10px !important;
+			-moz-border-right-colors: 1px solid #F4F4F4 !important;
+			border-top-right-radius: 10px !important;
+			border-bottom-right-radius: 10px !important;
 		}
 		@include respond-below (sm){
 			width: 100%;
@@ -157,8 +157,8 @@
 	}
 	.input-group {
 		& > :not(:nth-child(2)) {
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
 			font-size: 14px;
 		}
 		.search-icon {
@@ -236,7 +236,7 @@
 	align-items: center;
 }
 .course-content-three {
-	margin-left: 8px;
+	margin-right: 8px;
 }
 .course-count-three {
 	.course-img {
@@ -272,7 +272,7 @@
 		height: 231px;
 		background-color: $ligh-green;
 		border-radius: 50%;
-		right: 8px;
+		left: 8px;
 		top: 80px;
 		z-index: -1;
 		@include respond-below(sm){
@@ -301,16 +301,16 @@
 	.master-bg1{
 		position: absolute;
 		z-index: -1;
-		left: 0;
+		right: 0;
 		bottom: 0;
 		@include respond-below(sm){
 			width: 50%;
-			left: 0;
+			right: 0;
 		}
 	}
 	.master-bg2{
 		position: absolute;
-		right: 39px;
+		left: 39px;
 		top: 18%;
 		@include respond-below(sm){
 			width: 80px;
@@ -319,7 +319,7 @@
 	.master-bg4 {
 		position: absolute;
 		bottom: 0;
-		left: 5px;
+		right: 5px;
 		z-index: -1;
 		@include respond-below(md) {
 			width: 55%;
@@ -328,7 +328,7 @@
 	.master-bg5 {
 		position: absolute;
 		bottom: 35px;
-		left: 95px;
+		right: 95px;
 		z-index: -2;
 		@include respond-below(md) {
 			width: 45%;
@@ -336,9 +336,9 @@
 	}
 }
 .master-skill-content{
-	padding-left: 40px;
+	padding-right: 40px;
 	@include respond-below(xl){
-     padding-left: 0;
+     padding-right: 0;
 	}
 }
 .master-skill-three {
@@ -491,7 +491,7 @@
 				height: 60px;
 				border-radius: 50%;
 				overflow: hidden;
-				margin-right: 20px;
+				margin-left: 20px;
 				img {
 					position: absolute;
 					top: 0;
@@ -529,10 +529,10 @@
 				font-weight: 400;
 				font-size: 14px;
 				color: #736969;
-				margin-left: 5px;
+				margin-right: 5px;
 			}
 			p {
-				margin-left: 8px;
+				margin-right: 8px;
 				margin-bottom: 0;
 			}
 		}
@@ -860,7 +860,7 @@
 	position: absolute;
 	top: 1rem;
 	display: inline-block;
-	right: 1rem;
+	left: 1rem;
 	bottom: 0;
 	.fa-heart {
 		width: 31px;
@@ -888,7 +888,7 @@
 		font-weight: 400;
 		font-size: 14px;
 		color: #717171;
-		margin-left: 12px;
+		margin-right: 12px;
 		margin-bottom: 0;
 		-webkit-transition: 0.7s;
 		-moz-transition: 0.7s;
@@ -900,7 +900,7 @@
 .group-three-img {
 	position: absolute;
 	top: -20px;
-	right: 15px;
+	left: 15px;
 	img {
 		width: 40px;
 		height: 40px;
@@ -980,7 +980,7 @@
 .transform-button-three {
 	text-align: end;
 	@include respond-below(md) {
-		text-align: left;
+		text-align: right;
 	}
 }
 .instructors-list {
@@ -990,7 +990,7 @@
 	padding: 0;
 	margin: 0;
 	li {
-		margin-left: -20px;
+		margin-right: -20px;
 		a {
 			img {
 				width: 35px !important;
@@ -1039,7 +1039,7 @@
 		padding: 0 0 82px 0;
 		.master-skill-image2 {
 			position: absolute;
-			right: 0;
+			left: 0;
 			bottom: 60px;
 			width: 266px;
 		}
@@ -1070,14 +1070,14 @@
 p.accelerate-three-business {
 	color: $white;
 	margin-bottom: 40px;
-	padding-left: 70px;
+	padding-right: 70px;
 	@include respond-below(xl) {
-		padding-left: 0;
+		padding-right: 0;
 	}
 }
 .accelerate-one {
 	position: absolute;
-	right: 0;
+	left: 0;
 	top: 0;
 	bottom: 0;
 	img {
@@ -1116,7 +1116,7 @@ p.accelerate-three-business {
 	}
 	.award-three-images {
 		img {
-			text-align: left;
+			text-align: right;
 		}
 	}
 }
@@ -1178,7 +1178,7 @@ p.accelerate-three-business {
 .acheive-goals-content {
 	h4 {
 		margin-bottom: 20px;
-		text-align: left;
+		text-align: right;
 		@include respond-below(md) {
 			text-align: center;
 		}
@@ -1211,26 +1211,26 @@ p.accelerate-three-business {
 }
 .acheive-elips-three {
 	position: absolute;
-	right: 80px;
+	left: 80px;
 	z-index: -1;
 	top: -18px;
 	@include  respond-below(md) {
-		right: 44%;
+		left: 44%;
 	}
 }
 .acheive-elips-two {
 	position: absolute;
-	right: 38px;
+	left: 38px;
 	z-index: -1;
 	top: -18px;
 	@include  respond-below(md) {
-		right: 44%;
+		left: 44%;
 	}
 }
 .acheive-goals-icon {
 	position: absolute;
 	top: 0;
-	right: 7rem;
+	left: 7rem;
 	img {
 		width: 64px;
 		height: 64px;
@@ -1370,7 +1370,7 @@ p.accelerate-three-business {
   }
 .trending-three-counts {
 	p {
-		margin-left: 10px;
+		margin-right: 10px;
 		font-size: 14px;
 		margin-bottom: 0;
 	}
@@ -1751,17 +1751,17 @@ textarea:focus {
 	display: inline-flex;
 	align-items: center;
 	position: absolute;
-	left: 20px;
+	right: 20px;
 	top: 20px;
 	z-index: 2;
 	@include respond-below(sm){
-		left: 15px;
+		right: 15px;
 	}
 	img {
 		width: 24px;
 		height: 24px;
 		border-radius: 50%;
-		margin-right: 8px;
+		margin-left: 8px;
 		flex-shrink: 0;
 	}
 	a {
@@ -1776,7 +1776,7 @@ textarea:focus {
 	color: $white;
 	padding: 4px 12px;
 	border-radius: 40px;
-	margin-right: 15px;
+	margin-left: 15px;
 	font-size: $font-size-14;
 	@include respond-below(xl){
 		padding: 3px 10px;
@@ -1808,7 +1808,7 @@ textarea:focus {
 .latest-blog-content {
     position: absolute;
     bottom: 0;
-    left: 0;
+    right: 0;
     z-index: 1;
     width: 100%;
     padding: 20px 20px;
@@ -2008,8 +2008,8 @@ textarea:focus {
 					color: $secondary;
 				}
 				& + a {
-					padding-left: 12px;
-					margin-left: 8px;
+					padding-right: 12px;
+					margin-right: 8px;
 					&::before {
 						content: "/";
 						color: $gray-700;
@@ -2039,17 +2039,17 @@ textarea:focus {
 				color: $gray-100;
 				font-weight: 400;
 				font-size: 14px;
-				margin-left: 18px;
+				margin-right: 18px;
 				&:hover {
-					padding-left: 10px;
+					padding-right: 10px;
 				}
 				&:before {
 					position: absolute;
 					top: 7px;
 					display: block;
 					content: "\f111";
-					float: left;
-					margin-right: 10px;
+					float: right;
+					margin-left: 10px;
 					font-size: 6px;
 					color: $secondary;
 					transition: all 0.5s ease-in-out;
@@ -2096,7 +2096,7 @@ textarea:focus {
 			align-items: center;
 			display: flex;
 			&:last-child {
-				border-right: 0;
+				border-left: 0;
 			}
 			a {
 				font-weight: 400;
@@ -2127,7 +2127,7 @@ textarea:focus {
 		align-items: center;
 		margin-bottom: 0;
 		li {
-			margin-right: 15px;
+			margin-left: 15px;
 			.feather-facebook-icon {
 				color: $white;
 				display: flex;
@@ -2219,7 +2219,7 @@ textarea:focus {
 					&:hover {
 						color: #EE009C;
 						letter-spacing: 0.5px;
-						padding-left: 20px;
+						padding-right: 20px;
 					}
 				}
 			}
@@ -2229,7 +2229,7 @@ textarea:focus {
 .list-data {
 	list-style: none;
 	display: inline-block;
-	margin: 0 25px 0 0;
+	margin: 0 0px 0 25px;
 }
 .landing-menu {
 	li {
@@ -2243,7 +2243,7 @@ textarea:focus {
 			i {
 				font-weight: 600;
 				font-size: 16px;
-				padding-left: 7px;
+				padding-right: 7px;
 			}
 			&:hover {
 				color: #EE009C;
@@ -2251,7 +2251,7 @@ textarea:focus {
 		}
 	}
 	ul {
-		padding-left: 0;
+		padding-right: 0;
 		margin: 0;
 		li {
 			.landing-page-list {
@@ -2298,7 +2298,7 @@ textarea:focus {
 	a {
 		.active {
 			color: #F58E06;
-			padding-right: 20px;
+			padding-left: 20px;
 		}
 	}
 }
@@ -2535,12 +2535,12 @@ textarea:focus {
 	top: 10rem;
 }
 .banner-img-sec, .banner-img-third, .banner-img-fourth, .banner-imgs .banner-img-two, .banner-imgs .banner-img-three {
-	padding: 33px 0px 0px 33px;
+	padding: 33px 33px 0px 0px;
 	-webkit-animation: float 2s ease-in-out infinite;
 	animation: float 2s ease-in-out infinite;
 }
 .user-registration .student-img img,.master-skill-img-two,.master-skill-img-three {
-	padding: 33px 0px 0px 33px;
+	padding: 33px 33px 0px 0px;
 	-webkit-animation: float 2s ease-in-out infinite;
 	animation: float 2s ease-in-out infinite;
 }
@@ -2742,7 +2742,7 @@ textarea:focus {
 	height: 39px;
 	position: absolute;
 	top: 16px;
-	left: 20px;
+	right: 20px;
 	color: #fff;
 	font-size: 18px;
 	font-weight: 500;
@@ -2751,7 +2751,7 @@ textarea:focus {
 .heart {
 	position: absolute;
 	top: 16px;
-	right: 20px;
+	left: 20px;
 	color: #392C7D;
 	font-size: 20px;
 	cursor: pointer;
@@ -2901,7 +2901,7 @@ textarea:focus {
 			color: #5C5C5C;
 			span {
 				color: #EE009C;
-				padding-right: 10px;
+				padding-left: 10px;
 			}
 			&:last-child {
 				padding: 0;

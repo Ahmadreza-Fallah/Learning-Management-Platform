@@ -63,7 +63,7 @@
 			height: 168px;
 			background-color: #00BFFB;
 			border-radius: 50px;
-			right: -27px;
+			left: -27px;
 			bottom: -39px;
 			@include respond-below(xl){
 				width: 43px;
@@ -180,11 +180,11 @@
 				height: auto;
 				position: absolute;
 				top: 23px;
-				right: 0;
+				left: 0;
 				width: 50px;
 				b {
 					margin-top: -2px;
-					margin-left: -8px;
+					margin-right: -8px;
 					border-color: $white;
 				}
 			}
@@ -192,7 +192,7 @@
 				font-weight: 500;
 				font-size: 16px;
 				color: $white  !important;
-				padding-left: 0;
+				padding-right: 0;
 			}
 		}
 		&.select2-container--open {
@@ -233,8 +233,8 @@
 		line-height: 0;
 		padding: 15px 15px;
 		color: $white;
-		border-top-left-radius: 32px !important;
-		border-bottom-left-radius: 32px !important;
+		border-top-right-radius: 32px !important;
+		border-bottom-right-radius: 32px !important;
 		z-index: 9;
 		&:hover {
 			color: $white;
@@ -257,8 +257,8 @@
 	border-radius: 90px;
 	display: flex;
 	border: 0;
-	border-top-right-radius: 90px !important;
-	border-bottom-right-radius: 90px !important;
+	border-top-left-radius: 90px !important;
+	border-bottom-left-radius: 90px !important;
 	max-width: 147px;
 	width: 100%;
 	
@@ -269,7 +269,7 @@
 .banner-content-five .input-group>.form-control, .input-group>.form-select {
 	position: relative;
 	width: auto;
-	margin-left: 0px !important;
+	margin-right: 0px !important;
 	border: 1px solid transparent !important;
 }
 
@@ -289,7 +289,7 @@
 		padding: 0;
 		margin: 0;
 		li {
-			margin-right: -20px;
+			margin-left: -20px;
 			a {
 				img {
 					width: 40px;
@@ -302,7 +302,7 @@
 	}
 }
 .review-rating-five {
-	margin-left: 39px;
+	margin-right: 39px;
 	p {
 		display: inline-block;
 		font-weight: 500;
@@ -333,7 +333,7 @@
 }
 .review-five-group {
 	.course-count {
-		margin-left: 0;
+		margin-right: 0;
 	}
 }
 
@@ -509,7 +509,7 @@
 		content: '';
 		height: 100%;
 		width: 1px;
-		right: -10px;
+		left: -10px;
 		top: 0;
 		background: linear-gradient(to bottom, #5D5292, #392C7D);
 		@include respond-below(md){
@@ -527,7 +527,7 @@
 	}
 }
 .count-five-0 {
-	border-right: 0;
+	border-left: 0;
 }
 .featured-section-five {
 	padding: 80px 0;
@@ -543,7 +543,7 @@
 	text-align: center;
 	border-bottom: 1px solid $border-color;
 	.nav-tab {
-    margin-right: 40px;
+    margin-left: 40px;
 	font-weight: $font-weight-medium;
 	font-size: $font-size-14;
 	color: $gray-900;
@@ -888,9 +888,9 @@
 	}
 }
 .experienced-five-sub {
-	padding-left: 50px;
+	padding-right: 50px;
 	@include respond-below(lg){
-		padding-left: 0;
+		padding-right: 0;
 	}
 }
 .instructor-vector-right {
@@ -1010,7 +1010,7 @@
 	align-items: center;
 	img {
 		width: 24px;
-		margin-right: 10px;
+		margin-left: 10px;
 	}
 	p {
 		font-style: normal;
@@ -1178,7 +1178,7 @@
 	}
 }
 .goals-count-five {
-	border-left: 1px solid #FFF09F;
+	border-right: 1px solid #FFF09F;
 }
 
 
@@ -1291,7 +1291,7 @@
 		border-radius: 35px;
 		width: 62px;
 		height: 168px;
-		left: 25px;
+		right: 25px;
 		position: absolute;
 		top: 50%;
 		transform: translateY(-50%);
@@ -1301,12 +1301,12 @@
 	position: relative;
 	background: $white;
 	border-radius: 10px;
-	left: 35px;
+	right: 35px;
 	padding: 24px;
 	width: 757px;
 	z-index: 2;
 	@include respond-below(lg){
-		left: 0;
+		right: 0;
 	}
 }
 .testimonial-section-five .slick-prev, 
@@ -1361,7 +1361,7 @@
 	.footer-menu {
 		ul{
 			li{
-				padding-left: 16px;
+				padding-right: 16px;
 				position: relative;
 				&::before{
 					position: absolute;
@@ -1370,12 +1370,12 @@
 					height: 6px;
 					border-radius: 50px;
 					background-color: $secondary;
-					left: 0;
+					right: 0;
 					top: 8px;
 				}
 				a:hover{
 					color: $secondary !important;
-					margin-left: 5px;
+					margin-right: 5px;
 				}
 			}
 		}
@@ -1383,15 +1383,16 @@
 	}
 	.box-form-newsletter{
 		background-color: rgba($white, .10);
-		padding: 10px 10px 10px 24px;
+		padding: 10px 24px 10px 10px;
 		.input-newsletter{
 			background-color: transparent;
 			color: $gray-100;
 			background-image: url(../../../../public/assets/img/icon/mail-2.svg);
 			font-size: $font-size-14;
 			background-repeat: no-repeat;
-    		background-position: left;
-			padding-left: 30px;
+    		background-position: right;
+			padding-right: 30px;
+			text-align: right;
 			&::placeholder{
 				color: $gray-100;
 			}
@@ -1429,9 +1430,6 @@
     -o-transition: 0.7s;
     transition: 0.7s;
     margin-bottom: 0;
-}
-.blogs-section-five {
-
 }
 .blog-five-header .blog-five-text p {
 	font-weight: 600;
@@ -1474,7 +1472,7 @@
 				height: 5px;
 				background: $light;
 				padding: 0;
-				margin-right: 5px;
+				margin-left: 5px;
 			}
 			&.slick-active {
 				button {
@@ -1494,7 +1492,7 @@
 				height: 5px;
 				background: $light;
 				padding: 0;
-				margin-right: 5px;
+				margin-left: 5px;
 			}
 			&.slick-active {
 				button {
@@ -1589,7 +1587,7 @@
 					align-items: center;
 					justify-content: end;
 					li {
-						margin-right: 8px;
+						margin-left: 8px;
 						a {
 							color: $light;
 						}

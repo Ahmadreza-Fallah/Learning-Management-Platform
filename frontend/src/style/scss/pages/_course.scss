@@ -5,13 +5,13 @@
         width: auto;
         box-shadow: none;
         outline: none;
-        margin-right: 10px;
+        margin-left: 10px;
         font-size: $font-size-14;
         height: 40px;
         color: $gray-900;
         @include respond-below(sm){
            width: 100%;
-           margin-right: 0;
+           margin-left: 0;
            margin-bottom: 10px;
           }
     }
@@ -46,7 +46,7 @@
         font-size: $font-size-20;
         justify-content: center;
         text-align: center;
-        margin-right: 10px;
+        margin-left: 10px;
         width: 40px;
         height: 40px;
         &.active{
@@ -142,7 +142,7 @@
             position: relative;
             font-size: $font-size-14 !important;
             margin-bottom: 15px;
-            padding-left: 28px;
+            padding-right: 28px;
             cursor: pointer;
             font-weight: $font-weight-normal !important;
             -webkit-user-select: none;
@@ -155,7 +155,7 @@
         .custom_check .checkmark {
             position: absolute;
             top: 0;
-            left: 0;
+            right: 0;
             height: 16px;
             width: 16px;
             border: 1px solid $gray-100;
@@ -356,10 +356,11 @@
             background: $secondary;
             width: 50px;
             text-align: center;
-            margin-left: 10px;
+            margin-right: 10px;
             color: $gray-500;
             font-size: $font-size-14;
             background-color: transparent;
+            right: 0 !important;
             &:before {
                 border-top-color: $secondary;
                 display: none;
@@ -382,7 +383,7 @@
                 height: 15px;
                 border-radius: 50%;
                 top: 20px;
-                left: 0;
+                right: 0;
                 &:first-child {
                  
                 }
@@ -457,7 +458,7 @@
     }
     .category-image{
         width: 60px;
-        margin-right: 10px;
+        margin-left: 10px;
         border-radius: 10px;
     }
     .cat-count{
@@ -500,21 +501,21 @@
     }
     .course-bg{
         position: absolute;
-        right: 30px;
+        left: 30px;
         top: 50%;
         transform: translate(0,-50%);
         z-index: -2;
     }
     .course-bg2{
         position: absolute;
-        right: 8%;
+        left: 8%;
         top: 50%;
         transform: translate(0,-50%);
         z-index: -1; 
     }
     .course-bg3{
         position: absolute;
-        right: 30px;
+        left: 30px;
         bottom: 0;
         z-index: -2; 
     }
@@ -545,7 +546,7 @@
         padding: 10px 20px;
         @include respond-below(sm){
             padding: 6px 14px;
-            right: 14px;
+            left: 14px;
         }
         &:hover{
             background: $secondary;
@@ -723,7 +724,7 @@
         }
         .custom-list {
             list-style: disc;
-            margin-left: 24px;
+            margin-right: 24px;
             margin-bottom: 16px;
            li {
             margin-bottom: 8px;
@@ -850,7 +851,7 @@
     .ordered-list {
         .list-items {
             list-style: auto;
-            margin-left: 24px;
+            margin-right: 24px;
             margin-bottom: 8px;
         }
     }
@@ -881,7 +882,7 @@
   .close-btn {
     position: absolute;
     top: 10px;
-    right: 10px;
+    left: 10px;
     font-size: 24px;
     color: white;
     cursor: pointer;
@@ -1027,6 +1028,8 @@
     .play-again-btn{
         background-color: $primary;
         color: $white !important;
+        display: inline-flex;
+        align-items: center;
         &:hover{
             background-color: $secondary !important;
             border-color: $secondary !important;
@@ -1035,6 +1038,8 @@
     .note-btn{
         background-color: $secondary;
         color: $white !important;
+        display: inline-flex;
+        align-items: center;
         &:hover{
             background-color: $primary;
         }
@@ -1088,12 +1093,12 @@
             p {
                 font-size: $font-size-16;
                 margin-bottom: 0;
-                margin-right: 28px;
+                margin-left: 28px;
                 @include respond-below(xl){
-                 margin-right: 14px;
+                 margin-left: 14px;
                 }
                 img {
-                    margin-right: 10px;
+                    margin-left: 10px;
                 }
             }
             @include respond-below(md) {
@@ -1301,7 +1306,7 @@
             height: 24px;
             width: 24px;
             border-radius: 50px;
-            margin-right: 8px;
+            margin-left: 8px;
             img {
                 border-radius: 50px;
             }
@@ -1448,7 +1453,7 @@
             border-bottom: 1px solid $border-color;
             p {
                 margin-bottom: 0;
-                margin-left: 10px;
+                margin-right: 10px;
             }
         }		
         .course-content {
@@ -1488,7 +1493,7 @@
                         width: 50px;
                         height: 50px;
                         border-radius: 25px;
-                        margin-right: 10px;
+                        margin-left: 10px;
                     }
                 }
             }
@@ -1509,14 +1514,14 @@
             background: $white;
             position: absolute;
             bottom: 20px;
-            right: 20px;
+            left: 20px;
             padding: 4px 8px;
             border-radius: 10px;
             &.combo {
                 background: $white;
                 position: absolute;
                 bottom: 20px;
-                right: 20px;
+                left: 20px;
                 padding: 4px 8px;
                 border-radius: 10px;
                 min-width: auto;
@@ -1554,7 +1559,7 @@
                 position: absolute;
                 top: 10px;
                 display: flex;
-                left: 10px;
+                right: 10px;
                 justify-content: center;
                 padding: 3px 10px;
                 font-size: $font-size-14;
@@ -1657,7 +1662,7 @@
             .course-user-img {
                 position: absolute;
                 top: -20px;
-                right: 15px;
+                left: 15px;
                 img {
                     width: 40px;
                     height: 40px;
@@ -1776,7 +1781,7 @@
         color: $gray-900 !important;
       }
     .course-watch-content {
-        padding: 20px 0 0 20px;
+        padding: 20px 20px 0 0px;
         @include respond-below(lg){
             padding: 0;
         }
@@ -1788,7 +1793,7 @@
                 margin-inline-end: 0;
                }
                @include respond-below(sm){
-                margin-right: 0;
+                margin-left: 0;
                 }
               .nav-link {
                 background: $light;
@@ -1840,7 +1845,7 @@
           .close-btn {
             position: absolute;
             top: 10px;
-            right: 10px;
+            left: 10px;
             font-size: 24px;
             color: white;
             cursor: pointer;
@@ -1952,4 +1957,18 @@
     }
 }
 }
-/* /Course Watch*/
+
+.filter-clear {
+    .clear-filter  {
+        h5 {
+            display: inline-flex;
+            align-items: center;
+        }
+    }
+}
+.cart-cover {
+    .btn-danger-ghost {
+        display: inline-flex;
+        align-items: center;
+}
+}

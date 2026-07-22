@@ -3,7 +3,7 @@
 		margin-bottom: 30px;
 		.input-group {
 			background: $white;
-			padding-left: 0;
+			padding-right: 0;
 			align-items: center;
 			@include respond-below(sm) {
 				display: block;
@@ -25,7 +25,7 @@
 				display: flex;
 				background: $white;
 				height: 40px;
-				border-right: 1px solid $border-color;
+				border-left: 1px solid $border-color;
 				border-radius: 0;
 				@include respond-below(sm) {
 					border: 0;
@@ -43,7 +43,7 @@
 		.form-control {
 			border: 0;
 			background: transparent;
-			margin-right: 10px;
+			margin-left: 10px;
 			@include respond-below(sm) {
 				width: 100%;
 				margin: 0 0 5px 0;
@@ -99,7 +99,7 @@
 		.rating {
 			i {
 				font-size: $font-size-14;
-				margin-right: 4px;
+				margin-left: 4px;
 				&.filled {
 					color: $warning;
 				}
@@ -151,7 +151,7 @@
 				text-transform: capitalize;
 				img {
 					width: 20px;
-					margin-right: 10px;
+					margin-left: 10px;
 				}
 			}
 		}
@@ -186,7 +186,7 @@
 		ul {
 			li {
 				position: relative;
-				padding-left: 28px;
+				padding-right: 28px;
 				font-weight: $font-weight-medium;
 				margin-bottom: 16px;
 				&:last-child {
@@ -269,9 +269,9 @@
 		}
 		.stylist-gallery {
 			position: relative;
-			padding-left: 24px;
+			padding-right: 24px;
 			@include respond-below(lg) {
-				padding-left: 0;
+				padding-right: 0;
 			}
 			.image-1 {
 				position: relative;
@@ -378,7 +378,7 @@
 		}
 		.join-mentor-img {
 			position: relative;
-			margin-left: 50px;
+			margin-right: 50px;
 			& > img {
 				@include rounded(10px);
 			}
@@ -387,7 +387,7 @@
 				height: 100px;
 				position: absolute;
 				bottom: 25px;
-				left: -50px;
+				right: -50px;
 				@include rounded(10px);
 				display: flex;
 				align-items: center;
@@ -415,10 +415,10 @@
 		}
 		&.skill-center {
 			.join-mentor-img {
-				margin: 0 50px 0 0;				
+				margin: 0 0px 0 50px;				
 				.joing-icon-award {
-					right: -50px;
-					left: auto;
+					left: -50px;
+					right: auto;
 				}
 			}
 		}
@@ -430,7 +430,7 @@
 		}
 	}
 	.course-count-two {
-		margin-left: 0 !important;
+		margin-right: 0 !important;
 		box-shadow: 0px 4px 24px 0px #DCDCDC40;
 		@include rounded(10px);
 		padding: 24px;
@@ -487,9 +487,9 @@
 		width: 100%;
 		background: $light-700;
 		.joing-content {
-			margin-left: 24px;
+			margin-right: 24px;
 			@include respond-below(md) {
-				margin-left: 16px;
+				margin-right: 16px;
 			}
 		}
 		.joing-group {
@@ -652,7 +652,7 @@
 		.owl-nav {
 			button {
 				&.owl-next {
-					margin-left: 10px;
+					margin-right: 10px;
 				}
 			}
 		}
@@ -795,7 +795,7 @@
 			align-items: center;
 			color: $white;
 			i {
-				margin-right: 5px;
+				margin-left: 5px;
 			}
 		}
 	}
@@ -842,7 +842,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			margin-right: 15px;
+			margin-left: 15px;
 			width: 60px;
 			height: 60px;
 			flex-shrink: 0;

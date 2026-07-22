@@ -27,8 +27,8 @@
         top: 0;
         right: 0;
         width: 400px;
-    height: 400px;
-    z-index: -1;
+        height: 400px;
+        z-index: -1;
         @include respond-below(lg) {
             display: none;
         }
@@ -45,7 +45,7 @@
                 height: 7px;
                 border-radius: 10px;
                 background: $light;
-                margin-right: 4px;
+                margin-left: 4px;
             }
             .owl-dot.active {
                 width: 7px;
@@ -112,7 +112,7 @@
     .bg-star-01 {
         position: absolute;
         top: -94px;
-        left: -192px;
+        right: -192px;
         z-index: 0;
     }
     .bg-star-02 {
@@ -196,7 +196,7 @@
             height: 7px;
             border-radius: 10px;
             background:#D6D4E4;
-            margin-right: 4px;
+            margin-left: 4px;
             &.active {
                 width: 15px;
                 height: 7px;
@@ -251,7 +251,7 @@
             animation: moveDiagonal 4s ease-in-out infinite;
         }
             .counter-item {
-                padding-right: 20px;
+                padding-left: 20px;
                 position: relative;
                 &.no-border {
                     &::after {
@@ -264,7 +264,7 @@
                     height: 100%;
                     width: 1px;
                     top: 0;
-                    right: 0;
+                    left: 0;
                     background: linear-gradient(90deg, #5C28D4 0%, #392C7D 100%);
                     @include respond-below(lg) {
                         content: none;
@@ -302,7 +302,7 @@
                     @include rounded(50%);
                     position: absolute;
                     bottom: 0;
-                    right: 20px;
+                    left: 20px;
                     background: $white;
                     width: 32px;
                     height: 32px;
@@ -318,7 +318,7 @@
                     border-radius: 30px;
                     position: absolute;
                     top: 0;
-                    right: 0;
+                    left: 0;
                     font-size: $font-size-16;
                     color: $gray-900;
                     &:hover, &.selected {
@@ -359,7 +359,7 @@
             color: $white;
         }
         &:last-child {
-            margin-right: 0;
+            margin-left: 0;
         }
     }
 }
@@ -387,14 +387,14 @@
                 position: absolute;
                 top: 50%;
                 @include transform(translateY(-50%));
-                left: 32px;
+                right: 32px;
                 font-size: $font-size-16;
                 color: $gray-500;
             }
             .form-control {
                 height: 72px;
                 border: 0;
-                padding: 10px 125px 10px 54px;
+                padding: 10px 54px 10px 125px;
                 background: transparent;
                 font-size: $font-size-16;
                 @include respond-below(lg) {
@@ -404,7 +404,7 @@
             }
             .btn {
                 position: absolute;
-                right: 15px;
+                left: 15px;
                 top: 50%;
                 @include transform(translateY(-50%));
                 font-size: $font-size-16;
@@ -488,9 +488,9 @@
     
 }
 .skill-image {
-    padding-right: 35px;
+    padding-left: 35px;
     @include respond-below(xl) {
-        padding-left: 0;
+        padding-right: 0;
     }
     @include respond-below(lg) {
         display: none;
@@ -592,17 +592,17 @@
         }
         .img-section {
             position: relative;
-            padding-left: 70px;
+            padding-right: 70px;
             @include respond-below(xl) {
-                padding-left: 0;
+                padding-right: 0;
             }
             .enrolled-list-cover {
                 display: inline-flex;
                 box-shadow: $box-shadow;
-                border-radius: 30px 30px 0px 30px;
+                border-radius: 30px 30px 30px 0px;
                 background: $dark;
                 position: absolute;
-                left: 0;
+                right: 0;
                 top: 10px;
                 padding: 20px;
                 z-index: 1;
@@ -659,7 +659,7 @@
             .role-img {
                 position: absolute;
                 bottom: 0;
-                right: 0;
+                left: 0;
                 max-height: 210px;
             }
             &::before {
@@ -673,6 +673,7 @@
                 right: 0;
                 bottom: 0;    
                 z-index: -1;
+                transform: rotate(-180deg);
                 @include respond-below(xl) {
                     width: 55%;
                     height: 55%;
@@ -681,7 +682,7 @@
             }
             &.student-bg {
                 .role-img {
-                    right: 25px;
+                    left: 25px;
                 }
                 &::before {
                     background-image: url('../../../../public/assets/img/bg/role-bg-02.png');
@@ -801,7 +802,7 @@
             height: 7px;
             border-radius: 10px;
             background:#D6D4E4;
-            margin-right: 4px;
+            margin-left: 4px;
             &.slick-active {
                 width: 15px;
                 height: 7px;

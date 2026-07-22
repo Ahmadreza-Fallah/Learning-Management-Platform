@@ -19,7 +19,7 @@
     }
     .verify-tick {
         position: absolute;
-        right: 0;
+        left: 0;
         bottom: 0;
         color: $success;
         width: 24px;
@@ -177,9 +177,9 @@
         margin-bottom: 24px;
         li {
             margin-bottom: 16px;
-            margin-right: 15px;
+            margin-left: 15px;
             &:last-child {
-                margin-right: 0;
+                margin-left: 0;
             }
             a {
                 color: $gray-900;
@@ -433,10 +433,10 @@ fieldset {
 		width: 100%;
 		height: 5px;
 		background: $gray-100;
-		margin-right: 10px;
+		margin-left: 10px;
 		border-radius: 5px;
 		&:last-child {
-			margin-right: 0;
+			margin-left: 0;
 		}
 	}
 }
@@ -634,4 +634,10 @@ fieldset {
 }
 .progress, .progress-stacked {
     background: $light-700;
+}
+.file-upload {
+    .btn-secondary  {
+        display: inline-flex;
+        align-items: center;
+    }
 }

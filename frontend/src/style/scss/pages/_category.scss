@@ -86,7 +86,7 @@
             margin-bottom: 24px;
             @include transition(0.7s);	
             position: relative;	
-            text-align: left;
+            text-align: right;
             z-index: 1;
             &::before {
                 background: url('../../../../public/assets/img/bg/category-bg.png') no-repeat;
