@@ -91,7 +91,7 @@ const BannerSection = () => {
                                         type="text"
                                         name="search"
                                         className="border-0 form-control p-0"
-                                        placeholder="Search for Courses, Instructors"
+                                        placeholder="جستجوی دوره"
                                     />
                                     <button type="submit" className="btn btn-secondary ms-auto">
                                         <i className="isax isax-arrow-right-1" />
@@ -103,10 +103,8 @@ const BannerSection = () => {
                                             <ImageWithBasePath src="assets/img/icons/icon-32.svg" alt="img" />
                                         </div>
                                         <div className="count-content">
-                                            <h5 className="text-purple">
-                                                <span className="count-digit">10</span>K
-                                            </h5>
-                                            <p>Online Courses</p>
+                                            
+                                            <p>دانشجوی فعال </p>
                                         </div>
                                     </div>
                                     <div className="counter-item">
@@ -114,10 +112,8 @@ const BannerSection = () => {
                                             <ImageWithBasePath src="assets/img/icons/icon-33.svg" alt="img" />
                                         </div>
                                         <div className="count-content">
-                                            <h5 className="text-skyblue">
-                                                <span className="count-digit">6</span>K
-                                            </h5>
-                                            <p>Certified Courses</p>
+                                         
+                                            <p>دوره تخصصی </p>
                                         </div>
                                     </div>
                                     <div className="counter-item">
@@ -125,17 +121,15 @@ const BannerSection = () => {
                                             <ImageWithBasePath src="assets/img/icons/icon-34.svg" alt="img" />
                                         </div>
                                         <div className="count-content">
-                                            <h5 className="text-success">
-                                                <span className="count-digit">2</span>K
-                                            </h5>
-                                            <p>Experienced Tutors</p>
+                                         
+                                            <p> اساتید مجرب</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="col-xl-4 col-lg-5">
-                            <div className="banner-image">
+                            <div className="">
                                 <div className="">
                                     <Swiper
                                         effect={'cards'}

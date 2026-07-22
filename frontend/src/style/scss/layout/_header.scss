@@ -766,10 +766,10 @@ header {
     }
   }
   &.header-one {
-    background: #392c7d;
+    background: $primary;
     position: fixed;
     &.fixed {
-      background: #392c7d;
+      background:  $primary;
       .main-menu-wrapper {
         .main-nav {
           & > li {
