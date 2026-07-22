@@ -4,14 +4,14 @@ export const getHeader = (roleId: number) => {
   if (roleId === 1) {
     return [
       {
-        tittle: "Courses",
+        tittle: "دوره ها",
         route: all_routes.courseGrid,
         hasSubRoute: false,
         showSubRoute: false,
         menu: [],
       },
       {
-        tittle: "Dashboard",
+        tittle: "داشبورد",
         hasSubRoute: true,
         showSubRoute: true,
         showAsTab2: true,
@@ -98,12 +98,26 @@ export const getHeader = (roleId: number) => {
           },
         ],
       },
+          {
+        tittle: "درباره ما",
+        route:all_routes.about_us,
+        showSubRoute: false,
+        showAsTab: false,
+        separateRoute: false,
+      },
+       {
+        tittle: "تماس با ما",
+        route:all_routes.contactUs,
+        showSubRoute: false,
+        showAsTab: false,
+        separateRoute: false,
+      },
     ];
   }
   if (roleId === 2) {
     return [
       {
-        tittle: "Courses",
+        tittle: "دوره ها",
         base: "course",
         showAsTab: false,
         separateRoute: false,
@@ -133,7 +147,7 @@ export const getHeader = (roleId: number) => {
         ],
       },
       {
-        tittle: "Dashboard",
+        tittle: "داشبورد",
         base: "instructor",
         base2: "student",
         showAsTab: false,
@@ -241,6 +255,20 @@ export const getHeader = (roleId: number) => {
             subMenus: [],
           },
         ],
+      },
+             {
+        tittle: "درباره ما",
+        route:all_routes.about_us,
+        showSubRoute: false,
+        showAsTab: false,
+        separateRoute: false,
+      },
+       {
+        tittle: "تماس با ما",
+        route:all_routes.contactUs,
+        showSubRoute: false,
+        showAsTab: false,
+        separateRoute: false,
       },
     ];
   }

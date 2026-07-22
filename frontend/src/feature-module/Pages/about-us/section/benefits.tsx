@@ -9,7 +9,7 @@ const Benefits = () => {
         <div className="container">
           <div className="section-header text-center">
             <span className="fw-medium text-secondary text-decoration-underline mb-2 d-inline-block">
-              Our Benefits
+              مزایای ما
             </span>
             <h2>Master the Skills to Drive your Career</h2>
             <p>
