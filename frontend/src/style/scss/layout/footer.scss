@@ -29,17 +29,22 @@
         input {
             height: 42px;
             border-radius: 45px;
-            padding-right: 100px;
+            padding-left: 100px;
             border: 1px solid $border-color;
             font-size: $font-size-14;
-            padding-left: 16px;
-            &:placeholder {
+            padding-right: 16px;
+            text-align: right;
+            &::placeholder {
                 color: $gray-300;
             }
         }
         button {
+            display: inline-flex;
+            align-items: center;
+        }
+        button {
             position: absolute;
-            right: 6px; 
+            left: 6px; 
             top: 50%;
             @include transform(translateY(-50%));
             i {
@@ -99,15 +104,15 @@
                 }
             }
             & + li {
-                padding-left: 15px;
-                margin-left: 15px;
+                padding-right: 15px;
+                margin-right: 15px;
                 &::before {
                     content: "";
                     width: 1px;
                     height: 12px;
                     background: $white;
                     position: absolute;
-                    left: 0;
+                    right: 0;
                     top: 50%;
                     transform: translateY(-50%);
                 }
@@ -156,7 +161,7 @@
             span {
                 position: absolute;
                 top: 50%;
-                left: 32px;
+                right: 32px;
                 @include transform(translateY(-50%));
                 color: $gray-500;
                 display: flex;
@@ -164,7 +169,7 @@
             .form-control {
                 height: 54px;
                 @include rounded(70px);
-                padding-left: 56px;
+                padding-right: 56px;
                 &::placeholder {
                     color: $gray-500;
                 }
@@ -197,8 +202,8 @@
                         }
                     }
                     & + li {
-                        padding-left: 15px;
-                        margin-left: 15px;
+                        padding-right: 15px;
+                        margin-right: 15px;
                         &::before {
                             content: "";
                             width: 1px;

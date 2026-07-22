@@ -60,9 +60,9 @@ $font-size-19: 19px;
                 position: relative;
                 display: flex;
                 align-items: center;
-                margin-right: 3px;
+                margin-left: 3px;
                 @include respond-below(xxl){
-                 margin-right: 0;
+                 margin-left: 0;
                 }
                 img{
                   width: 16px;
@@ -74,9 +74,9 @@ $font-size-19: 19px;
                     height: 15px;
                     background-color: $gray-100;
                     display: block;
-                    margin-right: 6px;
+                    margin-left: 6px;
                     @include respond-below(xxl){
-                        margin-right: 4px;
+                        margin-left: 4px;
                     }
                 }
                 &:first-child{
@@ -151,7 +151,7 @@ $font-size-19: 19px;
         a{
             &:hover{
                 color: $secondary;
-                margin-left: 5px;
+                margin-right: 5px;
             }
         }
         span{
@@ -170,7 +170,7 @@ $font-size-19: 19px;
 		.btn{
          font-size: 15px;
          position: absolute;
-         right: 0;
+         left: 0;
          top: 50%;
          transform: translateY(-50%);
          z-index: 6;
@@ -187,7 +187,7 @@ $font-size-19: 19px;
     .post-thumb {
         border-radius: 5px;
         width: 80px;
-        float: left;
+        float: right;
         overflow: hidden;
         img{
             -webkit-transform: translateZ(0);
@@ -206,7 +206,7 @@ $font-size-19: 19px;
         }
     }
     .post-info {
-        margin-left: 95px;
+        margin-right: 95px;
         h5{
         font-weight: 500; 
         }
@@ -224,18 +224,18 @@ $font-size-19: 19px;
 // blog details
 .blog-sec{
     .blog-blockquote{
-        border-left: 2px solid $secondary !important;
+        border-right: 2px solid $secondary !important;
     }
     .blog-avatar{
         width: 120px;
         height: 120px;
     }
     .reply{
-     margin-left: 60px;
+     margin-right: 60px;
      background-color: $light-200;
      border: 1px solid $light;
      @include respond-below(sm){
-      margin-left: 20px;
+      margin-right: 20px;
      }
     }
     .review-info{
@@ -331,7 +331,7 @@ $font-size-19: 19px;
                 height: 24px;
                 display: inline-flex;
                 border-radius: 50%;
-                margin-right: 8px;
+                margin-left: 8px;
                 img {
                     border-radius: 50%;
                     width: 100%;
@@ -386,7 +386,7 @@ $font-size-19: 19px;
             }
             .post-thumb {
                 flex-shrink: 0;
-                margin-right: 20px;
+                margin-left: 20px;
                 width: 80px;
                 height: 80px;
                 border-radius: 5px;
@@ -410,10 +410,10 @@ $font-size-19: 19px;
         align-items: center;
         flex-wrap: wrap;
         li {
-            margin-right: 8px;
+            margin-left: 8px;
             margin-bottom: 8px;
             &:last-child {
-                margin-right: 0;
+                margin-left: 0;
             }
             a {
                 background: $light-900;
@@ -439,7 +439,7 @@ $font-size-19: 19px;
         align-items: center;
         justify-content: center;
         position: absolute;
-        right: 4px;
+        left: 4px;
         top: 4px;
         border: 0;
         &:hover {
@@ -544,7 +544,7 @@ $font-size-19: 19px;
             font-size: $font-size-14;
             i {
                 font-size: $font-size-18;
-                margin-right: 5px;
+                margin-left: 5px;
             }
         }
     }

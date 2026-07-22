@@ -196,7 +196,7 @@
     padding: 0;
     &.avatar-group-overlapped {
         .avatar {
-            margin-right: -.875rem;
+            margin-left: -.875rem;
             &:hover{
                 z-index:1;
             }
@@ -211,7 +211,7 @@
             }
         }
         &.avatar-group-overlapped .avatar {
-            margin-right: -1rem;
+            margin-left: -1rem;
         }	
     }
     &.avatar-group-sm {
@@ -223,7 +223,7 @@
             }
         }
         &.avatar-group-overlapped .avatar {
-            margin-right: -0.625rem;
+            margin-left: -0.625rem;
         }	
     }
     &.avatar-group-xs {
@@ -236,7 +236,7 @@
             }
         }
         &.avatar-group-overlapped .avatar {
-            margin-right: -6px;
+            margin-left: -6px;
         }	
     }
     .avatar {
@@ -268,7 +268,7 @@
 	}
 	&.avatar-group-overlapped {
 		.avatar {
-			margin-right: -.875rem;
+			margin-left: -.875rem;
 			&:hover{
 				z-index:1;
 			}
@@ -283,7 +283,7 @@
 			}
 		}
 		&.avatar-group-overlapped .avatar {
-			margin-right: -1rem;
+			margin-left: -1rem;
 		}	
 	}
 	&.avatar-group-sm {
@@ -295,7 +295,7 @@
 			}
 		}
 		&.avatar-group-overlapped .avatar {
-			margin-right: -0.625rem;
+			margin-left: -0.625rem;
 		}	
 	}
 }

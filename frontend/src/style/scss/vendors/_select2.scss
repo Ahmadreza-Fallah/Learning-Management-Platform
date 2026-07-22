@@ -13,10 +13,11 @@
             color: $gray-900 !important;
             line-height: 40px;
             @include rounded(6px);
-            padding-left: 16px;
+            padding-right: 16px;
             font-size: $font-size-14;
             font-weight: $font-weight-normal;
-            padding-right: 30px;
+            padding-left: 30px;
+            text-align: right;
             span {
                 display: -webkit-inline-box;
                 display: -ms-inline-flexbox;
@@ -28,7 +29,7 @@
                     width: 20px;
                     height: 20px;
                     border-radius: 50px;
-                    margin-right: 5px;
+                    margin-left: 5px;
                 }
             }
         }
@@ -37,7 +38,7 @@
         }
         .select2-selection__arrow {
             height: 40px;
-            right: 7px;
+            left: 7px;
         }
     }
 }
@@ -128,7 +129,7 @@ span.select2-container.select2-container--default.select2-container--open {
             width: 20px;
             height: 20px;
             border-radius: 50px;
-            margin-right: 5px;
+            margin-left: 5px;
         }
     }
 }

@@ -30,7 +30,7 @@
             }
         }
         & +.breadcrumb-item {
-            margin-left: 26px;
+            margin-right: 26px;
             &:before {
                 content: "";
                 width: 15px;
@@ -38,7 +38,7 @@
                 border-radius: 5px;
                 background: $secondary;
                 position: absolute;
-                left: -16px;
+                right: -16px;
                 top: 50%;
                 transform: translateY(-50%);
             }
@@ -70,7 +70,7 @@
 //     background-position: center;
 // }
 // .breadcrumb-bg-06{
-//     background: url('../../../../public/assets/img/bg/breadcrumb-04.jpg') no-repeat;
+//     background: url('../img/bg/breadcrumb-04.jpg') no-repeat;
 //     background-size: cover;
 //     background-position: center;
 // }

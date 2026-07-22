@@ -6,6 +6,7 @@ body {
 	background-color: $white;
 	overflow-y: auto;
 	overflow-x: hidden;
+	direction: rtl;
 	@include respond-below(md) {
 		font-size: $font-size-14;
 	}
@@ -70,7 +71,7 @@ ul {
 	  list-style: none;
 	  padding-left: 0;
 	  > li {
-	    padding-left: 1.875rem;
+	    padding-right: 1.875rem;
 	    counter-increment: li;
 	    i,
 	    .feather-icon,

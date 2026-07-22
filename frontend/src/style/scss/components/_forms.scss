@@ -9,6 +9,7 @@
   font-size: $font-size-14;
   padding: 0.5rem 1rem;
   min-height: 40px;
+  text-align: right;
   &:focus {
     box-shadow: none;
     border-color: $input-border;
@@ -894,8 +895,8 @@ input-icon {
 }
 
 .input-icon-addon:last-child {
-  right: 0;
-  left: auto
+  left: 0;
+  right: auto
 }
 .form-wrap {
     .form-wrap-icon {
@@ -928,7 +929,7 @@ input-icon {
     @include transform(translateY(-50%));
     position: absolute;
     top: 50%;
-    right: 10px;
+    left: 10px;
     pointer-events: auto;
     &:hover{
         color: $primary;
@@ -956,7 +957,7 @@ input-icon {
     @include transform(translateY(-50%));
     position: absolute;
     top: 50%;
-    right: 10px;
+    left: 10px;
     &:hover{
         color:$primary;
     }

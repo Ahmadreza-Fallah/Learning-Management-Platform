@@ -64,7 +64,7 @@
 	}
 	.login-wrap-bg {
 		position: absolute;
-		right: 0;
+		left: 0;
 		padding: 0;
 		.login-wrapper {
 			max-width: 100%;
@@ -133,14 +133,14 @@
                 font-weight: 900;
 				z-index: 1;
 				top: 0;
-				right: 0;
+				border-bottom-left-radius: 0;
 			}
 		}
 		.form-check-input {
 			width: 20px;
 			height: 20px;
 			margin-top: 0;
-			margin-right: 8px;
+			margin-left: 8px;
 		}
 		.form-check-label {
 			font-weight: $font-weight-normal;
@@ -149,10 +149,10 @@
 		.form-control.otp {
 			width: 88px;
 			height: 70px;
-			margin-right: 20px;
+			margin-left: 20px;
 			text-align: center;
 			&:last-child {
-				margin-right: 0;
+				margin-left: 0;
 			}		  
 			& {
 				-moz-appearance: textfield;
@@ -200,7 +200,7 @@
 		position: relative;
 	}
 	.toggle-password.feather-eye {
-		margin-right: 1px;
+		margin-left: 1px;
 		color: #6e82a3;
 	}
 	.toggle-password.feather-eye-off {
@@ -261,7 +261,7 @@
 		-ms-transform: translateY(-50%);
 		position: absolute;
 		top: 50%;
-		right: 10px;
+		left: 10px;
 	}
 	.timer-cover {
 		margin-bottom: 20px;

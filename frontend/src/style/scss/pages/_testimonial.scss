@@ -2,8 +2,6 @@
     Testimonial
 ===============================*/
 
-
-
 .testimonials {
     &-section {
         padding: 80px 0;
@@ -44,7 +42,7 @@
             }
             .quote{
                 position: absolute;
-                right: 10px;
+                left: 10px;
                 bottom: 0;
             }
             .slick-prev{
