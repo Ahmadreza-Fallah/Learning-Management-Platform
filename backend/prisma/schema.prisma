@@ -51,6 +51,7 @@ model Courses {
   Category         Category         @relation(fields: [CategoryId], references: [Id], onUpdate: NoAction, map: "FK_Courses_Categories")
   Level            Level?           @relation(fields: [Level_Id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Courses_Level")
   Users            Users            @relation(fields: [Teacher_Id], references: [Id], onUpdate: NoAction, map: "FK_Courses_Teachers")
+  CourseSections   CourseSections[]
   Enrollments      Enrollments[]
   Lessons          Lessons[]
   Payments         Payments[]
@@ -94,11 +95,14 @@ model Lessons {
   IsFreePreview   Boolean?         @default(false, map: "DF__Lessons__IsFreeP__2EDAF651")
   CreatedAt       DateTime?        @default(now(), map: "DF__Lessons__Created__2FCF1A8A")
   IsPublished     Boolean          @default(true, map: "DF_Lessons_IsPublished")
+  Section_Id      Int?
   CourseProgress  CourseProgress[]
   LessonFiles     LessonFiles[]
   Courses         Courses          @relation(fields: [Course_Id], references: [Id], onUpdate: NoAction, map: "FK_Lessons_Courses")
+  CourseSections  CourseSections?  @relation(fields: [Section_Id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Lessons_CourseSections")
 
   @@index([Course_Id], map: "IX_Lessons_Course")
+  @@index([Section_Id], map: "IX_Lessons_SectionId")
 }
 
 model Payments {
@@ -213,4 +217,18 @@ model InstructorRequests {
   Users_InstructorRequests_User_IdToUsers    Users     @relation("InstructorRequests_User_IdToUsers", fields: [User_Id], references: [Id], onUpdate: NoAction, map: "FK_InstructorRequests_User")
 
   @@index([User_Id], map: "IX_InstructorRequests_UserId")
+}
+
+model CourseSections {
+  Id           Int       @id(map: "PK__CourseSe__3214EC0766331D28") @default(autoincrement())
+  Course_Id    Int
+  Title        String    @db.NVarChar(200)
+  DisplayOrder Int       @default(1, map: "DF__CourseSec__Displ__2116E6DF")
+  CreatedAt    DateTime  @default(now(), map: "DF__CourseSec__Creat__220B0B18") @db.DateTime
+  UpdatedAt    DateTime? @db.DateTime
+  Description  String?   @db.NVarChar(Max)
+  Courses      Courses   @relation(fields: [Course_Id], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_CourseSections_Courses")
+  Lessons      Lessons[]
+
+  @@index([Course_Id], map: "IX_CourseSections_CourseId")
 }

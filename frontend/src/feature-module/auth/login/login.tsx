@@ -124,7 +124,8 @@ const Login = () => {
                   <div className="w-100">
                     <div className="d-flex align-items-center justify-content-between login-header">
                       <ImageWithBasePath
-                        src="assets/img/logo.svg"
+                        width={300}
+                        src="assets/img/logo.png"
                         className="img-fluid"
                         alt="Logo"
                       />
@@ -139,7 +140,7 @@ const Login = () => {
                     <form onSubmit={handleSubmit} className="mb-3 pb-3">
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          نام کاربری<span className="text-danger ms-1">*</span>
+                           <span className="text-danger ms-1">*</span> نام کاربری    
                         </label>
                         <div className="position-relative">
                           <input
@@ -156,7 +157,7 @@ const Login = () => {
                       </div>
                       <div className="mb-3 position-relative">
                         <label className="form-label">
-                          رمز عبور <span className="text-danger ms-1">*</span>
+                         <span className="text-danger ms-1">* </span> رمز عبور 
                         </label>
                         <div className="position-relative" id="passwordInput">
                           <input
@@ -179,7 +180,7 @@ const Login = () => {
                         </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between mb-4">
-                        <div className="remember-me d-flex align-items-center">
+                        {/* <div className="remember-me d-flex align-items-center">
                           <input
                             className="form-check-input"
                             type="checkbox"
@@ -189,12 +190,12 @@ const Login = () => {
                             className="form-check-label ms-2"
                             htmlFor="flexCheckDefault"
                           >
-                            Remember Me
+                            مرا به خاطر بسپار 
                           </label>
-                        </div>
+                        </div> */}
                         <div className="">
                           <Link to={route.forgotpassword} className="link-2">
-                            Forgot Password ?
+                           فراموشی رمز ؟
                           </Link>
                         </div>
                       </div>
@@ -204,13 +205,13 @@ const Login = () => {
                           type="submit"
                           disabled={loading}
                         >
-                          {loading ? "Signing in..." : "Login"}
+                          {loading ? "درحال ورود ..." : "ورود"}
                         </button>
                       </div>
                     </form>
-                    <div className="d-flex align-items-center justify-content-center or fs-14 mb-3">
-                      Or
-                    </div>
+                    {/* <div className="d-flex align-items-center justify-content-center or fs-14 mb-3">
+                      یا
+                    </div> */}
                     <div className="d-flex align-items-center justify-content-center mb-3">
                       <Link to="#" className="btn btn-light me-2">
                         <ImageWithBasePath
@@ -218,7 +219,7 @@ const Login = () => {
                           alt="img"
                           className="me-2"
                         />
-                        Google
+                        ورود با حساب گوگل
                       </Link>
                     </div>
                     <div className="fs-14 fw-normal d-flex align-items-center justify-content-center">

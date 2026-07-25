@@ -5,6 +5,7 @@ import { all_routes } from "../../router/all_routes";
 import StudentSidebar from "../common/studentSidebar";
 import userService from "../../../services/user.service";
 import toast from "react-hot-toast";
+import ProfileCard from "../common/profileCard";
 interface UserProfile {
   id: number;
   FirstName: string;
@@ -77,61 +78,10 @@ const StudentProfile = () => {
   }
   return (
     <>
-      <div className="content">
+      <div className="content mt-5">
         <div className="container">
           {/* profile box */}
-          <div className="profile-card overflow-hidden bg-blue-gradient2 mb-5 p-5">
-            <div className="profile-card-bg">
-              <ImageWithBasePath
-                src="assets/img/bg/card-bg-01.png"
-                className="profile-card-bg-1"
-                alt=""
-              />
-            </div>
-            <div className="row align-items-center row-gap-3">
-              <div className="col-lg-6">
-                <div className="d-flex align-items-center">
-                  <span className="avatar avatar-xxl avatar-rounded me-3 border border-white border-2 position-relative">
-                    <ImageWithBasePath
-                      src="assets/img/user/user-02.jpg"
-                      alt=""
-                    />
-                    <span className="verify-tick">
-                      <i className="isax isax-verify5" />
-                    </span>
-                  </span>
-                  <div>
-                    <h5 className="mb-1 text-white d-inline-flex align-items-center">
-                      {profile?.FirstName} {profile?.LastName}
-                      <Link
-                        to={route.instructorProfile}
-                        className="link-light fs-16 ms-2"
-                      >
-                        <i className="isax isax-edit-2" />
-                      </Link>
-                    </h5>
-                    <p className="text-light">
-                      {profile?.Role_Id === 1
-                        ? "Student"
-                        : profile?.Role_Id === 2
-                          ? "Instructor"
-                          : "Admin"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="d-flex align-items-center justify-content-lg-end flex-wrap gap-2">
-                  <Link
-                    to={route.becomeAnInstructor}
-                    className="btn btn-white rounded-pill me-3"
-                  >
-                    Become an Instructor
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ProfileCard/>
           {/* profile box */}
           <div className="row">
             {/* sidebar */}
@@ -139,7 +89,7 @@ const StudentProfile = () => {
             {/* sidebar */}
             <div className="col-lg-9">
               <div className="page-title d-flex align-items-center justify-content-between">
-                <h5 className="fw-bold">My Profile</h5>
+                <h5 className="fw-bold">پروفایل من</h5>
                 <button
                   type="button"
                   className="edit-profile-icon border-0 bg-transparent"
