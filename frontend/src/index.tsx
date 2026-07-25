@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-// import "../src/style/css/iconsax.css";
+import "../src/style/css/iconsax.css";
 import ALLRoutes from "./feature-module/router/router";
 import { BrowserRouter } from "react-router-dom";
 import { base_path } from "./environment";

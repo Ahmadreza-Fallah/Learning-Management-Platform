@@ -1,153 +1,310 @@
-import React from 'react'
-import Breadcrumb from '../../../core/common/Breadcrumb/breadcrumb'
-import ProfileCard from '../common/profileCard'
-import InstructorSidebar from '../common/instructorSidebar'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { all_routes } from "../../router/all_routes";
 
-const InstructorProfile = () => {
+import userService from "../../../services/user.service";
+import toast from "react-hot-toast";
+import InstructorSidebar from "../common/instructorSidebar";
+import ProfileCard from "../common/profileCard";
+interface UserProfile {
+  id: number;
+  FirstName: string;
+  LastName: string;
+  UserName: string;
+  Email: string;
+  Mobile: string;
+  Sex_Id: number;
+  Avatar: string;
+  Role_Id: number;
+}
+const StudentProfile = () => {
+  const route = all_routes;
+
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editProfile, setEditProfile] = useState({
+    firstName: "",
+    lastName: "",
+    userName: "",
+    email: "",
+    mobile: "",
+    sexId: 1,
+    avatar: "",
+  });
+  useEffect(() => {
+    const loadProfile = async () => {
+      debugger;
+      try {
+        const data = await userService.getProfile();
+        setProfile(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, []);
+  const handleUpdateProfile = async () => {
+    debugger;
+    try {
+      const updatedUser = await userService.updateProfile(editProfile);
+
+      setProfile(updatedUser?.user);
+      const existingUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+      // Update with new values
+      const updatedUserData = {
+        ...existingUser,
+        firstName: updatedUser?.user?.FirstName,
+        lastName: updatedUser?.user?.LastName,
+        email: updatedUser?.user?.Email,
+        mobile: updatedUser?.user?.Mobile,
+        userName: updatedUser?.user?.UserName,
+      };
+
+      // Store the updated object back
+      localStorage.setItem("user", JSON.stringify(updatedUserData));
+      setShowEditModal(false);
+      toast.success("Update Successfull");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
-    <Breadcrumb title='My Profile'/>
-    <div className="content">
-      <div className="container">
-        <ProfileCard/>
-        <div className="row">
-        {/* Sidebar */}
-        <InstructorSidebar/>
-        {/* /Sidebar */}
-        <div className="col-lg-9">
-          <div className="page-title d-flex align-items-center justify-content-between">
-            <h5 className="fw-bold">My Profile</h5>
-            <Link to="#" className="edit-profile-icon">
-              <i className="isax isax-edit-2" />
-            </Link>
-          </div>
-          <div className="card">
-            <div className="card-body">
-              <h5 className="fs-18 pb-3 border-bottom mb-3">Basic Information</h5>
-              <div className="row">
-                <div className="col-md-4">
-                  <div className="mb-3">
-                    <h6>First Name</h6>
-                    <span>Eugene</span>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="mb-3">
-                    <h6>Last Name</h6>
-                    <span>Andre</span>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="mb-3">
-                    <h6>Registration Date</h6>
-                    <span>16 Jan 2024, 11:15 AM</span>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="mb-3">
-                    <h6>User Name</h6>
-                    <span>instructordemo</span>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="mb-3">
-                    <h6>Phone Number</h6>
-                    <span>89104-71829</span>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="mb-3">
-                    <h6>Email</h6>
-                    <span>instructordemo@example.com</span>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="mb-3">
-                    <h6>Gender</h6>
-                    <span>Male</span>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="mb-3">
-                    <h6>DOB</h6>
-                    <span>16 Jan 2020</span>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="mb-3">
-                    <h6>Age</h6>
-                    <span>24</span>
-                  </div>
-                </div>
-                <div className="col-md-12">
-                  <div>
-                    <h6>Bio</h6>
-                    <span>
-                      I am a web developer with a vast array of knowledge in many
-                      different front end and back end languages, responsive
-                      frameworks, databases, and best code practices.
-                    </span>
-                  </div>
-                </div>
+      <div className="content mt-5">
+        <div className="container">
+          {/* profile box */}
+          <ProfileCard/>
+          {/* profile box */}
+          <div className="row">
+            {/* sidebar */}
+            <InstructorSidebar />
+            {/* sidebar */}
+            <div className="col-lg-9">
+              <div className="page-title d-flex align-items-center justify-content-between">
+                <h5 className="fw-bold">پروفایل من</h5>
+                <button
+                  type="button"
+                  className="edit-profile-icon border-0 bg-transparent"
+                  onClick={() => {
+                    if (!profile) return;
+
+                    setEditProfile({
+                      firstName: profile.FirstName,
+                      lastName: profile.LastName,
+                      userName: profile.UserName,
+                      email: profile.Email,
+                      mobile: profile.Mobile,
+                      sexId: profile.Sex_Id,
+                      avatar: profile.Avatar,
+                    });
+
+                    setShowEditModal(true);
+                  }}
+                >
+                  <i className="isax isax-edit-2" />
+                </button>
               </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-body">
-              <h5 className="fs-18 pb-3 border-bottom mb-3">Education</h5>
-              <div className="education-flow">
-                <div className="ps-4 pb-3 timeline-flow">
-                  <div>
-                    <h6 className="mb-1">BCA - Bachelor of Computer Applications</h6>
-                    <p>International University - (2004 - 2010)</p>
+              <div className="card mb-0">
+                <div className="card-body">
+                  <h6 className="fs-18 page-title fw-bold">
+                    اطلاعات شخصی 
+                  </h6>
+                  <div className="row">
+                    <div className="col-md-4">
+                      <div className="mb-3">
+                        <h6>نام</h6>
+                        <span>{profile?.FirstName}</span>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="mb-3">
+                        <h6>نام خانوادگی</h6>
+                        <span>{profile?.LastName}</span>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="mb-3">
+                        <h6>نام کاربری</h6>
+                        <span>{profile?.UserName} </span>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="mb-3">
+                        <h6>تلفن همراه</h6>
+                        <span>{profile?.Mobile}</span>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="mb-3">
+                        <h6>ایمیل</h6>
+                        <span>{profile?.Email}</span>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="mb-3">
+                        <h6>جنسیت</h6>
+                        <span>{profile?.Sex_Id === 5 ? "Male" : "Female"}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="ps-4 pb-3 timeline-flow">
-                  <div>
-                    <h6 className="mb-1">MCA - Master of Computer Application</h6>
-                    <p>International University - (2010 - 2012)</p>
-                  </div>
-                </div>
-                <div className="ps-4 pb-0 timeline-flow">
-                  <div>
-                    <h6 className="mb-1">Design Communication Visual</h6>
-                    <p>International University - (2012-2015)</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card mb-0">
-            <div className="card-body">
-              <h5 className="fs-18 pb-3 border-bottom mb-3">Experience</h5>
-              <div className="d-flex align-items-center mb-4">
-                <span className="bg-light border avatar avatar-lg text-gray-9 flex-shrink-0 me-3">
-                  <i className="isax isax-briefcase fw-bold" />
-                </span>
-                <div>
-                  <h6 className="mb-1">Web Design &amp; Development Team Leader</h6>
-                  <p>Creative Agency - (2013 - 2016)</p>
-                </div>
-              </div>
-              <div className="d-flex align-items-center">
-                <span className="bg-light border avatar avatar-lg text-gray-9 flex-shrink-0 me-3">
-                  <i className="isax isax-briefcase fw-bold" />
-                </span>
-                <div>
-                  <h6 className="mb-1">Project Manager</h6>
-                  <p>CJobcy Technology Pvt.Ltd - (Present)</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      {showEditModal && (
+        <div
+          className="modal fade show d-block"
+          style={{ background: "rgba(0,0,0,.5)" }}
+        >
+          <div className="modal-dialog modal-lg">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5>Edit Profile</h5>
+                <div>
+                  <button
+                    className="btn-close"
+                    onClick={() => setShowEditModal(false)}
+                  />
+                </div>
+              </div>
 
-      </div>
-    </div>
+              <div className="modal-body">
+                {/* First Name */}
+
+                <div className="mb-3">
+                  <label>First Name</label>
+
+                  <input
+                    className="form-control"
+                    value={editProfile.firstName}
+                    onChange={(e) =>
+                      setEditProfile({
+                        ...editProfile,
+                        firstName: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                {/* Last Name */}
+
+                <div className="mb-3">
+                  <label>Last Name</label>
+
+                  <input
+                    className="form-control"
+                    value={editProfile.lastName}
+                    onChange={(e) =>
+                      setEditProfile({
+                        ...editProfile,
+                        lastName: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                {/* Username */}
+
+                <div className="mb-3">
+                  <label>Username</label>
+
+                  <input
+                    className="form-control"
+                    value={editProfile.userName}
+                    onChange={(e) =>
+                      setEditProfile({
+                        ...editProfile,
+                        userName: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                {/* Email */}
+
+                <div className="mb-3">
+                  <label>Email</label>
+
+                  <input
+                    className="form-control"
+                    value={editProfile.email}
+                    onChange={(e) =>
+                      setEditProfile({
+                        ...editProfile,
+                        email: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                {/* Mobile */}
+
+                <div className="mb-3">
+                  <label>Mobile</label>
+
+                  <input
+                    className="form-control"
+                    value={editProfile.mobile}
+                    onChange={(e) =>
+                      setEditProfile({
+                        ...editProfile,
+                        mobile: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                {/* Gender */}
+
+                <div className="mb-3">
+                  <label>Gender</label>
+
+                  <select
+                    className="form-select"
+                    value={editProfile.sexId}
+                    onChange={(e) =>
+                      setEditProfile({
+                        ...editProfile,
+                        sexId: Number(e.target.value),
+                      })
+                    }
+                  >
+                    <option value={1}>Male</option>
+                    <option value={2}>Female</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setShowEditModal(false)}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={handleUpdateProfile}
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default InstructorProfile
+export default StudentProfile;

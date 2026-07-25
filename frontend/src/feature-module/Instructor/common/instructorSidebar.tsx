@@ -7,47 +7,46 @@ const InstructorSidebar = () => {
   const location = useLocation();
   return (
     <div className="col-lg-3 ">
-    <div className="settings-sidebar mb-lg-0 theiaStickySidebar">
-      <div>
-        <h6 className="mb-3">Main Menu</h6>
-        <ul className="mb-3 pb-1">
-          {instructorSidebarData.map((menu:any ,index:any)=>(
-            <li key={index}>
-            <Link
-              to={menu.route}
-              className={`d-inline-flex align-items-center ${location.pathname === menu.route || location.pathname === menu.subRoute  ? 'active' : ''}`}
-            >
-              <i className={`${menu.icon} me-2`} />
-              {menu.title}
-            </Link>
-          </li>
-          ))}
-          
-        </ul>
-        <hr />
-        <h6 className="mb-3">Account Settings</h6>
-        <ul>
-          <li>
-            <Link
-              to={all_routes.instructorsettings}
-              className={`d-inline-flex align-items-center ${location.pathname.includes('settings') ? 'active' : ''}`}
-            >
-              <i className="isax isax-setting-25 me-2" />
-              Settings
-            </Link>
-          </li>
-          <li>
-            <Link
-              to={all_routes.login}
-              className="d-inline-flex align-items-center"
-            >
-              <i className="isax isax-logout5 me-2" />
-              Logout
-            </Link>
-          </li>
-        </ul>
+      <div className="settings-sidebar mb-lg-0 theiaStickySidebar">
+        <div>
+          <h6 className="mb-3">منوی اصلی</h6>
+          <ul className="mb-3 pb-1">
+            {instructorSidebarData.map((menu:any ,index:any)=>(
+              <li key={index}>
+              <Link
+                to={menu.route}
+                className={`d-inline-flex align-items-center ${location.pathname === menu.route || location.pathname === menu.subRoute  ? 'active' : ''}`}
+              >
+                <i className={`${menu.icon} me-2`} />
+                {menu.title}
+              </Link>
+            </li>
+            ))} 
+          </ul>
+          <hr />
+          <h6 className="mb-3">تنظیمات حساب کاربری</h6>
+          <ul>
+            <li>
+              <Link
+                to={all_routes.instructorsettings}
+                className={`d-inline-flex align-items-center ${location.pathname.includes('settings') ? 'active' : ''}`}
+              >
+                <i className="isax isax-setting-25 me-2" />
+                تنظیمات
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={all_routes.login}
+                className="d-inline-flex align-items-center"
+              >
+                <i className="isax isax-logout5 me-2" />
+                خروج
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
   </div>
   )
 }

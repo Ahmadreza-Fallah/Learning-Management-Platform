@@ -1,6 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCourseDto } from './dto/create-course.dto';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Injectable()
 export class CoursesService {
@@ -16,14 +22,38 @@ export class CoursesService {
       .replace(/^-+|-+$/g, '');
   }
 
-  async create(dto: CreateCourseDto, userId: number) {
-    let slug = this.generateSlug(dto.title);
+  private async ensureUniqueSlug(slug: string): Promise<string> {
     const existing = await this.prisma.courses.findUnique({
       where: { Slug: slug },
     });
     if (existing) {
-      slug = `${slug}-${Date.now()}`;
+      return `${slug}-${Date.now()}`;
     }
+    return slug;
+  }
+
+  private async verifyOwnership(courseId: number, userId: number) {
+    const course = await this.prisma.courses.findUnique({
+      where: { Id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+    if (course.Teacher_Id !== userId) {
+      throw new ForbiddenException('You can only manage your own courses');
+    }
+    return course;
+  }
+
+  private courseInclude() {
+    return {
+      Category: true,
+      Level: true,
+    };
+  }
+
+  async create(dto: CreateCourseDto, userId: number) {
+    const slug = await this.ensureUniqueSlug(this.generateSlug(dto.title));
 
     return this.prisma.courses.create({
       data: {
@@ -41,18 +71,15 @@ export class CoursesService {
         IsPublished: false,
         AverageRating: 0,
       },
-      include: {
-        Category: true,
-        Level: true,
-      },
+      include: this.courseInclude(),
     });
   }
 
   async findAll() {
     return this.prisma.courses.findMany({
+      where: { IsPublished: true },
       include: {
-        Category: true,
-        Level: true,
+        ...this.courseInclude(),
         Users: {
           select: {
             Id: true,
@@ -61,17 +88,14 @@ export class CoursesService {
           },
         },
       },
+      orderBy: { CreatedAt: 'desc' },
     });
   }
 
   async findByTeacher(teacherId: number) {
     return this.prisma.courses.findMany({
-      where: {
-        Teacher_Id: teacherId,
-      },
-      orderBy: {
-        CreatedAt: 'desc',
-      },
+      where: { Teacher_Id: teacherId },
+      orderBy: { CreatedAt: 'desc' },
       select: {
         Id: true,
         Title: true,
@@ -81,14 +105,14 @@ export class CoursesService {
         IsPublished: true,
         CreatedAt: true,
         AverageRating: true,
-
+        Slug: true,
+        ShortDescription: true,
         Category: {
           select: {
             Id: true,
             Title: true,
           },
         },
-
         Level: {
           select: {
             Id: true,
@@ -96,6 +120,103 @@ export class CoursesService {
           },
         },
       },
+    });
+  }
+
+  async findOne(id: number) {
+    const course = await this.prisma.courses.findUnique({
+      where: { Id: id },
+      include: {
+        ...this.courseInclude(),
+        Users: {
+          select: {
+            Id: true,
+            FirstName: true,
+            LastName: true,
+          },
+        },
+        CourseSections: {
+          orderBy: { DisplayOrder: 'asc' },
+          include: {
+            Lessons: {
+              orderBy: { SortOrder: 'asc' },
+            },
+          },
+        },
+      },
+    });
+
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    return course;
+  }
+
+  async update(id: number, userId: number, dto: UpdateCourseDto) {
+    await this.verifyOwnership(id, userId);
+
+    const data: any = { UpdatedAt: new Date() };
+    if (dto.title !== undefined) {
+      data.Title = dto.title;
+      data.Slug = await this.ensureUniqueSlug(this.generateSlug(dto.title));
+    }
+    if (dto.shortDescription !== undefined)
+      data.ShortDescription = dto.shortDescription;
+    if (dto.description !== undefined) data.Description = dto.description;
+    if (dto.price !== undefined) data.Price = dto.price;
+    if (dto.discountPrice !== undefined) data.DiscountPrice = dto.discountPrice;
+    if (dto.categoryId !== undefined) data.CategoryId = dto.categoryId;
+    if (dto.levelId !== undefined) data.Level_Id = dto.levelId;
+    if (dto.durationMinutes !== undefined)
+      data.DurationMinutes = dto.durationMinutes;
+    if (dto.thumbnail !== undefined) data.Thumbnail = dto.thumbnail;
+
+    return this.prisma.courses.update({
+      where: { Id: id },
+      data,
+      include: this.courseInclude(),
+    });
+  }
+
+  async remove(id: number, userId: number) {
+    await this.verifyOwnership(id, userId);
+
+    await this.prisma.courses.delete({ where: { Id: id } });
+    return { message: 'Course deleted successfully' };
+  }
+
+  async publish(id: number, userId: number) {
+    const course = await this.verifyOwnership(id, userId);
+
+    if (course.IsPublished) {
+      throw new BadRequestException('Course is already published');
+    }
+
+    const sectionCount = await this.prisma.courseSections.count({
+      where: { Course_Id: id },
+    });
+
+    if (sectionCount === 0) {
+      throw new BadRequestException(
+        'Course must have at least one section to be published',
+      );
+    }
+
+    const lessonCount = await this.prisma.lessons.count({
+      where: { Course_Id: id },
+    });
+
+    if (lessonCount === 0) {
+      throw new BadRequestException(
+        'Course must have at least one lesson to be published',
+      );
+    }
+
+    return this.prisma.courses.update({
+      where: { Id: id },
+      data: { IsPublished: true, UpdatedAt: new Date() },
+      include: this.courseInclude(),
     });
   }
 }

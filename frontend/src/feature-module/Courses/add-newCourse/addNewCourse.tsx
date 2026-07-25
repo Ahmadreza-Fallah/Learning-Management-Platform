@@ -1,260 +1,212 @@
-import React, { useState, useEffect } from "react";
-import Breadcrumb from "../../../core/common/Breadcrumb/breadcrumb";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { all_routes } from "../../router/all_routes";
-import courseService, {
-  Category,
-  Level,
-} from "../../../services/course.service";
+import courseService, { Category, Level } from "../../../services/course.service";
 import toast from "react-hot-toast";
+import Stepper from "./components/Stepper";
+import CourseInformation from "./components/CourseInformation";
+import SectionManager from "./components/SectionManager";
+import CourseSummary from "./components/CourseSummary";
+
+const STEPS = [
+  { label: "اطلاعات دوره", icon: "fas fa-info-circle" },
+  { label: "سرفصل ها", icon: "fas fa-layer-group" },
+  { label: "دروس", icon: "fas fa-book" },
+  { label: "فایل های دروس", icon: "fas fa-paperclip" },
+  { label: "انتشار", icon: "fas fa-rocket" },
+];
 
 const AddNewCourse = () => {
   const route = all_routes;
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState("");
-  const [shortDescription, setShortDescription] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [discountPrice, setDiscountPrice] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [levelId, setLevelId] = useState("");
-  const [durationMinutes, setDurationMinutes] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
+  const [currentStep, setCurrentStep] = useState(0);
+  const [courseId, setCourseId] = useState<number | null>(null);
+  const [courseData, setCourseData] = useState<any>(null);
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [levels, setLevels] = useState<Level[]>([]);
-  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      debugger;
       try {
         const [cats, lvls] = await Promise.all([
           courseService.getCategories(),
           courseService.getLevels(),
         ]);
-        console.log("Categories:", cats);
-        console.log("Levels:", lvls);
         setCategories(cats);
         setLevels(lvls);
-      } catch (err) {
+      } catch {
         toast.error("Failed to load categories or levels");
       }
     };
     fetchData();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!title.trim()) {
-      toast.error("Course title is required");
-      return;
-    }
-    if (!categoryId) {
-      toast.error("Please select a category");
-      return;
-    }
-    if (!price || Number(price) < 0) {
-      toast.error("Please enter a valid price");
-      return;
-    }
-
-    setSubmitting(true);
+  const handleCourseCreated = useCallback(async (id: number) => {
+    setCourseId(id);
     try {
-      await courseService.createCourse({
-        title: title.trim(),
-        shortDescription: shortDescription.trim() || undefined,
-        description: description.trim() || undefined,
-        price: Number(price),
-        discountPrice: discountPrice ? Number(discountPrice) : undefined,
-        categoryId: Number(categoryId),
-        levelId: levelId ? Number(levelId) : undefined,
-        durationMinutes: durationMinutes ? Number(durationMinutes) : undefined,
-        thumbnail: thumbnail.trim() || undefined,
-      });
-      toast.success("Course created successfully!");
-      navigate(route.instructorCourse);
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || "Failed to create course";
-      toast.error(Array.isArray(msg) ? msg[0] : msg);
-    } finally {
-      setSubmitting(false);
+      const course = await courseService.getCourse(id);
+      setCourseData(course);
+    } catch {
+    
+    }
+    setCurrentStep(1);
+  }, []);
+
+  const handlePublished = useCallback(() => {
+    navigate(route.instructorCourse);
+  }, [navigate, route]);
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <div className="add-course-item">
+            <CourseInformation
+              categories={categories}
+              levels={levels}
+              initialData={courseData}
+              onComplete={handleCourseCreated}
+            />
+          </div>
+        );
+      case 1:
+        return (
+          <div className="add-course-item">
+            <div className="wizard-form-card">
+              <div className="title d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">سرفصل های دوره</h5>
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => setCurrentStep(0)}
+                  title="Edit course info"
+                >
+                  <i className="fas fa-edit me-1" /> ویرایش دوره 
+                </button>
+              </div>
+              {courseId && <SectionManager courseId={courseId} />}
+              <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-between mb-0">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setCurrentStep(0)}
+                >
+                  <i className="fas fa-arrow-right me-1" /> قبلی
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setCurrentStep(2)}
+                >
+                  بعدی: دروس <i className="fas fa-arrow-left ms-1" />
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 2:
+        return (
+          <div className="add-course-item">
+            <div className="wizard-form-card">
+              <div className="title d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">دروس</h5>
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => setCurrentStep(1)}
+                >
+                  <i className="fas fa-arrow-left me-1" /> بازگشت به سرفصل ها
+                </button>
+              </div>
+              {courseId && <SectionManager courseId={courseId} />}
+              <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-between mb-0">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setCurrentStep(1)}
+                >
+                  <i className="fas fa-arrow-right me-1" /> قبلی
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setCurrentStep(3)}
+                >
+                  بعدی: فایل های دروس  <i className="fas fa-arrow-left ms-1" />
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 3:
+        return (
+          <div className="add-course-item">
+            <div className="wizard-form-card">
+              <div className="title d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">فایل های دروس</h5>
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => setCurrentStep(2)}
+                >
+                  <i className="fas fa-arrow-left me-1" /> بازگشت به دروس 
+                </button>
+              </div>
+              <p className="text-muted mb-3">
+                فایل‌های مربوط به هر درس را مدیریت کنید. سرفصل ها را باز کنید تا درس‌ها را ببینید، سپس فایل‌ها را به هر درس اضافه کنید.
+              </p>
+              {courseId && <SectionManager courseId={courseId} />}
+              <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-between mb-0">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setCurrentStep(2)}
+                >
+                  <i className="fas fa-arrow-right me-1" /> قبلی
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setCurrentStep(4)}
+                >
+                  بعدی: انتشار <i className="fas fa-arrow-Left ms-1" />
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 4:
+        return (
+          <div className="add-course-item">
+            <div className="wizard-form-card">
+              <div className="title d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">انتشار دوره</h5>
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => setCurrentStep(3)}
+                >
+                  <i className="fas fa-arrow-left me-1" /> بازگشت به فایل های دروس
+                </button>
+              </div>
+              {courseId && (
+                <CourseSummary courseId={courseId} onPublished={handlePublished} />
+              )}
+              <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-start mb-0">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setCurrentStep(3)}
+                >
+                  <i className="fas fa-arrow-right me-1" /> قبلی
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return null;
     }
   };
-
   return (
     <>
-      <Breadcrumb title="Add New Course" />
-
-      <div className="content">
+      <div className="content mt-5">
         <div className="container">
           <div className="row">
             <div className="col-lg-10 mx-auto">
-              <div className="add-course-item">
-                <form onSubmit={handleSubmit}>
-                  <div className="form-inner wizard-form-card">
-                    <div className="title">
-                      <h5>Course Information</h5>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="input-block">
-                          <label className="form-label">
-                            Course Title
-                            <span className="text-danger ms-1">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="Enter course title"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="input-block">
-                          <label className="form-label">
-                            Course Category
-                            <span className="text-danger ms-1">*</span>
-                          </label>
-                          <select
-                            className="form-control"
-                            value={categoryId}
-                            onChange={(e) => setCategoryId(e.target.value)}
-                          >
-                            <option value="">Select Category</option>
-                            {categories.map((cat) => (
-                              <option key={cat.Id} value={cat.Id}>
-                                {cat.Title}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="input-block">
-                          <label className="form-label">Course Level</label>
-                          <select
-                            className="form-control"
-                            value={levelId}
-                            onChange={(e) => setLevelId(e.target.value)}
-                          >
-                            <option value="">Select Level</option>
-                            {levels.map((lvl) => (
-                              <option key={lvl.Id} value={lvl.Id}>
-                                {lvl.LevelName}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-12">
-                        <div className="input-block">
-                          <label className="form-label">
-                            Short Description
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            value={shortDescription}
-                            onChange={(e) =>
-                              setShortDescription(e.target.value)
-                            }
-                            placeholder="Brief description of the course"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-12">
-                        <div className="input-block">
-                          <label className="form-label">
-                            Course Description
-                          </label>
-                          <textarea
-                            className="form-control"
-                            rows={6}
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="Enter course description"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="input-block">
-                          <label className="form-label">
-                            Price ($)<span className="text-danger ms-1">*</span>
-                          </label>
-                          <input
-                            type="number"
-                            className="form-control"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            placeholder="0.00"
-                            min="0"
-                            step="0.01"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="input-block">
-                          <label className="form-label">
-                            Discount Price ($)
-                          </label>
-                          <input
-                            type="number"
-                            className="form-control"
-                            value={discountPrice}
-                            onChange={(e) => setDiscountPrice(e.target.value)}
-                            placeholder="0.00"
-                            min="0"
-                            step="0.01"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="input-block">
-                          <label className="form-label">
-                            Duration (Minutes)
-                          </label>
-                          <input
-                            type="number"
-                            className="form-control"
-                            value={durationMinutes}
-                            onChange={(e) => setDurationMinutes(e.target.value)}
-                            placeholder="0"
-                            min="0"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-12">
-                        <div className="input-block">
-                          <label className="form-label">Thumbnail URL</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            value={thumbnail}
-                            onChange={(e) => setThumbnail(e.target.value)}
-                            placeholder="https://example.com/thumbnail.jpg"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-end mb-0">
-                      <div className="btn-left">
-                        <button
-                          type="submit"
-                          className="btn btn-primary"
-                          disabled={submitting}
-                        >
-                          {submitting ? "Creating..." : "Create Course"}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
+              <Stepper steps={STEPS} currentStep={currentStep} />
+              {renderStep()}
             </div>
           </div>
         </div>
