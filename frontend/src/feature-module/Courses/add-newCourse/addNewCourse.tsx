@@ -96,7 +96,7 @@ const AddNewCourse = () => {
                 <form onSubmit={handleSubmit}>
                   <div className="form-inner wizard-form-card">
                     <div className="title">
-                      <h5>Course Information</h5>
+                      <h5>اطلاعات دوره</h5>
                     </div>
                     <div className="row">
                       <div className="col-md-12">
@@ -117,7 +117,7 @@ const AddNewCourse = () => {
                       <div className="col-md-6">
                         <div className="input-block">
                           <label className="form-label">
-                            Course Category
+                            دسته بندی دوره 
                             <span className="text-danger ms-1">*</span>
                           </label>
                           <select
@@ -125,7 +125,7 @@ const AddNewCourse = () => {
                             value={categoryId}
                             onChange={(e) => setCategoryId(e.target.value)}
                           >
-                            <option value="">Select Category</option>
+                            <option value="">انتخاب دسته بندی</option>
                             {categories.map((cat) => (
                               <option key={cat.Id} value={cat.Id}>
                                 {cat.Title}
@@ -154,7 +154,7 @@ const AddNewCourse = () => {
                       <div className="col-md-12">
                         <div className="input-block">
                           <label className="form-label">
-                            Short Description
+                            توضیحات کوتاه 
                           </label>
                           <input
                             type="text"
@@ -170,7 +170,7 @@ const AddNewCourse = () => {
                       <div className="col-md-12">
                         <div className="input-block">
                           <label className="form-label">
-                            Course Description
+                            توضیحات دوره 
                           </label>
                           <textarea
                             className="form-control"
@@ -184,7 +184,7 @@ const AddNewCourse = () => {
                       <div className="col-md-4">
                         <div className="input-block">
                           <label className="form-label">
-                            Price ($)<span className="text-danger ms-1">*</span>
+                            هزینه دوره ($)<span className="text-danger ms-1">*</span>
                           </label>
                           <input
                             type="number"
@@ -200,7 +200,7 @@ const AddNewCourse = () => {
                       <div className="col-md-4">
                         <div className="input-block">
                           <label className="form-label">
-                            Discount Price ($)
+                            قیمت پس از تخفیف ($)
                           </label>
                           <input
                             type="number"
@@ -216,7 +216,7 @@ const AddNewCourse = () => {
                       <div className="col-md-4">
                         <div className="input-block">
                           <label className="form-label">
-                            Duration (Minutes)
+                            مدت زمان (Minutes)
                           </label>
                           <input
                             type="number"

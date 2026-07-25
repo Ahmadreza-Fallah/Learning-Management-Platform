@@ -45,7 +45,6 @@ export const getHeader = (roleId: number) => {
             showSubRoute: false,
             subMenus: [],
           },
-
           {
             menuValue: "Reviews",
             route: all_routes.studentReviews,
@@ -54,37 +53,8 @@ export const getHeader = (roleId: number) => {
             subMenus: [],
           },
           {
-            menuValue: "My Quiz Attempts",
-            route: all_routes.studentQuiz,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-
-          {
             menuValue: "Order History",
             route: all_routes.studentOrderHistory,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-          {
-            menuValue: "Referrals",
-            route: all_routes.studentReferral,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-          {
-            menuValue: "Messages",
-            route: all_routes.studentMessage,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-          {
-            menuValue: "Support Ticket",
-            route: all_routes.studentTickets,
             hasSubRoute: false,
             showSubRoute: false,
             subMenus: [],
@@ -98,56 +68,33 @@ export const getHeader = (roleId: number) => {
           },
         ],
       },
-   {
-  tittle: "درباره ما",
-  route: all_routes.about_us,
-  hasSubRoute: false,
-  showSubRoute: false,
-  menu: [],
-},
-{
-  tittle: "تماس با ما",
-  route: all_routes.contactUs,
-  hasSubRoute: false,
-  showSubRoute: false,
-  menu: [],
-},
+      {
+        tittle: "درباره ما",
+        route: all_routes.about_us,
+        hasSubRoute: false,
+        showSubRoute: false,
+        menu: [],
+      },
+      {
+        tittle: "تماس با ما",
+        route: all_routes.contactUs,
+        hasSubRoute: false,
+        showSubRoute: false,
+        menu: [],
+      },
     ];
   }
   if (roleId === 2) {
     return [
       {
         tittle: "دوره ها",
-        base: "course",
-        showAsTab: false,
-        separateRoute: false,
-        menu: [
-          {
-            menuValue: "Course",
-            hasSubRoute: true,
-            showSubRoute: true,
-            showAsTab2: false,
-            subMenus: [
-              {
-                menuValue: "Course Grid",
-                route: all_routes.courseGrid,
-                hasSubRoute: false,
-                showSubRoute: false,
-                subMenus: [],
-              },
-              {
-                menuValue: "Course List",
-                route: all_routes.courseList,
-                hasSubRoute: false,
-                showSubRoute: false,
-                subMenus: [],
-              },
-            ],
-          },
-        ],
+        route: all_routes.courseGrid,
+        hasSubRoute: false,
+        showSubRoute: false,
+        menu: [],
       },
       {
-        tittle: "داشبورد",
+        tittle: "داشبورد مدرس",
         base: "instructor",
         base2: "student",
         showAsTab: false,
@@ -175,13 +122,6 @@ export const getHeader = (roleId: number) => {
             subMenus: [],
           },
           {
-            menuValue: "Assignment",
-            route: all_routes.instructorAssignment,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-          {
             menuValue: "Student",
             hasSubRoute: true,
             showSubRoute: true,
@@ -197,20 +137,6 @@ export const getHeader = (roleId: number) => {
             ],
           },
           {
-            menuValue: "Quiz",
-            route: all_routes.instructorQuiz,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-          {
-            menuValue: "Quiz Results",
-            route: all_routes.instructorQuizResult,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-          {
             menuValue: "Certificate",
             route: all_routes.instructorCertificate,
             hasSubRoute: false,
@@ -224,29 +150,6 @@ export const getHeader = (roleId: number) => {
             showSubRoute: false,
             subMenus: [],
           },
-
-          {
-            menuValue: "Payout",
-            route: all_routes.instructorPayout,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-          {
-            menuValue: "Statement",
-            route: all_routes.instructorStatements,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
-
-          {
-            menuValue: "Support Ticket",
-            route: all_routes.instructorTickets,
-            hasSubRoute: false,
-            showSubRoute: false,
-            subMenus: [],
-          },
           {
             menuValue: "Settings",
             route: all_routes.instructorsettings,
@@ -256,20 +159,20 @@ export const getHeader = (roleId: number) => {
           },
         ],
       },
-           {
-  tittle: "درباره ما",
-  route: all_routes.about_us,
-  hasSubRoute: false,
-  showSubRoute: false,
-  menu: [],
-},
-{
-  tittle: "تماس با ما",
-  route: all_routes.contactUs,
-  hasSubRoute: false,
-  showSubRoute: false,
-  menu: [],
-},
+      {
+        tittle: "درباره ما",
+        route: all_routes.about_us,
+        hasSubRoute: false,
+        showSubRoute: false,
+        menu: [],
+      },
+      {
+        tittle: "تماس با ما",
+        route: all_routes.contactUs,
+        hasSubRoute: false,
+        showSubRoute: false,
+        menu: [],
+      },
     ];
   }
   if (roleId === 3) {
@@ -322,4 +225,58 @@ export const getHeader = (roleId: number) => {
       },
     ];
   }
+};
+
+// Profile dropdown items, keyed by role. Header.tsx reads this instead of
+// hardcoding student/instructor links, so adding or changing a role's
+// profile links only means editing this list.
+export const getProfileMenu = (roleId: number) => {
+  if (roleId === 1) {
+    return [
+      {
+        label: "پروفایل من",
+        route: all_routes.studentProfile,
+        icon: "isax isax-security-user",
+      },
+      {
+        label: "دوره های من",
+        route: all_routes.studentCourses,
+        icon: "isax isax-teacher",
+      },
+      {
+        label: "تنظیمات پروفایل",
+        route: all_routes.studentSettings,
+        icon: "isax isax-setting-2",
+      },
+    ];
+  }
+  if (roleId === 2) {
+    return [
+      {
+        label: "پروفایل من",
+        route: all_routes.instructorProfile,
+        icon: "isax isax-security-user",
+      },
+      {
+        label: "دوره های من",
+        route: all_routes.instructorCourse,
+        icon: "isax isax-teacher",
+      },
+      {
+        label: "تنظیمات پروفایل",
+        route: all_routes.instructorsettings,
+        icon: "isax isax-setting-2",
+      },
+    ];
+  }
+  if (roleId === 3) {
+    return [
+      {
+        label: "مدیریت کاربران",
+        route: all_routes.adminDashboard,
+        icon: "isax isax-security-user",
+      },
+    ];
+  }
+  return [];
 };
