@@ -2,8 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { all_routes } from '../../router/all_routes'
 import ImageWithBasePath from '../../../core/common/imageWithBasePath'
+import { useAuth } from '../../../context/AuthContext'
 
 const ProfileCard = () => {
+  const {user}=useAuth();
   return (
     <div className="profile-card overflow-hidden bg-blue-gradient2 mb-5 p-5">
     <div className="profile-card-bg">
@@ -29,10 +31,10 @@ const ProfileCard = () => {
                 to={all_routes.studentProfile}
                 className="link-light fs-16 ms-2"
               >
-                <i className="isax isax-edit-2" />
+                {user?.firstName} {user?.lastName}
               </Link>
             </h5>
-            <p className="text-light">Student</p>
+            <p className="text-light">دانشجو</p>
           </div>
         </div>
       </div>
@@ -42,13 +44,7 @@ const ProfileCard = () => {
             to={all_routes.becomeAnInstructor}
             className="btn btn-white rounded-pill me-3"
           >
-            Become an Instructor
-          </Link>
-          <Link
-            to={all_routes.instructorDashboard}
-            className="btn btn-secondary rounded-pill"
-          >
-            Instructor Dashboard
+            مدرس شو
           </Link>
         </div>
       </div>
