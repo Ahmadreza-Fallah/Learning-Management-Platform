@@ -15,9 +15,8 @@ const Footer = () => {
                   <ImageWithBasePath src="assets/img/logo-white.svg" alt="" />
                 </div>
                 <p>
-                  Platform designed to help organizations, educators, and
-                  learners manage, deliver, and track learning and training
-                  activities.
+                  پلتفرمی که برای کمک به سازمان‌ها، مربیان و فراگیران در مدیریت،
+                  ارائه و پیگیری فعالیت‌های یادگیری و آموزشی طراحی شده است.
                 </p>
                 <div className="d-flex align-items-center">
                   <Link to="#" className="me-2">
