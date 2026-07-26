@@ -4,6 +4,7 @@ import courseService, {
   Category,
   Level,
 } from "../../../../services/course.service";
+import uploadService from "../../../../services/upload.service";
 
 interface CourseInformationProps {
   categories: Category[];
@@ -18,33 +19,71 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
   initialData,
   onComplete,
 }) => {
+  const getApiUrl = () => "http://localhost:3000";
   const [title, setTitle] = useState(initialData?.Title || "");
   const [shortDescription, setShortDescription] = useState(
-    initialData?.ShortDescription || ""
+    initialData?.ShortDescription || "",
   );
   const [description, setDescription] = useState(
-    initialData?.Description || ""
+    initialData?.Description || "",
   );
-  const [price, setPrice] = useState(
-    initialData?.Price?.toString() || ""
-  );
+  const [price, setPrice] = useState(initialData?.Price?.toString() || "");
   const [discountPrice, setDiscountPrice] = useState(
-    initialData?.DiscountPrice?.toString() || ""
+    initialData?.DiscountPrice?.toString() || "",
   );
   const [categoryId, setCategoryId] = useState(
-    initialData?.CategoryId?.toString() || ""
+    initialData?.CategoryId?.toString() || "",
   );
   const [levelId, setLevelId] = useState(
-    initialData?.Level_Id?.toString() || ""
+    initialData?.Level_Id?.toString() || "",
   );
   const [durationMinutes, setDurationMinutes] = useState(
-    initialData?.DurationMinutes?.toString() || ""
+    initialData?.DurationMinutes?.toString() || "",
   );
-  const [thumbnail, setThumbnail] = useState(
-    initialData?.Thumbnail || ""
-  );
-  const [submitting, setSubmitting] = useState(false);
+  const buildThumbnailUrl = (path?: string) =>
+    path ? `${getApiUrl()}${path}` : "";
 
+  const [thumbnail, setThumbnail] = useState(initialData?.Thumbnail || "");
+
+  const [thumbnailPreview, setThumbnailPreview] = useState(
+    buildThumbnailUrl(initialData?.Thumbnail),
+  );
+
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const handleThumbnailUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("فقط فایل تصویری مجاز است.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("حداکثر حجم تصویر ۵ مگابایت است.");
+      return;
+    }
+
+    setThumbnailPreview(URL.createObjectURL(file));
+
+    try {
+      setUploadingImage(true);
+
+      const result = await uploadService.uploadCourseImage(file);
+
+      setThumbnail(result.path);
+      setThumbnailPreview(`${getApiUrl()}${result.path}`);
+      toast.success("تصویر با موفقیت آپلود شد.");
+    } catch {
+      toast.error("آپلود تصویر انجام نشد.");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -61,6 +100,10 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
       return;
     }
 
+    if (!thumbnail) {
+      toast.error("لطفاً تصویر دوره را آپلود کنید.");
+      return;
+    }
     setSubmitting(true);
     try {
       if (initialData?.Id) {
@@ -72,7 +115,9 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           discountPrice: discountPrice ? Number(discountPrice) : undefined,
           categoryId: Number(categoryId),
           levelId: levelId ? Number(levelId) : undefined,
-          durationMinutes: durationMinutes ? Number(durationMinutes) : undefined,
+          durationMinutes: durationMinutes
+            ? Number(durationMinutes)
+            : undefined,
           thumbnail: thumbnail.trim() || undefined,
         });
         toast.success("Course updated successfully!");
@@ -86,15 +131,16 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           discountPrice: discountPrice ? Number(discountPrice) : undefined,
           categoryId: Number(categoryId),
           levelId: levelId ? Number(levelId) : undefined,
-          durationMinutes: durationMinutes ? Number(durationMinutes) : undefined,
+          durationMinutes: durationMinutes
+            ? Number(durationMinutes)
+            : undefined,
           thumbnail: thumbnail.trim() || undefined,
         });
         toast.success("Course created successfully!");
         onComplete(course.Id);
       }
     } catch (err: any) {
-      const msg =
-        err?.response?.data?.message || "Failed to save course";
+      const msg = err?.response?.data?.message || "Failed to save course";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setSubmitting(false);
@@ -111,16 +157,15 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           <div className="col-md-12">
             <div className="input-block">
               <label className="form-label">
-                 <span className="text-danger ms-1"> * </span> 
+                <span className="text-danger ms-1"> * </span>
                 عنوان دوره
-               
               </label>
               <input
                 type="text"
                 className="form-control"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter course title"
+                placeholder="عنوان دوره را وارد کنید"
                 disabled={submitting}
               />
             </div>
@@ -130,7 +175,6 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
               <label className="form-label">
                 <span className="text-danger ms-1"> * </span>
                 دسته بندی
-                
               </label>
               <select
                 className="form-control"
@@ -173,7 +217,7 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
                 className="form-control"
                 value={shortDescription}
                 onChange={(e) => setShortDescription(e.target.value)}
-                placeholder="Brief description of the course"
+                placeholder="معرفی کوتاهی از دوره بنویسید"
                 disabled={submitting}
               />
             </div>
@@ -186,7 +230,7 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
                 rows={6}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Enter course description"
+                placeholder="توضیحات کامل دوره را وارد کنید"
                 disabled={submitting}
               />
             </div>
@@ -194,7 +238,7 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           <div className="col-md-4">
             <div className="input-block">
               <label className="form-label">
-               <span className="text-danger ms-1">*</span> هزینه  (ریال)
+                <span className="text-danger ms-1">*</span> هزینه (ریال)
               </label>
               <input
                 type="number"
@@ -210,7 +254,7 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           </div>
           <div className="col-md-4">
             <div className="input-block">
-              <label className="form-label">Discount Price (ریال)</label>
+              <label className="form-label">قیمت با تخفیف (اختیاری)</label>
               <input
                 type="number"
                 className="form-control"
@@ -225,7 +269,7 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           </div>
           <div className="col-md-4">
             <div className="input-block">
-              <label className="form-label">مدت زمان (دقیقه)</label>
+              <label className="form-label">مدت دوره (دقیقه)</label>
               <input
                 type="number"
                 className="form-control"
@@ -239,15 +283,45 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           </div>
           <div className="col-md-12">
             <div className="input-block">
-              <label className="form-label">Thumbnail URL</label>
+              <label className="form-label">
+                تصویر کاور دوره
+                <span className="text-danger ms-1">*</span>
+              </label>
+
               <input
-                type="text"
+                type="file"
                 className="form-control"
-                value={thumbnail}
-                onChange={(e) => setThumbnail(e.target.value)}
-                placeholder="https://example.com/thumbnail.jpg"
-                disabled={submitting}
+                accept="image/*"
+                onChange={handleThumbnailUpload}
+                disabled={uploadingImage || submitting}
               />
+
+              <small className="text-muted">
+                فرمت‌های مجاز: JPG، PNG، WEBP - حداکثر حجم: ۵ مگابایت
+              </small>
+
+              {uploadingImage && (
+                <div className="mt-2">
+                  <span className="spinner-border spinner-border-sm me-2"></span>
+                  در حال آپلود تصویر...
+                </div>
+              )}
+
+              {thumbnailPreview && (
+                <div className="mt-3">
+                  <img
+                    src={thumbnailPreview}
+                    alt="Course Thumbnail"
+                    style={{
+                      maxWidth: "320px",
+                      maxHeight: "200px",
+                      borderRadius: "10px",
+                      objectFit: "cover",
+                      border: "1px solid #ddd",
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -264,7 +338,7 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
                   role="status"
                 />
               )}
-              {initialData?.Id ? "به روز رسانی " : "ایجاد دوره"}
+              {initialData?.Id ? "ذخیره تغییرات" : "ذخیره و ادامه"}
             </button>
           </div>
         </div>
