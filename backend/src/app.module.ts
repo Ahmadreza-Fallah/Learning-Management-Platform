@@ -11,7 +11,7 @@ import { LevelsModule } from './levels/levels.module';
 import { CourseSectionsModule } from './course-sections/course-sections.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LessonFilesModule } from './lesson-files/lesson-files.module';
-
+import { UploadModule } from './upload/upload.module';
 @Module({
   imports: [
     PrismaModule,
@@ -24,6 +24,7 @@ import { LessonFilesModule } from './lesson-files/lesson-files.module';
     CourseSectionsModule,
     LessonsModule,
     LessonFilesModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
