@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { all_routes } from "../../router/all_routes";
-import courseService, { Category, Level } from "../../../services/course.service";
+import courseService, {
+  Category,
+  Level,
+} from "../../../services/course.service";
 import toast from "react-hot-toast";
 import Stepper from "./components/Stepper";
 import CourseInformation from "./components/CourseInformation";
@@ -48,9 +51,7 @@ const AddNewCourse = () => {
     try {
       const course = await courseService.getCourse(id);
       setCourseData(course);
-    } catch {
-    
-    }
+    } catch {}
     setCurrentStep(1);
   }, []);
 
@@ -82,7 +83,7 @@ const AddNewCourse = () => {
                   onClick={() => setCurrentStep(0)}
                   title="Edit course info"
                 >
-                  <i className="fas fa-edit me-1" /> ویرایش دوره 
+                  <i className="fas fa-edit me-1" /> ویرایش دوره
                 </button>
               </div>
               {courseId && <SectionManager courseId={courseId} />}
@@ -128,7 +129,7 @@ const AddNewCourse = () => {
                   className="btn btn-primary"
                   onClick={() => setCurrentStep(3)}
                 >
-                  بعدی: فایل های دروس  <i className="fas fa-arrow-left ms-1" />
+                  بعدی: فایل های دروس <i className="fas fa-arrow-left ms-1" />
                 </button>
               </div>
             </div>
@@ -144,11 +145,12 @@ const AddNewCourse = () => {
                   className="btn btn-sm btn-outline-secondary"
                   onClick={() => setCurrentStep(2)}
                 >
-                  <i className="fas fa-arrow-left me-1" /> بازگشت به دروس 
+                  <i className="fas fa-arrow-left me-1" /> بازگشت به دروس
                 </button>
               </div>
               <p className="text-muted mb-3">
-                فایل‌های مربوط به هر درس را مدیریت کنید. سرفصل ها را باز کنید تا درس‌ها را ببینید، سپس فایل‌ها را به هر درس اضافه کنید.
+                فایل‌های مربوط به هر درس را مدیریت کنید. سرفصل ها را باز کنید تا
+                درس‌ها را ببینید، سپس فایل‌ها را به هر درس اضافه کنید.
               </p>
               {courseId && <SectionManager courseId={courseId} />}
               <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-between mb-0">
@@ -178,11 +180,15 @@ const AddNewCourse = () => {
                   className="btn btn-sm btn-outline-secondary"
                   onClick={() => setCurrentStep(3)}
                 >
-                  <i className="fas fa-arrow-left me-1" /> بازگشت به فایل های دروس
+                  <i className="fas fa-arrow-left me-1" /> بازگشت به فایل های
+                  دروس
                 </button>
               </div>
               {courseId && (
-                <CourseSummary courseId={courseId} onPublished={handlePublished} />
+                <CourseSummary
+                  courseId={courseId}
+                  onPublished={handlePublished}
+                />
               )}
               <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-start mb-0">
                 <button

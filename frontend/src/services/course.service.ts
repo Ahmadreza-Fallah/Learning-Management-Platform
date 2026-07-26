@@ -22,6 +22,7 @@ export interface Level {
   Id: number;
   LevelName: string;
 }
+
 export interface MyCourse {
   Id: number;
   Title: string;
@@ -31,8 +32,14 @@ export interface MyCourse {
   IsPublished: boolean;
   CreatedAt: string;
   AverageRating: number;
-  Category: { Id: number; Title: string };
-  Level: { Id: number; LevelName: string } | null;
+  Category: {
+    Id: number;
+    Title: string;
+  };
+  Level: {
+    Id: number;
+    LevelName: string;
+  } | null;
 }
 
 export interface Course {
@@ -112,7 +119,10 @@ class CourseService {
     return response.data;
   }
 
-  async updateCourse(id: number, data: Partial<CreateCourseData>): Promise<Course> {
+  async updateCourse(
+    id: number,
+    data: Partial<CreateCourseData>,
+  ): Promise<Course> {
     const response = await api.put(`/courses/${id}`, data);
     return response.data;
   }
@@ -131,12 +141,18 @@ class CourseService {
     return response.data;
   }
 
-  async createSection(courseId: number, data: { title: string; displayOrder?: number }): Promise<Section> {
+  async createSection(
+    courseId: number,
+    data: { title: string; displayOrder?: number },
+  ): Promise<Section> {
     const response = await api.post(`/courses/${courseId}/sections`, data);
     return response.data;
   }
 
-  async updateSection(id: number, data: { title?: string; displayOrder?: number }): Promise<Section> {
+  async updateSection(
+    id: number,
+    data: { title?: string; displayOrder?: number },
+  ): Promise<Section> {
     const response = await api.put(`/sections/${id}`, data);
     return response.data;
   }
@@ -150,26 +166,32 @@ class CourseService {
     return response.data;
   }
 
-  async createLesson(sectionId: number, data: {
-    title: string;
-    description?: string;
-    videoUrl?: string;
-    durationMinutes?: number;
-    displayOrder?: number;
-    isFreePreview?: boolean;
-  }): Promise<Lesson> {
+  async createLesson(
+    sectionId: number,
+    data: {
+      title: string;
+      description?: string;
+      videoUrl?: string;
+      durationMinutes?: number;
+      displayOrder?: number;
+      isFreePreview?: boolean;
+    },
+  ): Promise<Lesson> {
     const response = await api.post(`/sections/${sectionId}/lessons`, data);
     return response.data;
   }
 
-  async updateLesson(id: number, data: {
-    title?: string;
-    description?: string;
-    videoUrl?: string;
-    durationMinutes?: number;
-    displayOrder?: number;
-    isFreePreview?: boolean;
-  }): Promise<Lesson> {
+  async updateLesson(
+    id: number,
+    data: {
+      title?: string;
+      description?: string;
+      videoUrl?: string;
+      durationMinutes?: number;
+      displayOrder?: number;
+      isFreePreview?: boolean;
+    },
+  ): Promise<Lesson> {
     const response = await api.put(`/lessons/${id}`, data);
     return response.data;
   }
@@ -183,7 +205,10 @@ class CourseService {
     return response.data;
   }
 
-  async createLessonFile(lessonId: number, data: { fileName: string; fileUrl: string }): Promise<LessonFile> {
+  async createLessonFile(
+    lessonId: number,
+    data: { fileName: string; fileUrl: string },
+  ): Promise<LessonFile> {
     const response = await api.post(`/lessons/${lessonId}/files`, data);
     return response.data;
   }
