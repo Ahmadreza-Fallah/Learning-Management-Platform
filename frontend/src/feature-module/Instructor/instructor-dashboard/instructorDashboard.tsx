@@ -89,6 +89,7 @@ const InstructorDashboard = () => {
     <div className="content">
     <div className="container">
       <ProfileCard/>
+      
       <div className="row">
         {/* Sidebar */}
         <InstructorSidebar/>
