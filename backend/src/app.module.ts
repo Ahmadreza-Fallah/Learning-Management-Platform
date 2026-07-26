@@ -8,6 +8,10 @@ import { InstructorRequestsModule } from './instructure-requests/instructure-req
 import { CoursesModule } from './courses/courses.module';
 import { CategoriesModule } from './categories/categories.module';
 import { LevelsModule } from './levels/levels.module';
+import { CourseSectionsModule } from './course-sections/course-sections.module';
+import { LessonsModule } from './lessons/lessons.module';
+import { LessonFilesModule } from './lesson-files/lesson-files.module';
+
 @Module({
   imports: [
     PrismaModule,
@@ -17,6 +21,9 @@ import { LevelsModule } from './levels/levels.module';
     CoursesModule,
     CategoriesModule,
     LevelsModule,
+    CourseSectionsModule,
+    LessonsModule,
+    LessonFilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
