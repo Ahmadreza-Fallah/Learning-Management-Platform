@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
 import courseService, { Lesson } from "../../../../services/course.service";
 import LessonFileManager from "./LessonFileManager";
+import uploadService from "../../../../services/upload.service";
 
 interface LessonManagerProps {
   courseId: number;
@@ -13,6 +14,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
   sectionId,
   onLessonsChanged,
 }) => {
+  const getApiUrl = () => "http://localhost:3000";
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +26,11 @@ const LessonManager: React.FC<LessonManagerProps> = ({
   const [lessonTitle, setLessonTitle] = useState("");
   const [lessonDescription, setLessonDescription] = useState("");
   const [lessonVideoUrl, setLessonVideoUrl] = useState("");
+  const [videoType, setVideoType] = useState<"upload" | "link">("upload");
+
+  const [videoPreview, setVideoPreview] = useState("");
+
+  const [uploadingVideo, setUploadingVideo] = useState(false);
   const [lessonDuration, setLessonDuration] = useState("");
   const [lessonOrder, setLessonOrder] = useState("");
   const [lessonFreePreview, setLessonFreePreview] = useState(false);
@@ -35,7 +42,8 @@ const LessonManager: React.FC<LessonManagerProps> = ({
       const data = await courseService.getLessons(sectionId);
       setLessons(data);
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "ارگذاری درس‌ها با مشکل مواجه شد.";
+      const msg =
+        err?.response?.data?.message || "ارگذاری درس‌ها با مشکل مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setLoading(false);
@@ -50,15 +58,48 @@ const LessonManager: React.FC<LessonManagerProps> = ({
     setLessonTitle("");
     setLessonDescription("");
     setLessonVideoUrl("");
+    setVideoPreview("");
+    setVideoType("upload");
     setLessonDuration("");
     setLessonOrder("");
     setLessonFreePreview(false);
   };
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
 
+    if (!file) return;
+
+    if (!file.type.startsWith("video/")) {
+      toast.error("فقط فایل ویدیویی مجاز است.");
+      return;
+    }
+
+    setVideoPreview(URL.createObjectURL(file));
+
+    try {
+      setUploadingVideo(true);
+
+      const result = await uploadService.uploadVideo(file);
+
+      setLessonVideoUrl(result.path);
+
+      toast.success("ویدیو با موفقیت آپلود شد.");
+    } catch {
+      toast.error("آپلود ویدیو انجام نشد.");
+    } finally {
+      setUploadingVideo(false);
+    }
+  };
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!lessonTitle.trim()) {
       toast.error("Lesson title is required");
+      return;
+    }
+
+    if (!lessonVideoUrl) {
+      toast.error("لطفاً ویدیو را انتخاب کنید.");
       return;
     }
     setSaving(true);
@@ -108,7 +149,8 @@ const LessonManager: React.FC<LessonManagerProps> = ({
       fetchLessons();
       onLessonsChanged();
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "به‌روزرسانی درس با مشکل مواجه شد.";
+      const msg =
+        err?.response?.data?.message || "به‌روزرسانی درس با مشکل مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setSaving(false);
@@ -138,6 +180,9 @@ const LessonManager: React.FC<LessonManagerProps> = ({
     setLessonTitle(lesson.Title);
     setLessonDescription(lesson.Description || "");
     setLessonVideoUrl(lesson.VideoUrl || "");
+    if (lesson.VideoUrl) {
+      setVideoPreview(`${getApiUrl()}${lesson.VideoUrl}`);
+    }
     setLessonDuration(lesson.DurationMinutes?.toString() || "");
     setLessonOrder(lesson.SortOrder?.toString() || "");
     setLessonFreePreview(lesson.IsFreePreview);
@@ -180,17 +225,51 @@ const LessonManager: React.FC<LessonManagerProps> = ({
         <div className="row">
           <div className="col-md-6">
             <div className="input-block">
-              <label className="form-label">آدرس ویدئو</label>
+              <label className="form-label">نوع ویدیو</label>
+
+              <select
+                className="form-control"
+                value={videoType}
+                onChange={(e) =>
+                  setVideoType(e.target.value as "upload" | "link")
+                }
+              >
+                <option value="upload">آپلود ویدیو</option>
+
+                <option value="link">لینک ویدیو</option>
+              </select>
+            </div>
+          </div>
+          {videoType === "upload" && (
+            <div className="input-block">
+              <label className="form-label">ویدیوی درس</label>
+
+              <input
+                type="file"
+                accept="video/*"
+                className="form-control"
+                onChange={handleVideoUpload}
+              />
+
+              {uploadingVideo && <p>درحال آپلود...</p>}
+
+              {videoPreview && (
+                <video controls width="400" src={videoPreview} />
+              )}
+            </div>
+          )}
+          {videoType === "link" && (
+            <div className="input-block">
+              <label className="form-label">لینک ویدیو</label>
+
               <input
                 type="text"
                 className="form-control"
                 value={lessonVideoUrl}
                 onChange={(e) => setLessonVideoUrl(e.target.value)}
-                placeholder="https://example.com/video.mp4"
-                disabled={saving}
               />
             </div>
-          </div>
+          )}
           <div className="col-md-6">
             <div className="input-block">
               <label className="form-label">مدت زمان (دقیقه)</label>
@@ -257,14 +336,8 @@ const LessonManager: React.FC<LessonManagerProps> = ({
         >
           Cancel
         </button>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={saving}
-        >
-          {saving && (
-            <span className="spinner-border spinner-border-sm me-2" />
-          )}
+        <button type="submit" className="btn btn-primary" disabled={saving}>
+          {saving && <span className="spinner-border spinner-border-sm me-2" />}
           {showEditModal ? "ذخیره تغییرات" : "افزودن درس"}
         </button>
       </div>
@@ -435,7 +508,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
               </div>
               <div className="modal-body">
                 <p>
-                آیا از حذف این درس اطمینان دارید{" "}
+                  آیا از حذف این درس اطمینان دارید{" "}
                   <strong>{selectedLesson?.Title}</strong>?
                 </p>
               </div>
