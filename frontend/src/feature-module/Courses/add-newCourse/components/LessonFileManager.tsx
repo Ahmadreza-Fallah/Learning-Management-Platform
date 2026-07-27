@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
 import courseService, { LessonFile } from "../../../../services/course.service";
 import uploadService from "../../../../services/upload.service";
-import { getApiUrl } from "../../../../config/api";
 
 interface LessonFileManagerProps {
   lessonId: number;
@@ -38,6 +37,7 @@ const getFileIcon = (ext?: string): string => {
 };
 
 const LessonFileManager: React.FC<LessonFileManagerProps> = ({ lessonId }) => {
+  const getApiUrl = () => "http://localhost:3000";
   const [files, setFiles] = useState<LessonFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);

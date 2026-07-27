@@ -88,10 +88,20 @@ export interface Lesson {
 
 export interface LessonFile {
   Id: number;
-  FileName: string | null;
-  FileUrl: string | null;
-  CreatedAt: string;
   Lesson_Id: number;
+
+  FileName: string;
+  FileUrl: string;
+
+  FileType: boolean;
+
+  FileSize: number;
+
+  FileExtension: string;
+
+  DownloadCount: number;
+
+  CreatedAt: string;
 }
 
 class CourseService {
@@ -173,7 +183,7 @@ class CourseService {
       title: string;
       description?: string;
       videoUrl?: string;
-      videoType?:boolean,
+      videoType?: boolean;
       durationMinutes?: number;
       displayOrder?: number;
       isFreePreview?: boolean;
@@ -189,7 +199,7 @@ class CourseService {
       title?: string;
       description?: string;
       videoUrl?: string;
-      videoType?:boolean,
+      videoType?: boolean;
       durationMinutes?: number;
       displayOrder?: number;
       isFreePreview?: boolean;
@@ -210,7 +220,13 @@ class CourseService {
 
   async createLessonFile(
     lessonId: number,
-    data: { fileName: string; fileUrl: string },
+    data: {
+      fileName: string;
+      fileUrl: string;
+      fileType: boolean;
+      fileSize: number;
+      fileExtension: string;
+    },
   ): Promise<LessonFile> {
     const response = await api.post(`/lessons/${lessonId}/files`, data);
     return response.data;

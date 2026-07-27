@@ -105,16 +105,16 @@ export class UploadController {
       path: `/uploads/videos/${file.filename}`,
     };
   }
-  
-  @Post("lesson-file")
+
+  @Post('lesson-file')
   @UseInterceptors(
-    FileInterceptor("file", {
+    FileInterceptor('file', {
       storage: diskStorage({
         destination: (req, file, cb) => {
           const uploadPath = path.join(
             process.cwd(),
-            "uploads",
-            "lesson-files",
+            'uploads',
+            'lesson-files',
           );
 
           if (!fs.existsSync(uploadPath)) {
@@ -132,15 +132,15 @@ export class UploadController {
       }),
     }),
   )
-  @ApiOperation({ summary: "Upload lesson file" })
-  @ApiConsumes("multipart/form-data")
+  @ApiOperation({ summary: 'Upload lesson file' })
+  @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
-      type: "object",
+      type: 'object',
       properties: {
         file: {
-          type: "string",
-          format: "binary",
+          type: 'string',
+          format: 'binary',
         },
       },
     },
@@ -152,6 +152,4 @@ export class UploadController {
       path: `/uploads/lesson-files/${file.filename}`,
     };
   }
-
-
 }
