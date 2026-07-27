@@ -49,13 +49,22 @@ export class LessonFilesService {
   async create(lessonId: number, userId: number, dto: CreateLessonFileDto) {
     await this.verifyLessonOwnership(lessonId, userId);
 
-    return this.prisma.lessonFiles.create({
+    const file = await this.prisma.lessonFiles.create({
       data: {
         Lesson_Id: lessonId,
         FileName: dto.fileName,
         FileUrl: dto.fileUrl,
+        FileType: dto.fileType,
+        FileSize: BigInt(dto.fileSize),
+        FileExtension: dto.fileExtension,
+        DownloadCount: 0,
       },
     });
+
+    return {
+      ...file,
+      FileSize: file.FileSize?.toString(),
+    };
   }
 
   async findByLesson(lessonId: number) {
