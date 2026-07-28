@@ -1,5 +1,23 @@
 import api from "./api";
 
+export interface BrowseCoursesParams {
+  search?: string;
+  categoryId?: number;
+  levelId?: number;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface BrowseCoursesResponse {
+  data: Course[];
+  pagination: {
+    page: number;
+    pageSize: number;
+    totalItems: number;
+    totalPages: number;
+  };
+}
+
 export interface CreateCourseData {
   title: string;
   shortDescription?: string;
@@ -234,6 +252,15 @@ class CourseService {
 
   async deleteLessonFile(id: number): Promise<void> {
     await api.delete(`/lesson-files/${id}`);
+  }
+  async browseCourses(
+    params: BrowseCoursesParams,
+  ): Promise<BrowseCoursesResponse> {
+    const response = await api.get("/courses/browse", {
+      params,
+    });
+
+    return response.data;
   }
 }
 

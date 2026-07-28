@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { BrowseCoursesDto } from './dto/browsw-course.dto';
 
 @Injectable()
 export class CoursesService {
@@ -91,7 +92,61 @@ export class CoursesService {
       orderBy: { CreatedAt: 'desc' },
     });
   }
+  async browse(dto: BrowseCoursesDto) {
+    const page = dto.page ?? 1;
+    const pageSize = dto.pageSize ?? 12;
 
+    const where: any = {
+      IsPublished: true,
+    };
+
+    if (dto.search) {
+      where.Title = {
+        contains: dto.search,
+      };
+    }
+
+    if (dto.categoryId) {
+      where.CategoryId = dto.categoryId;
+    }
+
+    if (dto.levelId) {
+      where.Level_Id = dto.levelId;
+    }
+
+    const totalItems = await this.prisma.courses.count({
+      where,
+    });
+
+    const courses = await this.prisma.courses.findMany({
+      where,
+      include: {
+        ...this.courseInclude(),
+        Users: {
+          select: {
+            Id: true,
+            FirstName: true,
+            LastName: true,
+          },
+        },
+      },
+      orderBy: {
+        CreatedAt: 'desc',
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+
+    return {
+      data: courses,
+      pagination: {
+        page,
+        pageSize,
+        totalItems,
+        totalPages: Math.ceil(totalItems / pageSize),
+      },
+    };
+  }
   async findByTeacher(teacherId: number) {
     return this.prisma.courses.findMany({
       where: { Teacher_Id: teacherId },

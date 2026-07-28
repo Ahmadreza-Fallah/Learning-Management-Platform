@@ -47,6 +47,7 @@ model Courses {
   DurationMinutes  Int?
   DiscountPrice    Decimal?         @db.Decimal(18, 2)
   AverageRating    Decimal          @default(0, map: "DF_Courses_AverageRating") @db.Decimal(3, 2)
+  Status           Int              @default(0, map: "DF__Courses__Status__324172E1") @db.TinyInt
   CourseProgress   CourseProgress[]
   Category         Category         @relation(fields: [CategoryId], references: [Id], onUpdate: NoAction, map: "FK_Courses_Categories")
   Level            Level?           @relation(fields: [Level_Id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Courses_Level")
