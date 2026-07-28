@@ -17,7 +17,6 @@ const LessonManager: React.FC<LessonManagerProps> = ({
   const getApiUrl = () => "http://localhost:3000";
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(false);
-
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -26,7 +25,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
   const [lessonTitle, setLessonTitle] = useState("");
   const [lessonDescription, setLessonDescription] = useState("");
   const [lessonVideoUrl, setLessonVideoUrl] = useState("");
-  const [videoType, setVideoType] = useState<"upload" | "link">("upload");
+  const [videoType, setVideoType] = useState(false);
 
   const [videoPreview, setVideoPreview] = useState("");
 
@@ -59,7 +58,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
     setLessonDescription("");
     setLessonVideoUrl("");
     setVideoPreview("");
-    setVideoType("upload");
+    setVideoType(false);
     setLessonDuration("");
     setLessonOrder("");
     setLessonFreePreview(false);
@@ -82,7 +81,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
       const result = await uploadService.uploadVideo(file);
 
       setLessonVideoUrl(result.path);
-
+      setVideoType(true);
       toast.success("ویدیو با موفقیت آپلود شد.");
     } catch {
       toast.error("آپلود ویدیو انجام نشد.");
@@ -108,6 +107,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
         title: lessonTitle.trim(),
         description: lessonDescription.trim() || undefined,
         videoUrl: lessonVideoUrl.trim() || undefined,
+        videoType: videoType,
         durationMinutes: lessonDuration ? Number(lessonDuration) : undefined,
         displayOrder: lessonOrder ? Number(lessonOrder) : undefined,
         isFreePreview: lessonFreePreview,
@@ -138,6 +138,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
         title: lessonTitle.trim(),
         description: lessonDescription.trim() || undefined,
         videoUrl: lessonVideoUrl.trim() || undefined,
+        videoType: videoType,
         durationMinutes: lessonDuration ? Number(lessonDuration) : undefined,
         displayOrder: lessonOrder ? Number(lessonOrder) : undefined,
         isFreePreview: lessonFreePreview,
@@ -175,17 +176,30 @@ const LessonManager: React.FC<LessonManagerProps> = ({
     }
   };
 
-  const openEditModal = (lesson: Lesson) => {
+   const openEditModal = (lesson: Lesson) => {
+    console.log(lesson);
+
     setSelectedLesson(lesson);
     setLessonTitle(lesson.Title);
     setLessonDescription(lesson.Description || "");
+
+    setVideoType(lesson.VideoType);
+
+    // این خط را اضافه کن
     setLessonVideoUrl(lesson.VideoUrl || "");
-    if (lesson.VideoUrl) {
+
+    if (lesson.VideoType) {
+      // فقط برای ویدیوهای آپلودی Preview بساز
       setVideoPreview(`${getApiUrl()}${lesson.VideoUrl}`);
+    } else {
+      // برای لینک Preview لازم نیست
+      setVideoPreview("");
     }
+
     setLessonDuration(lesson.DurationMinutes?.toString() || "");
     setLessonOrder(lesson.SortOrder?.toString() || "");
     setLessonFreePreview(lesson.IsFreePreview);
+
     setShowEditModal(true);
   };
 
@@ -229,18 +243,22 @@ const LessonManager: React.FC<LessonManagerProps> = ({
 
               <select
                 className="form-control"
-                value={videoType}
+                value={videoType ? "1" : "0"}
                 onChange={(e) =>
-                  setVideoType(e.target.value as "upload" | "link")
+                    setVideoType(e.target.value === "1")
                 }
-              >
-                <option value="upload">آپلود ویدیو</option>
+            >
+                <option value="0">
+                    لینک ویدیو
+                </option>
 
-                <option value="link">لینک ویدیو</option>
-              </select>
+                <option value="1">
+                    فایل آپلود شده
+                </option>
+            </select>
             </div>
           </div>
-          {videoType === "upload" && (
+          {videoType &&(
             <div className="input-block">
               <label className="form-label">ویدیوی درس</label>
 
@@ -258,7 +276,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
               )}
             </div>
           )}
-          {videoType === "link" && (
+          {!videoType && (
             <div className="input-block">
               <label className="form-label">لینک ویدیو</label>
 
