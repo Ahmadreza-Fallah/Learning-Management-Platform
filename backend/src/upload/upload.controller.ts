@@ -105,4 +105,53 @@ export class UploadController {
       path: `/uploads/videos/${file.filename}`,
     };
   }
+  
+  @Post("lesson-file")
+  @UseInterceptors(
+    FileInterceptor("file", {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const uploadPath = path.join(
+            process.cwd(),
+            "uploads",
+            "lesson-files",
+          );
+
+          if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+          }
+
+          cb(null, uploadPath);
+        },
+
+        filename: (req, file, cb) => {
+          const ext = path.extname(file.originalname);
+
+          cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
+        },
+      }),
+    }),
+  )
+  @ApiOperation({ summary: "Upload lesson file" })
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        file: {
+          type: "string",
+          format: "binary",
+        },
+      },
+    },
+  })
+  uploadLessonFile(@UploadedFile() file: Express.Multer.File) {
+    return {
+      fileName: file.filename,
+      originalName: file.originalname,
+      path: `/uploads/lesson-files/${file.filename}`,
+    };
+  }
+
+
 }

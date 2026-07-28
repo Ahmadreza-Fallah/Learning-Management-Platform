@@ -75,6 +75,7 @@ export interface Lesson {
   Title: string;
   Description: string | null;
   VideoUrl: string | null;
+  VideoType: boolean;
   DurationMinutes: number | null;
   SortOrder: number | null;
   IsFreePreview: boolean;
@@ -172,6 +173,7 @@ class CourseService {
       title: string;
       description?: string;
       videoUrl?: string;
+      videoType?:boolean,
       durationMinutes?: number;
       displayOrder?: number;
       isFreePreview?: boolean;
@@ -187,6 +189,7 @@ class CourseService {
       title?: string;
       description?: string;
       videoUrl?: string;
+      videoType?:boolean,
       durationMinutes?: number;
       displayOrder?: number;
       isFreePreview?: boolean;
