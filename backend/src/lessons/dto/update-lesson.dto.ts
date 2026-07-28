@@ -1,5 +1,5 @@
 import { IsString, IsNumber, IsOptional, IsBoolean } from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateLessonDto {
   @ApiPropertyOptional({ example: 'Updated Lesson Title' })
@@ -16,6 +16,11 @@ export class UpdateLessonDto {
   @IsString()
   @IsOptional()
   videoUrl?: string;
+
+  @ApiPropertyOptional()
+  @IsBoolean()
+  @IsOptional()
+  videoType?: boolean;
 
   @ApiPropertyOptional({ example: 20 })
   @IsNumber()
