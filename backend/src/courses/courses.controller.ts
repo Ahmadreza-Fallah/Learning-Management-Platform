@@ -8,6 +8,7 @@ import {
   Param,
   ParseIntPipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -16,12 +17,15 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+
 import {
   ApiTags,
   ApiOperation,
   ApiBearerAuth,
   ApiResponse,
+  ApiQuery,
 } from '@nestjs/swagger';
+import { BrowseCoursesDto } from './dto/browsw-course.dto';
 
 @ApiTags('Courses')
 @Controller('courses')
@@ -35,12 +39,29 @@ export class CoursesController {
   @ApiOperation({ summary: 'Create a new course (Teacher only)' })
   @ApiResponse({ status: 201, description: 'Course created successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 403, description: 'Forbidden - Teacher role required' })
-  async create(
-    @Body() dto: CreateCourseDto,
-    @CurrentUser() user: any,
-  ) {
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - Teacher role required',
+  })
+  async create(@Body() dto: CreateCourseDto, @CurrentUser() user: any) {
     return this.coursesService.create(dto, user.id);
+  }
+
+  @Get('browse')
+  @ApiOperation({
+    summary: 'Browse published courses with search, filters and pagination',
+  })
+  @ApiQuery({ name: 'search', required: false })
+  @ApiQuery({ name: 'categoryId', required: false, type: Number })
+  @ApiQuery({ name: 'levelId', required: false, type: Number })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'pageSize', required: false, type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns paginated published courses',
+  })
+  async browse(@Query() dto: BrowseCoursesDto) {
+    return this.coursesService.browse(dto);
   }
 
   @Get()
