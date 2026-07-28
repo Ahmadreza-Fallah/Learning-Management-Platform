@@ -55,6 +55,7 @@ export class LessonsService {
         Title: dto.title,
         Description: dto.description || null,
         VideoUrl: dto.videoUrl || null,
+        VideoType: dto.videoType,
         DurationMinutes: dto.durationMinutes || null,
         SortOrder: sortOrder,
         IsFreePreview: dto.isFreePreview ?? false,
@@ -88,9 +89,11 @@ export class LessonsService {
     await this.verifyLessonOwnership(id, userId);
 
     const data: any = {};
+
     if (dto.title !== undefined) data.Title = dto.title;
     if (dto.description !== undefined) data.Description = dto.description;
     if (dto.videoUrl !== undefined) data.VideoUrl = dto.videoUrl;
+    if (dto.videoType !== undefined) data.VideoType = dto.videoType;
     if (dto.durationMinutes !== undefined)
       data.DurationMinutes = dto.durationMinutes;
     if (dto.displayOrder !== undefined) data.SortOrder = dto.displayOrder;

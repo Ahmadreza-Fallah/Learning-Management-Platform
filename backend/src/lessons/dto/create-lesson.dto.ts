@@ -17,6 +17,13 @@ export class CreateLessonDto {
   @IsOptional()
   videoUrl?: string;
 
+  @ApiProperty({
+    example: false,
+    description: 'false = External Link, true = Uploaded Video',
+  })
+  @IsBoolean()
+  videoType: boolean;
+
   @ApiPropertyOptional({ example: 15 })
   @IsNumber()
   @IsOptional()
