@@ -93,6 +93,25 @@ export class CoursesService {
     });
   }
   async browse(dto: BrowseCoursesDto) {
+    let orderBy: any = {
+      CreatedAt: 'desc',
+    };
+
+    switch (dto.sortBy) {
+      case 'priceAsc':
+        orderBy = { Price: 'asc' };
+        break;
+
+      case 'priceDesc':
+        orderBy = { Price: 'desc' };
+        break;
+
+      case 'newest':
+      default:
+        orderBy = { CreatedAt: 'desc' };
+        break;
+    }
+
     const page = dto.page ?? 1;
     const pageSize = dto.pageSize ?? 12;
 
@@ -103,6 +122,7 @@ export class CoursesService {
     if (dto.search) {
       where.Title = {
         contains: dto.search,
+        // mode: 'insensitive', // Uncomment if your Prisma/SQL Server version supports it
       };
     }
 
@@ -130,9 +150,7 @@ export class CoursesService {
           },
         },
       },
-      orderBy: {
-        CreatedAt: 'desc',
-      },
+      orderBy, // <-- Don't forget this comma
       skip: (page - 1) * pageSize,
       take: pageSize,
     });
