@@ -298,7 +298,7 @@ export const publicRoutes = [
     route: Route,
   },
   {
-    path: routes.courseDetails,
+    path: `${routes.courseDetails}/:id`,
     element: <CourseDetails />,
     route: Route,
   },

@@ -11,6 +11,10 @@ export class BrowseCoursesDto {
   @IsString()
   search?: string;
 
+  @IsOptional()
+  @IsString()
+  sortBy?: string;
+
   @ApiPropertyOptional({
     description: 'Category ID',
     example: 1,
