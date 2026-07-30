@@ -32,7 +32,9 @@ export class LessonsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(2)
   @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ summary: 'Create a lesson in a section (Teacher owner only)' })
+  @ApiOperation({
+    summary: 'Create a lesson in a section (Teacher owner only)',
+  })
   @ApiResponse({ status: 201, description: 'Lesson created successfully' })
   @ApiResponse({ status: 403, description: 'Forbidden - Not section owner' })
   @ApiResponse({ status: 404, description: 'Section not found' })
@@ -48,9 +50,7 @@ export class LessonsController {
   @ApiOperation({ summary: 'Get all lessons for a section' })
   @ApiResponse({ status: 200, description: 'Returns section lessons' })
   @ApiResponse({ status: 404, description: 'Section not found' })
-  async findBySection(
-    @Param('sectionId', ParseIntPipe) sectionId: number,
-  ) {
+  async findBySection(@Param('sectionId', ParseIntPipe) sectionId: number) {
     return this.lessonsService.findBySection(sectionId);
   }
 
@@ -83,5 +83,10 @@ export class LessonsController {
     @CurrentUser() user: any,
   ) {
     return this.lessonsService.remove(id, user.id);
+  }
+  @UseGuards(JwtAuthGuard, EnrollmentGuard) // was: @UseGuards(JwtAuthGuard)
+  @Get(':lessonId')
+  getLessonContent(@Param('lessonId', ParseIntPipe) lessonId: number) {
+    return this.lessonsService.findOne(lessonId);
   }
 }

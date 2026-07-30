@@ -182,14 +182,6 @@ const BannerSection = () => {
                               alt={course.Title}
                               className="img-fluid"
                             />
-                            <div className="position-absolute start-0 top-0 d-flex align-items-start w-100 z-index-2 p-3">
-                              <Link
-                                to="#"
-                                className="fav-icon ms-auto rounded-circle bg-white shadow-sm d-flex align-items-center justify-content-center"
-                              >
-                                <i className="isax isax-heart" />
-                              </Link>
-                            </div>
                           </div>
 
                           <div className="course-content p-3">

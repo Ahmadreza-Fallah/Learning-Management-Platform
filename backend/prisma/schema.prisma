@@ -48,6 +48,7 @@ model Courses {
   DurationMinutes        Int?
   DiscountPrice          Decimal?                 @db.Decimal(18, 2)
   AverageRating          Decimal                  @default(0, map: "DF_Courses_AverageRating") @db.Decimal(3, 2)
+  Carts                  Carts[]
   CourseLearningOutcomes CourseLearningOutcomes[]
   CoursePrequisties      CoursePrequisties[]
   CourseProgress         CourseProgress[]
@@ -181,6 +182,7 @@ model Users {
   Mobile                                                  String?              @unique(map: "UQ__Users__6FAE07828EE36961") @db.NVarChar(11)
   IsActive                                                Boolean              @default(true, map: "DF__Users__IsActive__2180FB33")
   LastLogin                                               DateTime?            @db.DateTime
+  Carts                                                   Carts[]
   CourseProgress                                          CourseProgress[]
   Courses                                                 Courses[]
   Enrollments                                             Enrollments[]
@@ -256,4 +258,16 @@ model CoursePrequisties {
   DisplayOrder Int      @default(1, map: "DF__CoursePre__Displ__5F141958")
   CreatedAt    DateTime @default(now(), map: "DF__CoursePre__Creat__60083D91")
   Courses      Courses  @relation(fields: [Course_ID], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_CoursePrerequisites_Course")
+}
+
+model Carts {
+  Id        Int      @id(map: "PK_Carts") @default(autoincrement())
+  User_Id   Int
+  Course_Id Int
+  CreatedAt DateTime @default(now(), map: "DF_Carts_CreatedAt") @db.DateTime
+  Courses   Courses  @relation(fields: [Course_Id], references: [Id], onUpdate: NoAction, map: "FK_Carts_Courses")
+  Users     Users    @relation(fields: [User_Id], references: [Id], onUpdate: NoAction, map: "FK_Carts_Users")
+
+  @@unique([User_Id, Course_Id], map: "UQ_Carts_User_Course")
+  @@index([User_Id], map: "IX_Carts_UserId")
 }

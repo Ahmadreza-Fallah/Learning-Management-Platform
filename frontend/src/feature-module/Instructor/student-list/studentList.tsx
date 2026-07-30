@@ -111,6 +111,7 @@ const StudentList = () => {
                   </div>
                 </div>
               </div>
+
               <Table dataSource={data} columns={columns} Search={true} />
             </div>
           </div>
