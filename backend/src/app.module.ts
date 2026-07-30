@@ -12,6 +12,10 @@ import { CourseSectionsModule } from './course-sections/course-sections.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LessonFilesModule } from './lesson-files/lesson-files.module';
 import { UploadModule } from './upload/upload.module';
+// --- ADD to imports ---
+import { CartModule } from './cart/cart.module';
+
+// --- ADD CartModule to the imports array, alongside your existing modules ---
 @Module({
   imports: [
     PrismaModule,
@@ -25,6 +29,7 @@ import { UploadModule } from './upload/upload.module';
     LessonsModule,
     LessonFilesModule,
     UploadModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],
