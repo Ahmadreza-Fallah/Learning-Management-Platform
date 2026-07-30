@@ -1,4 +1,11 @@
 import api from "./api";
+export interface SaveLearningOutcomesDto {
+  items: string[];
+}
+
+export interface SavePrerequisitesDto {
+  items: string[];
+}
 
 export interface BrowseCoursesParams {
   search?: string;
@@ -6,6 +13,7 @@ export interface BrowseCoursesParams {
   levelId?: number;
   page?: number;
   pageSize?: number;
+  sortBy?: string;
 }
 
 export interface BrowseCoursesResponse {
@@ -34,6 +42,7 @@ export interface Category {
   Id: number;
   Title: string;
   Description?: string;
+  Icon?: string;
 }
 
 export interface Level {
@@ -262,6 +271,32 @@ class CourseService {
     });
 
     return response.data;
+  }
+
+  async getLearningOutcomes(courseId: number): Promise<string[]> {
+    const response = await api.get(`/courses/${courseId}/learning-outcomes`);
+
+    return response.data;
+  }
+
+  async saveLearningOutcomes(
+    courseId: number,
+    data: SaveLearningOutcomesDto,
+  ): Promise<void> {
+    await api.put(`/courses/${courseId}/learning-outcomes`, data);
+  }
+
+  async getPrerequisites(courseId: number): Promise<string[]> {
+    const response = await api.get(`/courses/${courseId}/prerequisites`);
+
+    return response.data;
+  }
+
+  async savePrerequisites(
+    courseId: number,
+    data: SavePrerequisitesDto,
+  ): Promise<void> {
+    await api.put(`/courses/${courseId}/prerequisites`, data);
   }
 }
 
