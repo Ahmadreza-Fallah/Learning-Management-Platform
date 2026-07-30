@@ -67,6 +67,8 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Put('profile')
   updateProfile(@CurrentUser() user: any, @Body() dto: UpdateProfileDto) {
+    console.log('user in the controller:', user);
+    console.log('dto in the controller:', dto);
     return this.usersService.updateProfile(user.id, dto);
   }
 
