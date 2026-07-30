@@ -32,18 +32,14 @@ class UploadService {
 
     formData.append("file", file);
 
-    const response = await api.post(
-        "/upload/lesson-file",
-        formData,
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        }
-    );
+    const response = await api.post("/upload/lesson-file", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     return response.data;
-}
+  }
 }
 
 export default new UploadService();
