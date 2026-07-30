@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import DefaultEditor from "react-simple-wysiwyg";
 import courseService, {
@@ -6,6 +6,7 @@ import courseService, {
   Level,
 } from "../../../../services/course.service";
 import uploadService from "../../../../services/upload.service";
+import { Link } from "react-router-dom";
 
 interface CourseInformationProps {
   categories: Category[];
@@ -49,7 +50,53 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
   const [thumbnailPreview, setThumbnailPreview] = useState(
     buildThumbnailUrl(initialData?.Thumbnail),
   );
+  const [learningOutcomes, setLearningOutcomes] = useState<string[]>([]);
+  const [prerequisites, setPrerequisites] = useState<string[]>([]);
+  useEffect(() => {
+    debugger;
+    if (!initialData) return;
 
+    setLearningOutcomes(
+      initialData.CourseLearningOutcomes?.map((x: any) => x.Title) ?? [],
+    );
+
+    setPrerequisites(
+      initialData.CoursePrequisties?.map((x: any) => x.Title) ?? [],
+    );
+  }, [initialData]);
+  const addLearningOutcome = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setLearningOutcomes((prev) => [...prev, ""]);
+  };
+
+  const updateLearningOutcome = (index: number, value: string) => {
+    setLearningOutcomes((prev) =>
+      prev.map((item, i) => (i === index ? value : item)),
+    );
+  };
+
+  const removeLearningOutcome = (e: React.MouseEvent, index: number) => {
+    e.preventDefault();
+
+    setLearningOutcomes((prev) => prev.filter((_, i) => i !== index));
+  };
+  const addPrerequisite = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    setPrerequisites((prev) => [...prev, ""]);
+  };
+
+  const updatePrerequisite = (index: number, value: string) => {
+    setPrerequisites((prev) =>
+      prev.map((item, i) => (i === index ? value : item)),
+    );
+  };
+
+  const removePrerequisite = (e: React.MouseEvent, index: number) => {
+    e.preventDefault();
+
+    setPrerequisites((prev) => prev.filter((_, i) => i !== index));
+  };
   const [uploadingImage, setUploadingImage] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const handleThumbnailUpload = async (
@@ -121,6 +168,13 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
             : undefined,
           thumbnail: thumbnail.trim() || undefined,
         });
+        await courseService.saveLearningOutcomes(initialData.Id, {
+          items: learningOutcomes.filter((x) => x.trim() !== ""),
+        });
+
+        await courseService.savePrerequisites(initialData.Id, {
+          items: prerequisites.filter((x) => x.trim() !== ""),
+        });
         toast.success("دوره با موفقیت بروزرسانی شد.");
         onComplete(initialData.Id);
       } else {
@@ -136,6 +190,13 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
             ? Number(durationMinutes)
             : undefined,
           thumbnail: thumbnail.trim() || undefined,
+        });
+        await courseService.saveLearningOutcomes(course.Id, {
+          items: learningOutcomes.filter((x) => x.trim() !== ""),
+        });
+
+        await courseService.savePrerequisites(course.Id, {
+          items: prerequisites.filter((x) => x.trim() !== ""),
         });
         toast.success("دوره با موفقیت ایجاد شد.");
         onComplete(course.Id);
@@ -323,6 +384,97 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
                 </div>
               )}
             </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="bg-light border p-4 rounded-3">
+              <h6 className="mb-2">دانشجویان چه چیزهایی یاد خواهد گرفت؟</h6>
+
+              <div className="input-block">
+                {learningOutcomes.map((item, index) => (
+                  <div
+                    key={index}
+                    className="d-flex align-items-center add-new-input"
+                  >
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="مثلاً یادگیری React"
+                      value={item}
+                      onChange={(e) =>
+                        updateLearningOutcome(index, e.target.value)
+                      }
+                    />
+
+                    <Link
+                      to="#"
+                      className="link-trash"
+                      onClick={(e) => removeLearningOutcome(e, index)}
+                    >
+                      <i className="isax isax-trash" />
+                    </Link>
+                  </div>
+                ))}
+              </div>
+
+              <div className="d-flex justify-content-end mt-3">
+                <Link
+                  to="#"
+                  className="d-flex align-items-center add-new-topic"
+                  onClick={addLearningOutcome}
+                >
+                  <i className="isax isax-add me-1" />
+                  افزودن مورد جدید
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            {" "}
+            <div className="bg-light border p-4 rounded-3">
+              {" "}
+              <h6 className="mb-2">پیش نیاز های دوره</h6>{" "}
+              <div className="input-block">
+                {" "}
+                {prerequisites.map((item, index) => (
+                  <div
+                    key={index}
+                    className="d-flex align-items-center add-new-input"
+                  >
+                    {" "}
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="مثلاً آشنایی با HTML"
+                      value={item}
+                      onChange={(e) =>
+                        updatePrerequisite(index, e.target.value)
+                      }
+                    />{" "}
+                    <Link
+                      to="#"
+                      className="link-trash"
+                      onClick={(e) => removePrerequisite(e, index)}
+                    >
+                      {" "}
+                      <i className="isax isax-trash" />{" "}
+                    </Link>{" "}
+                  </div>
+                ))}{" "}
+              </div>{" "}
+              <div className="d-flex justify-content-end mt-3">
+                {" "}
+                <Link
+                  to="#"
+                  className="d-flex align-items-center add-new-topic"
+                  onClick={addPrerequisite}
+                >
+                  {" "}
+                  <i className="isax isax-add me-1" /> افزودن مورد جدید{" "}
+                </Link>{" "}
+              </div>{" "}
+            </div>{" "}
           </div>
         </div>
         <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-end mb-0">
