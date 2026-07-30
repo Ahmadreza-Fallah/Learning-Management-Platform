@@ -1,14 +1,26 @@
 import React, { useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
-import courseService, { Section, Lesson } from "../../../../services/course.service";
+import courseService, {
+  Section,
+  Lesson,
+} from "../../../../services/course.service";
 import LessonManager from "./LessonManager";
 
 interface SectionManagerProps {
   courseId: number;
 }
 
+// مقادیر ثابت برای اجبار روشن ماندن مودال، مستقل از هر تم تیره‌ی سراسری که
+// ممکن است در پروژه فعال باشد.
+const modalContentStyle: React.CSSProperties = {
+  backgroundColor: "#fff",
+  color: "#212529",
+};
+
 const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
-  const [sections, setSections] = useState<(Section & { Lessons?: Lesson[] })[]>([]);
+  const [sections, setSections] = useState<
+    (Section & { Lessons?: Lesson[] })[]
+  >([]);
   const [loading, setLoading] = useState(false);
   const [expandedSection, setExpandedSection] = useState<number | null>(null);
 
@@ -27,7 +39,8 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
       const data = await courseService.getSections(courseId);
       setSections(data);
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "Failed to load sections";
+      const msg =
+        err?.response?.data?.message || "بارگذاری سرفصل‌ها با خطا مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setLoading(false);
@@ -56,7 +69,8 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
       setSectionOrder("");
       fetchSections();
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "Failed to create section";
+      const msg =
+        err?.response?.data?.message || "ایجاد سرفصل با خطا مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setSaving(false);
@@ -67,7 +81,7 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
     e.preventDefault();
     if (!selectedSection) return;
     if (!sectionTitle.trim()) {
-      toast.error("Section title is required");
+      toast.error("عنوان سرفصل اجباری میباشد.");
       return;
     }
     setSaving(true);
@@ -76,14 +90,15 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
         title: sectionTitle.trim(),
         displayOrder: sectionOrder ? Number(sectionOrder) : undefined,
       });
-      toast.success("Section updated successfully!");
+      toast.success("سرفصل با موفقیت بروزرسانی شد.");
       setShowEditModal(false);
       setSelectedSection(null);
       setSectionTitle("");
       setSectionOrder("");
       fetchSections();
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "Failed to update section";
+      const msg =
+        err?.response?.data?.message || "بروزرسانی سرفصل با خطا مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setSaving(false);
@@ -95,12 +110,12 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
     setSaving(true);
     try {
       await courseService.deleteSection(selectedSection.Id);
-      toast.success("Section deleted successfully!");
+      toast.success("سرفصل با موفقیت حذف شد.");
       setShowDeleteModal(false);
       setSelectedSection(null);
       fetchSections();
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "Failed to delete section";
+      const msg = err?.response?.data?.message || "حذف سرفصل با خطا مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setSaving(false);
@@ -147,10 +162,16 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
           ) : sections.length === 0 ? (
             <div className="text-center py-5 text-muted">
               <i className="fas fa-layer-group fa-3x mb-3 d-block" />
-              <p>هنوز هیچ سرفصلی ایجاد نشده است. برای شروع، اولین سرفصل را اضافه کنید.</p>
+              <p>
+                هنوز هیچ سرفصلی ایجاد نشده است. برای شروع، اولین سرفصل را اضافه
+                کنید.
+              </p>
             </div>
           ) : (
-            <div className="accordion accordions-items-seperate" id="sectionsAccordion">
+            <div
+              className="accordion accordions-items-seperate"
+              id="sectionsAccordion"
+            >
               {sections.map((section, index) => (
                 <div className="accordion-item" key={section.Id}>
                   <div className="accordion-header d-flex justify-content-between align-items-center">
@@ -161,7 +182,9 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
                       style={{
                         boxShadow: "none",
                         backgroundColor:
-                          expandedSection === section.Id ? undefined : "#f8f9fa",
+                          expandedSection === section.Id
+                            ? undefined
+                            : "#f8f9fa",
                       }}
                     >
                       <span className="me-2">
@@ -169,17 +192,20 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
                       </span>
                       <div>
                         <strong>
-                          Section {index + 1}: {section.Title}
+                          سرفصل {index + 1}: {section.Title}
                         </strong>
                         <span className="badge bg-secondary ms-2">
                           {section.Lessons?.length || 0} دروس
                         </span>
                       </div>
                     </button>
-                    <div className="d-flex align-items-center pe-3" style={{ position: "relative", zIndex: 10 }}>
+                    <div
+                      className="d-flex align-items-center pe-3"
+                      style={{ position: "relative", zIndex: 10 }}
+                    >
                       <button
                         className="edit-btn1"
-                        title="Edit Section"
+                        title="ویرایش سرفصل"
                         onClick={(e) => {
                           e.stopPropagation();
                           openEditModal(section);
@@ -189,7 +215,7 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
                       </button>
                       <button
                         className="delete-btn1 ms-2"
-                        title="Delete Section"
+                        title="حذف سرفصل"
                         onClick={(e) => {
                           e.stopPropagation();
                           openDeleteModal(section);
@@ -217,11 +243,15 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
         </div>
       </div>
 
-      {/* Add Section Modal */}
+      {/* مودال افزودن سرفصل */}
       {showAddModal && (
-        <div className="modal fade show d-block" tabIndex={-1} style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+        <div
+          className="modal fade show d-block"
+          tabIndex={-1}
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
+            <div className="modal-content" style={modalContentStyle}>
               <div className="modal-header">
                 <h5 className="modal-title">افزودن سرفصل</h5>
                 <button
@@ -234,14 +264,14 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
                 <div className="modal-body">
                   <div className="input-block">
                     <label className="form-label">
-                      Section Title <span className="text-danger">*</span>
+                      عنوان سرفصل <span className="text-danger">*</span>
                     </label>
                     <input
                       type="text"
                       className="form-control"
                       value={sectionTitle}
                       onChange={(e) => setSectionTitle(e.target.value)}
-                      placeholder="Enter section title"
+                      placeholder="عنوان سرفصل را وارد کنید"
                       disabled={saving}
                       autoFocus
                     />
@@ -253,7 +283,7 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
                       className="form-control"
                       value={sectionOrder}
                       onChange={(e) => setSectionOrder(e.target.value)}
-                      placeholder="Auto-assigned"
+                      placeholder="به صورت خودکار تعیین می‌شود"
                       min="1"
                       disabled={saving}
                     />
@@ -266,7 +296,7 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
                     onClick={() => setShowAddModal(false)}
                     disabled={saving}
                   >
-                    Cancel
+                    لغو
                   </button>
                   <button
                     type="submit"
@@ -276,7 +306,7 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
                     {saving && (
                       <span className="spinner-border spinner-border-sm me-2" />
                     )}
-                    Add Section
+                    افزودن سرفصل
                   </button>
                 </div>
               </form>
@@ -285,11 +315,15 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
         </div>
       )}
 
-      {/* Edit Section Modal */}
+      {/* مودال ویرایش سرفصل */}
       {showEditModal && (
-        <div className="modal fade show d-block" tabIndex={-1} style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+        <div
+          className="modal fade show d-block"
+          tabIndex={-1}
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
+            <div className="modal-content" style={modalContentStyle}>
               <div className="modal-header">
                 <h5 className="modal-title">ویرایش سرفصل</h5>
                 <button
@@ -302,26 +336,26 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
                 <div className="modal-body">
                   <div className="input-block">
                     <label className="form-label">
-                      Section Title <span className="text-danger">*</span>
+                      عنوان سرفصل <span className="text-danger">*</span>
                     </label>
                     <input
                       type="text"
                       className="form-control"
                       value={sectionTitle}
                       onChange={(e) => setSectionTitle(e.target.value)}
-                      placeholder="Enter section title"
+                      placeholder="عنوان سرفصل را وارد کنید"
                       disabled={saving}
                       autoFocus
                     />
                   </div>
                   <div className="input-block">
-                    <label className="form-label">ترتیب نمایش </label>
+                    <label className="form-label">ترتیب نمایش</label>
                     <input
                       type="number"
                       className="form-control"
                       value={sectionOrder}
                       onChange={(e) => setSectionOrder(e.target.value)}
-                      placeholder="Auto-assigned"
+                      placeholder="به صورت خودکار تعیین می‌شود"
                       min="1"
                       disabled={saving}
                     />
@@ -334,7 +368,7 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
                     onClick={() => setShowEditModal(false)}
                     disabled={saving}
                   >
-                    Cancel
+                    لغو
                   </button>
                   <button
                     type="submit"
@@ -353,11 +387,15 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
         </div>
       )}
 
-      {/* Delete Section Modal */}
+      {/* مودال حذف سرفصل */}
       {showDeleteModal && (
-        <div className="modal fade show d-block" tabIndex={-1} style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+        <div
+          className="modal fade show d-block"
+          tabIndex={-1}
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
+            <div className="modal-content" style={modalContentStyle}>
               <div className="modal-header">
                 <h5 className="modal-title">حذف سرفصل</h5>
                 <button
@@ -369,7 +407,7 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
               <div className="modal-body">
                 <p>
                   از حذف کردن سرفصل اطمینان دارید{" "}
-                  <strong>{selectedSection?.Title}</strong>?
+                  <strong>{selectedSection?.Title}</strong>؟
                 </p>
                 <p className="text-muted mb-0">
                   تمام درس‌های این بخش نیز حذف خواهند شد.

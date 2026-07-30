@@ -76,7 +76,7 @@ export interface Course {
   Category: { Id: number; Title: string };
   Level: { Id: number; LevelName: string } | null;
   Users?: { Id: number; FirstName: string; LastName: string };
-  Sections?: Section[];
+  CourseSections?: Section[];
 }
 
 export interface Section {
@@ -84,6 +84,7 @@ export interface Section {
   Title: string;
   DisplayOrder: number | null;
   Course_Id: number;
+  Description: string;
   CreatedAt: string;
   Lessons?: Lesson[];
 }

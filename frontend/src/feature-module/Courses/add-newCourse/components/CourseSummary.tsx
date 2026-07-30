@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
-import courseService, { Course, Section } from "../../../../services/course.service";
+import courseService, {
+  Course,
+  Section,
+} from "../../../../services/course.service";
 
 interface CourseSummaryProps {
   courseId: number;
   onPublished: () => void;
 }
 
-const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) => {
+const CourseSummary: React.FC<CourseSummaryProps> = ({
+  courseId,
+  onPublished,
+}) => {
   const [course, setCourse] = useState<Course | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +29,9 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) 
       setCourse(courseData);
       setSections(sectionsData);
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "Failed to load course data";
+      const msg =
+        err?.response?.data?.message ||
+        "بارگذاری اطلاعات دوره با خطا مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setLoading(false);
@@ -36,7 +44,7 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) 
 
   const totalLessons = sections.reduce(
     (sum, s) => sum + (s.Lessons?.length || 0),
-    0
+    0,
   );
 
   const totalFiles = sections.reduce(
@@ -44,18 +52,18 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) 
       sum +
       (s.Lessons?.reduce((lSum, l) => lSum + (l.LessonFiles?.length || 0), 0) ||
         0),
-    0
+    0,
   );
 
   const handlePublish = async () => {
     setPublishing(true);
     try {
       await courseService.publishCourse(courseId);
-      toast.success("Course published successfully!");
+      toast.success("دوره با موفقیت منتشر شد.");
       onPublished();
     } catch (err: any) {
       const msg =
-        err?.response?.data?.message || "Failed to publish course";
+        err?.response?.data?.message || "انتشار دوره با خطا مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setPublishing(false);
@@ -75,7 +83,7 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) 
   return (
     <div className="card">
       <div className="card-header">
-        <h5 className="mb-0">Course Summary</h5>
+        <h5 className="mb-0">خلاصه دوره</h5>
       </div>
       <div className="card-body">
         <div className="row mb-4">
@@ -84,19 +92,19 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) 
               <tbody>
                 <tr>
                   <td className="text-muted" style={{ width: "140px" }}>
-                    Title
+                    عنوان
                   </td>
                   <td>
                     <strong>{course.Title}</strong>
                   </td>
                 </tr>
                 <tr>
-                  <td className="text-muted">Category</td>
+                  <td className="text-muted">دسته‌بندی</td>
                   <td>{course.Category?.Title || "-"}</td>
                 </tr>
                 <tr>
-                  <td className="text-muted">Level</td>
-                  <td>{course.Level?.LevelName || "Not set"}</td>
+                  <td className="text-muted">سطح</td>
+                  <td>{course.Level?.LevelName || "تعیین نشده"}</td>
                 </tr>
               </tbody>
             </table>
@@ -106,28 +114,28 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) 
               <tbody>
                 <tr>
                   <td className="text-muted" style={{ width: "140px" }}>
-                    Price
+                    قیمت
                   </td>
                   <td>
-                    <strong>${course.Price}</strong>
+                    <strong>{course.Price} ریال</strong>
                   </td>
                 </tr>
                 <tr>
-                  <td className="text-muted">Discount Price</td>
+                  <td className="text-muted">قیمت با تخفیف</td>
                   <td>
                     {course.DiscountPrice != null
-                      ? `$${course.DiscountPrice}`
-                      : "Not set"}
+                      ? `${course.DiscountPrice} ریال`
+                      : "تعیین نشده"}
                   </td>
                 </tr>
                 <tr>
-                  <td className="text-muted">Status</td>
+                  <td className="text-muted">وضعیت</td>
                   <td>
                     {course.IsPublished ? (
-                      <span className="badge bg-success">Published</span>
+                      <span className="badge bg-success">منتشر شده</span>
                     ) : (
                       <span className="badge bg-warning text-dark">
-                        Draft
+                        پیش‌نویس
                       </span>
                     )}
                   </td>
@@ -141,19 +149,19 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) 
           <div className="col-md-4 mb-3">
             <div className="border rounded p-3">
               <h3 className="text-primary mb-1">{sections.length}</h3>
-              <small className="text-muted">Sections</small>
+              <small className="text-muted">سرفصل‌ها</small>
             </div>
           </div>
           <div className="col-md-4 mb-3">
             <div className="border rounded p-3">
               <h3 className="text-primary mb-1">{totalLessons}</h3>
-              <small className="text-muted">Lessons</small>
+              <small className="text-muted">دروس</small>
             </div>
           </div>
           <div className="col-md-4 mb-3">
             <div className="border rounded p-3">
               <h3 className="text-primary mb-1">{totalFiles}</h3>
-              <small className="text-muted">Files</small>
+              <small className="text-muted">فایل‌ها</small>
             </div>
           </div>
         </div>
@@ -162,7 +170,7 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) 
           {course.IsPublished ? (
             <div className="py-3">
               <i className="fas fa-check-circle fa-3x text-success mb-3" />
-              <p className="text-muted mb-0">This course is already published.</p>
+              <p className="text-muted mb-0">این دوره قبلاً منتشر شده است.</p>
             </div>
           ) : (
             <button
@@ -174,7 +182,7 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ courseId, onPublished }) 
                 <span className="spinner-border spinner-border-sm me-2" />
               )}
               <i className="fas fa-rocket me-2" />
-              Publish Course
+              انتشار دوره
             </button>
           )}
         </div>

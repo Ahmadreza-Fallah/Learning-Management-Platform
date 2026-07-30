@@ -10,6 +10,13 @@ interface LessonManagerProps {
   onLessonsChanged: () => void;
 }
 
+// مقادیر ثابت برای اجبار روشن ماندن مودال، مستقل از هر تم تیره‌ی سراسری که
+// ممکن است در پروژه فعال باشد.
+const modalContentStyle: React.CSSProperties = {
+  backgroundColor: "#fff",
+  color: "#212529",
+};
+
 const LessonManager: React.FC<LessonManagerProps> = ({
   sectionId,
   onLessonsChanged,
@@ -42,7 +49,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
       setLessons(data);
     } catch (err: any) {
       const msg =
-        err?.response?.data?.message || "ارگذاری درس‌ها با مشکل مواجه شد.";
+        err?.response?.data?.message || "بارگذاری درس‌ها با مشکل مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setLoading(false);
@@ -93,7 +100,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
     e.preventDefault();
 
     if (!lessonTitle.trim()) {
-      toast.error("Lesson title is required");
+      toast.error("عنوان درس اجباری است.");
       return;
     }
 
@@ -112,7 +119,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
         displayOrder: lessonOrder ? Number(lessonOrder) : undefined,
         isFreePreview: lessonFreePreview,
       });
-      toast.success("Lesson created successfully!");
+      toast.success("درس با موفقیت ایجاد شد.");
       setShowAddModal(false);
       resetForm();
       fetchLessons();
@@ -129,7 +136,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
     e.preventDefault();
     if (!selectedLesson) return;
     if (!lessonTitle.trim()) {
-      toast.error("Lesson title is required");
+      toast.error("عنوان درس اجباری است.");
       return;
     }
     setSaving(true);
@@ -143,7 +150,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
         displayOrder: lessonOrder ? Number(lessonOrder) : undefined,
         isFreePreview: lessonFreePreview,
       });
-      toast.success("Lesson updated successfully!");
+      toast.success("درس با موفقیت بروزرسانی شد.");
       setShowEditModal(false);
       setSelectedLesson(null);
       resetForm();
@@ -163,7 +170,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
     setSaving(true);
     try {
       await courseService.deleteLesson(selectedLesson.Id);
-      toast.success("Lesson deleted successfully!");
+      toast.success("درس با موفقیت حذف شد.");
       setShowDeleteModal(false);
       setSelectedLesson(null);
       fetchLessons();
@@ -177,22 +184,18 @@ const LessonManager: React.FC<LessonManagerProps> = ({
   };
 
   const openEditModal = (lesson: Lesson) => {
-    console.log(lesson);
-
     setSelectedLesson(lesson);
     setLessonTitle(lesson.Title);
     setLessonDescription(lesson.Description || "");
 
     setVideoType(lesson.VideoType);
-
-    // این خط را اضافه کن
     setLessonVideoUrl(lesson.VideoUrl || "");
 
     if (lesson.VideoType) {
-      // فقط برای ویدیوهای آپلودی Preview بساز
+      // فقط برای ویدیوهای آپلودی پیش‌نمایش بساز
       setVideoPreview(`${getApiUrl()}${lesson.VideoUrl}`);
     } else {
-      // برای لینک Preview لازم نیست
+      // برای لینک، پیش‌نمایش لازم نیست
       setVideoPreview("");
     }
 
@@ -220,7 +223,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
             className="form-control"
             value={lessonTitle}
             onChange={(e) => setLessonTitle(e.target.value)}
-            placeholder="Enter lesson title"
+            placeholder="عنوان درس را وارد کنید"
             disabled={saving}
             autoFocus
           />
@@ -232,7 +235,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
             rows={3}
             value={lessonDescription}
             onChange={(e) => setLessonDescription(e.target.value)}
-            placeholder="Brief lesson description"
+            placeholder="توضیح مختصری از درس بنویسید"
             disabled={saving}
           />
         </div>
@@ -306,7 +309,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
                 className="form-control"
                 value={lessonOrder}
                 onChange={(e) => setLessonOrder(e.target.value)}
-                placeholder="Auto-assigned"
+                placeholder="به صورت خودکار تعیین می‌شود"
                 min="1"
                 disabled={saving}
               />
@@ -346,7 +349,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
           }}
           disabled={saving}
         >
-          Cancel
+          لغو
         </button>
         <button type="submit" className="btn btn-primary" disabled={saving}>
           {saving && <span className="spinner-border spinner-border-sm me-2" />}
@@ -391,7 +394,9 @@ const LessonManager: React.FC<LessonManagerProps> = ({
                       <div className="d-flex align-items-center mb-1">
                         <strong className="me-2">{lesson.Title}</strong>
                         {lesson.IsFreePreview && (
-                          <span className="badge bg-success">Free Preview</span>
+                          <span className="badge bg-success">
+                            پیش‌نمایش رایگان
+                          </span>
                         )}
                       </div>
                       {lesson.Description && (
@@ -409,7 +414,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
                         {lesson.VideoUrl && (
                           <span>
                             <i className="fas fa-video me-1" />
-                            Video
+                            ویدیو
                           </span>
                         )}
                         <span>
@@ -421,14 +426,14 @@ const LessonManager: React.FC<LessonManagerProps> = ({
                     <div className="d-flex gap-1">
                       <button
                         className="edit-btn1"
-                        title="Edit Lesson"
+                        title="ویرایش درس"
                         onClick={() => openEditModal(lesson)}
                       >
                         <i className="fas fa-pen" />
                       </button>
                       <button
                         className="delete-btn1"
-                        title="Delete Lesson"
+                        title="حذف درس"
                         onClick={() => openDeleteModal(lesson)}
                       >
                         <i className="fas fa-trash" />
@@ -445,7 +450,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
         </div>
       )}
 
-      {/* Add Lesson Modal */}
+      {/* مودال افزودن درس */}
       {showAddModal && (
         <div
           className="modal fade show d-block"
@@ -453,9 +458,9 @@ const LessonManager: React.FC<LessonManagerProps> = ({
           style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
         >
           <div className="modal-dialog modal-dialog-centered modal-lg">
-            <div className="modal-content">
+            <div className="modal-content" style={modalContentStyle}>
               <div className="modal-header">
-                <h5 className="modal-title"> افزودن درس</h5>
+                <h5 className="modal-title">افزودن درس</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -471,7 +476,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
         </div>
       )}
 
-      {/* Edit Lesson Modal */}
+      {/* مودال ویرایش درس */}
       {showEditModal && (
         <div
           className="modal fade show d-block"
@@ -479,7 +484,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
           style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
         >
           <div className="modal-dialog modal-dialog-centered modal-lg">
-            <div className="modal-content">
+            <div className="modal-content" style={modalContentStyle}>
               <div className="modal-header">
                 <h5 className="modal-title">ویرایش درس</h5>
                 <button
@@ -498,7 +503,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
         </div>
       )}
 
-      {/* Delete Lesson Modal */}
+      {/* مودال حذف درس */}
       {showDeleteModal && (
         <div
           className="modal fade show d-block"
@@ -506,7 +511,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
           style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
+            <div className="modal-content" style={modalContentStyle}>
               <div className="modal-header">
                 <h5 className="modal-title">حذف درس</h5>
                 <button
@@ -521,7 +526,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
               <div className="modal-body">
                 <p>
                   آیا از حذف این درس اطمینان دارید{" "}
-                  <strong>{selectedLesson?.Title}</strong>?
+                  <strong>{selectedLesson?.Title}</strong>؟
                 </p>
               </div>
               <div className="modal-footer">
