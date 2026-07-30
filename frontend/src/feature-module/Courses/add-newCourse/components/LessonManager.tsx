@@ -176,7 +176,7 @@ const LessonManager: React.FC<LessonManagerProps> = ({
     }
   };
 
-   const openEditModal = (lesson: Lesson) => {
+  const openEditModal = (lesson: Lesson) => {
     console.log(lesson);
 
     setSelectedLesson(lesson);
@@ -244,21 +244,15 @@ const LessonManager: React.FC<LessonManagerProps> = ({
               <select
                 className="form-control"
                 value={videoType ? "1" : "0"}
-                onChange={(e) =>
-                    setVideoType(e.target.value === "1")
-                }
-            >
-                <option value="0">
-                    لینک ویدیو
-                </option>
+                onChange={(e) => setVideoType(e.target.value === "1")}
+              >
+                <option value="0">لینک ویدیو</option>
 
-                <option value="1">
-                    فایل آپلود شده
-                </option>
-            </select>
+                <option value="1">فایل آپلود شده</option>
+              </select>
             </div>
           </div>
-          {videoType &&(
+          {videoType && (
             <div className="input-block">
               <label className="form-label">ویدیوی درس</label>
 
