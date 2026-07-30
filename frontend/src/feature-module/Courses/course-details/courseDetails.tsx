@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import VideoModal from "../../HomePages/home-one/section/videoModal";
 import { all_routes } from "../../router/all_routes";
 import courseService, { Course } from "../../../services/course.service";
+import { api_base_url } from "../../../environment";
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -13,7 +14,6 @@ const CourseDetails = () => {
   const [error, setError] = useState("");
 
   const [showModal, setShowModal] = useState(false);
-  const videoUrl = "https://www.youtube.com/embed/1trvO6dqQUI";
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -21,6 +21,23 @@ const CourseDetails = () => {
   useEffect(() => {
     loadCourse();
   }, [id]);
+  const isEnrolled = true;
+  const totalSections = course?.CourseSections?.length ?? 0;
+  const totalLessons =
+    course?.CourseSections?.reduce(
+      (sum, section) => sum + (section.Lessons?.length ?? 0),
+      0,
+    ) ?? 0;
+  const totalDuration =
+    course?.CourseSections?.reduce(
+      (sum, section) =>
+        sum +
+        (section.Lessons ?? []).reduce(
+          (lessonSum, lesson) => lessonSum + (lesson.DurationMinutes ?? 0),
+          0,
+        ),
+      0,
+    ) ?? 0;
   const loadCourse = async () => {
     try {
       debugger;
@@ -47,28 +64,16 @@ const CourseDetails = () => {
               <div className="card bg-light">
                 <div className="card-body d-lg-flex align-items-center">
                   <div className="position-relative">
-                    <Link to="#" id="openVideoBtn" onClick={handleOpenModal}>
-                      <ImageWithBasePath
-                        className="img-fluid rounded-2"
-                        src="assets/img/course/video-bg.jpg"
-                        alt="img"
-                      />
-                      <div className="play-icon">
-                        <i className="ti ti-player-play-filled fs-28" />
-                      </div>
-                    </Link>
-                  </div>
-                  <div id="videoModal">
-                    <div className="modal-content1">
-                      <span className="close-btn" id="closeModal">
-                        ×
-                      </span>
-                      <VideoModal
-                        show={showModal}
-                        handleClose={handleCloseModal}
-                        videoUrl={videoUrl}
-                      />
-                    </div>
+                    <img
+                      style={{ height: "300px", width: "700px" }}
+                      src={
+                        course?.Thumbnail
+                          ? `${api_base_url}${course?.Thumbnail}`
+                          : "/assets/img/course/course-09.jpg"
+                      }
+                      alt={course?.Title}
+                      className="img-fluid"
+                    />
                   </div>
                   <div className="w-100 ps-lg-4">
                     <h3 className="mb-2">{course?.Title}</h3>
@@ -80,7 +85,15 @@ const CourseDetails = () => {
                           src="./assets/img/icons/book.svg"
                           alt="img"
                         />
-                        12+ Lesson
+                        {totalSections} سرفصل
+                      </p>
+                      <p className="fw-medium d-flex align-items-center mb-0">
+                        <ImageWithBasePath
+                          className="me-2"
+                          src="./assets/img/icons/book.svg"
+                          alt="img"
+                        />
+                        {totalLessons} درس
                       </p>
                       <p className="fw-medium d-flex align-items-center mb-0">
                         <ImageWithBasePath
@@ -88,16 +101,9 @@ const CourseDetails = () => {
                           src="./assets/img/icons/timer-start.svg"
                           alt="img"
                         />
-                        9hr 30min
+                        {course?.DurationMinutes} دقیقه
                       </p>
-                      <p className="fw-medium d-flex align-items-center mb-0">
-                        <ImageWithBasePath
-                          className="me-2"
-                          src="./assets/img/icons/people.svg"
-                          alt="img"
-                        />
-                        32 students enrolled
-                      </p>
+
                       <span className="badge badge-sm rounded-pill bg-warning fs-12">
                         {course?.Category?.Title}
                       </span>
@@ -114,10 +120,11 @@ const CourseDetails = () => {
                         <div className="ms-2">
                           <h5 className="fs-18 fw-semibold">
                             <Link to={route.instructorDetails}>
-                              Nicole Brown
+                              {course?.Users?.FirstName}{" "}
+                              {course?.Users?.LastName}
                             </Link>
                           </h5>
-                          <p className="fs-14">Instructor</p>
+                          <p className="fs-14">مدرس این دوره</p>
                         </div>
                       </div>
                     </div>
@@ -138,24 +145,9 @@ const CourseDetails = () => {
               <div className="course-page-content pt-0">
                 <div className="card mb-4">
                   <div className="card-body">
-                    <h5 className="mb-3">Overview</h5>
-                    <h6 className="mb-2">Course Description</h6>
-                    <p>
-                      Embark on a transformative journey into AI with Mike
-                      Wheeler, your guide in this Udemy Best Seller course on
-                      ChatGPT and Prompt Engineering. As an experience
-                      instructor who has taught well over 300,000 students, Mike
-                      unveils the secrets of developing your own custom GPTs,
-                      ensuring your skills shine in the thriving digital
-                      marketplace.{" "}
-                    </p>
-                    <p>
-                      This course will get your familiar with Generative
-                      AI&nbsp;and the effective use of ChatGPT and is perfect
-                      for the beginner. You will also learn advanced prompting
-                      techniques to take your Prompt Engineering skills to the
-                      next level!
-                    </p>
+                    <h6 className="mb-2">توضیحات دوره</h6>
+                    <p>{course?.Description}</p>
+
                     <h6 className="mb-2">What you'll learn</h6>
                     <ul className="custom-list mb-3">
                       <li className="list-item">Become a UX designer</li>
@@ -188,130 +180,131 @@ const CourseDetails = () => {
                 <div className="card mb-4">
                   <div className="card-body">
                     <div className="d-flex justify-content-between flex-wrap">
-                      <h5 className="subs-title mb-2 mb-sm-3">
-                        Course Content
-                      </h5>
+                      <h5 className="subs-title mb-2 mb-sm-3">محتوای دوره</h5>
                       <h6 className="fs-16 fw-medium text-gray-7 mb-3">
-                        92 Lectures{" "}
-                        <span className="text-secondary">10:56:11</span>
+                        {totalSections} فصل • {totalLessons} درس
+                        <span className="text-secondary">
+                          {" "}
+                          ({totalDuration} دقیقه)
+                        </span>
                       </h6>
                     </div>
                     <div
                       className="accordion accordion-customicon1 accordions-items-seperate p-0"
-                      id="accordioncustomicon1Example"
+                      id="courseAccordion"
                     >
-                      <div className="accordion-item" data-aos="fade-up">
-                        <h2
-                          className="accordion-header"
-                          id="headingcustomicon1One"
-                        >
-                          <button
-                            className="accordion-button collapsed"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsecustomicon1One"
-                            aria-expanded="false"
-                            aria-controls="collapsecustomicon1One"
-                          >
-                            Getting Started{" "}
-                            <i className="fa-solid fa-chevron-down" />
-                          </button>
-                        </h2>
-                        <div
-                          id="collapsecustomicon1One"
-                          className="accordion-collapse collapse"
-                          aria-labelledby="headingcustomicon1One"
-                          data-bs-parent="#accordioncustomicon1Example"
-                        >
-                          <div className="accordion-body p-0">
-                            <ul>
-                              <li className="p-4 px-3 d-flex justify-content-between">
-                                <p className="mb-0">
-                                  <ImageWithBasePath
-                                    className="me-2"
-                                    src="./assets/img/icons/play.svg"
-                                    alt="img"
-                                  />
-                                  Lecture1.1 Introduction to the User Experience
-                                  Course
-                                </p>
-                                <div className="d-flex gap-xl-5 gap-3">
-                                  <Link to="#" className="preview-link">
-                                    Preview
-                                  </Link>
-                                  <p className="mb-0">02:53</p>
+                      {course?.CourseSections?.map((section, sectionIndex) => {
+                        const lessons = section.Lessons ?? [];
+
+                        const lessonCount = lessons.length;
+
+                        const duration = lessons.reduce(
+                          (sum, lesson) => sum + (lesson.DurationMinutes ?? 0),
+                          0,
+                        );
+
+                        return (
+                          <div className="accordion-item" key={section.Id}>
+                            <h2
+                              className="accordion-header"
+                              id={`heading-${section.Id}`}
+                            >
+                              <button
+                                className={`accordion-button ${
+                                  sectionIndex === 0 ? "" : "collapsed"
+                                }`}
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target={`#collapse-${section.Id}`}
+                              >
+                                <div className="d-flex justify-content-between w-100 me-3">
+                                  <span>{section.Title}</span>
+
+                                  <small className="text-muted">
+                                    {lessonCount} درس • {duration} دقیقه
+                                  </small>
                                 </div>
-                              </li>
-                              <li className="p-4 px-3 d-flex justify-content-between">
-                                <p className="mb-0">
-                                  <ImageWithBasePath
-                                    className="me-2"
-                                    src="./assets/img/icons/play.svg"
-                                    alt="img"
-                                  />
-                                  Lecture1.2 Exercise: Your first design
-                                  challenge
-                                </p>
-                                <div className="d-flex gap-xl-5 gap-3">
-                                  <Link to="#" className="preview-link">
-                                    Preview
-                                  </Link>
-                                  <p className="mb-0">02:53</p>
-                                </div>
-                              </li>
-                              <li className="p-4 px-3 d-flex justify-content-between">
-                                <p className="mb-0">
-                                  <ImageWithBasePath
-                                    className="me-2"
-                                    src="./assets/img/icons/play.svg"
-                                    alt="img"
-                                  />
-                                  Lecture1.3 How to solve the previous exercise
-                                </p>
-                                <div className="d-flex gap-xl-5 gap-3">
-                                  <Link to="#" className="preview-link">
-                                    Preview
-                                  </Link>
-                                  <p className="mb-0">02:53</p>
-                                </div>
-                              </li>
-                              <li className="p-4 px-3 d-flex justify-content-between">
-                                <p className="mb-0">
-                                  <ImageWithBasePath
-                                    className="me-2"
-                                    src="./assets/img/icons/play.svg"
-                                    alt="img"
-                                  />
-                                  Lecture1.4 Find out why smart objects are
-                                  amazing
-                                </p>
-                                <div className="d-flex gap-xl-5 gap-3">
-                                  <Link to="#" className="preview-link">
-                                    Preview
-                                  </Link>
-                                  <p className="mb-0">02:53</p>
-                                </div>
-                              </li>
-                              <li className="p-4 px-3 d-flex justify-content-between">
-                                <p className="mb-0">
-                                  <ImageWithBasePath
-                                    className="me-2"
-                                    src="./assets/img/icons/play.svg"
-                                    alt="img"
-                                  />
-                                  Lecture1.5 How to use text layers effectively
-                                </p>
-                                <div className="d-flex gap-xl-5 gap-3">
-                                  <Link to="#" className="preview-link">
-                                    Preview
-                                  </Link>
-                                  <p className="mb-0">02:53</p>
-                                </div>
-                              </li>
-                            </ul>
+
+                                <i className="fa-solid fa-chevron-down" />
+                              </button>
+                            </h2>
+
+                            <div
+                              id={`collapse-${section.Id}`}
+                              className={`accordion-collapse collapse ${
+                                sectionIndex === 0 ? "show" : ""
+                              }`}
+                              data-bs-parent="#courseAccordion"
+                            >
+                              {course?.CourseSections?.map(
+                                (section, sectionIndex) => {
+                                  const lessons = section.Lessons ?? [];
+
+                                  return (
+                                    <div key={section.Id}>
+                                      <div className="accordion-body p-0">
+                                        {lessons.length === 0 ? (
+                                          <div className="p-4 text-center text-muted">
+                                            درسی برای این فصل ثبت نشده است.
+                                          </div>
+                                        ) : (
+                                          <ul>
+                                            {lessons.map((lesson) => (
+                                              <li
+                                                key={lesson.Id}
+                                                className="p-4 px-3 d-flex justify-content-between align-items-center"
+                                              >
+                                                <div>
+                                                  <ImageWithBasePath
+                                                    className="me-2"
+                                                    src="./assets/img/icons/play.svg"
+                                                    alt=""
+                                                  />
+
+                                                  {lesson.Title}
+                                                </div>
+
+                                                <div className="d-flex gap-4 align-items-center">
+                                                  {isEnrolled ? (
+                                                    <Link
+                                                      to={`/learn/${course.Id}/lesson/${lesson.Id}`}
+                                                      className="preview-link"
+                                                    >
+                                                      شروع
+                                                    </Link>
+                                                  ) : lesson.IsFreePreview ? (
+                                                    <Link
+                                                      to={`/preview/${lesson.Id}`}
+                                                      className="preview-link"
+                                                    >
+                                                      پیش نمایش
+                                                    </Link>
+                                                  ) : (
+                                                    <span className="text-muted">
+                                                      <i className="fas fa-lock me-1"></i>
+                                                      قفل
+                                                    </span>
+                                                  )}
+
+                                                  <span>
+                                                    {lesson.DurationMinutes ??
+                                                      0}{" "}
+                                                    دقیقه
+                                                  </span>
+                                                </div>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                },
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -411,89 +404,21 @@ const CourseDetails = () => {
                     <div className="d-flex justify-content-between align-items-center mb-4">
                       <h2 className="text-success fs-30">FREE</h2>
                       <p className="fs-14 mb-0">
-                        <span className="text-decoration-line-through me-2">
-                          $99.00
-                        </span>
-                        50% off
+                        <span className="text-decoration-line-through me-2"></span>
+                        {course?.Price} ریال
                       </p>
-                    </div>
-                    <div className="d-flex justify-content-between gap-3 wishlist-btns">
-                      <Link
-                        className="btn d-flex btn-wish"
-                        to={route.studentWishlist}
-                      >
-                        <i className="isax isax-heart me-1 fs-18" />
-                        Add to Wishlist
-                      </Link>
-                      <Link className="btn d-flex btn-wish" to="#">
-                        <i className="ti ti-share me-1 fs-18" />
-                        Share
-                      </Link>
                     </div>
                     <Link
                       to={route.courseCart}
                       className="btn btn-primary w-100 mt-3 btn-enroll"
                     >
-                      Enroll Now
+                      خرید دوره
                     </Link>
-                  </div>
-                </div>
-                <div className="card mb-4">
-                  <div className="card-body">
-                    <h5 className="subs-title mb-4">Includes</h5>
-                    <p className="mb-3">
-                      <ImageWithBasePath
-                        className="me-2"
-                        src="./assets/img/icons/play.svg"
-                        alt="img"
-                      />
-                      11 hours on-demand video
-                    </p>
-                    <p className="mb-3">
-                      <ImageWithBasePath
-                        className="me-2"
-                        src="./assets/img/icons/import.svg"
-                        alt="img"
-                      />
-                      69 downloadable resources
-                    </p>
-                    <p className="mb-3">
-                      <ImageWithBasePath
-                        className="me-2"
-                        src="./assets/img/icons/key.svg"
-                        alt="img"
-                      />
-                      Full lifetime access
-                    </p>
-                    <p className="mb-3">
-                      <ImageWithBasePath
-                        className="me-2"
-                        src="./assets/img/icons/monitor-mobbile.svg"
-                        alt="img"
-                      />
-                      Access on mobile and TV
-                    </p>
-                    <p className="mb-3">
-                      <ImageWithBasePath
-                        className="me-2"
-                        src="./assets/img/icons/cloud-lightning.svg"
-                        alt="img"
-                      />
-                      Assignments
-                    </p>
-                    <p className="mb-0">
-                      <ImageWithBasePath
-                        className="me-2"
-                        src="./assets/img/icons/teacher.svg"
-                        alt="img"
-                      />
-                      Certificate of Completion
-                    </p>
                   </div>
                 </div>
                 <div className="card">
                   <div className="card-body cou-features">
-                    <h5 className="subs-title">Course Features</h5>
+                    <h5 className="subs-title">ویژگی های دوره </h5>
                     <ul>
                       <li>
                         <p className="mb-0">
@@ -502,37 +427,7 @@ const CourseDetails = () => {
                             src="./assets/img/icons/people2.svg"
                             alt="img"
                           />
-                          Enrolled: 32 students
-                        </p>
-                      </li>
-                      <li>
-                        <p className="mb-0">
-                          <ImageWithBasePath
-                            className="me-2"
-                            src="./assets/img/icons/timer-start3.svg"
-                            alt="img"
-                          />
-                          Duration: 20 hours
-                        </p>
-                      </li>
-                      <li>
-                        <p className="mb-0">
-                          <ImageWithBasePath
-                            className="me-2"
-                            src="./assets/img/icons/note.svg"
-                            alt="img"
-                          />
-                          Chapters: 15
-                        </p>
-                      </li>
-                      <li>
-                        <p className="mb-0">
-                          <ImageWithBasePath
-                            className="me-2"
-                            src="./assets/img/icons/play3.svg"
-                            alt="img"
-                          />
-                          Video: 12 hours
+                          دسته بندی : {course?.Category.Title}
                         </p>
                       </li>
                       <li>
@@ -542,10 +437,95 @@ const CourseDetails = () => {
                             src="./assets/img/icons/chart.svg"
                             alt="img"
                           />
-                          Level: Beginner
+                          سطح : {course?.Level?.LevelName}
+                        </p>
+                      </li>
+                      <li>
+                        <p className="mb-0">
+                          <ImageWithBasePath
+                            className="me-2"
+                            src="./assets/img/icons/timer-start3.svg"
+                            alt="img"
+                          />
+                          مدت زمان : {course?.DurationMinutes}
+                        </p>
+                      </li>
+                      <li>
+                        <p className="mb-0">
+                          <ImageWithBasePath
+                            className="me-2"
+                            src="./assets/img/icons/note.svg"
+                            alt="img"
+                          />
+                          تعداد سرفصل ها : {totalSections}
+                        </p>
+                      </li>
+                      <li>
+                        <p className="mb-0">
+                          <ImageWithBasePath
+                            className="me-2"
+                            src="./assets/img/icons/play3.svg"
+                            alt="img"
+                          />
+                          تعداد دروس : {totalLessons}
                         </p>
                       </li>
                     </ul>
+                  </div>
+                </div>
+                <div className="card mb-4">
+                  <div className="card-body">
+                    <h5 className="subs-title mb-4">
+                      دوره های منتوریتو شامل موارد زیر میباشد
+                    </h5>
+                    <p className="mb-3">
+                      <ImageWithBasePath
+                        className="me-2"
+                        src="./assets/img/icons/play.svg"
+                        alt="img"
+                      />
+                      ویدیوهای آموزشی باکیفیت
+                    </p>
+                    <p className="mb-3">
+                      <ImageWithBasePath
+                        className="me-2"
+                        src="./assets/img/icons/import.svg"
+                        alt="img"
+                      />
+                      منابع قابل دانلود
+                    </p>
+                    <p className="mb-3">
+                      <ImageWithBasePath
+                        className="me-2"
+                        src="./assets/img/icons/key.svg"
+                        alt="img"
+                      />
+                      دسترسی مادام‌العمر کامل
+                    </p>
+                    <p className="mb-3">
+                      <ImageWithBasePath
+                        className="me-2"
+                        src="./assets/img/icons/monitor-mobbile.svg"
+                        alt="img"
+                      />
+                      دسترسی روی موبایل و تلویزیون
+                    </p>
+                    <p className="mb-3">
+                      <ImageWithBasePath
+                        className="me-2"
+                        src="./assets/img/icons/cloud-lightning.svg"
+                        alt="img"
+                      />
+                      تمرین‌ها و پروژه‌های عملی
+                    </p>
+                    <p className="mb-0">
+                      <ImageWithBasePath
+                        className="me-2"
+                        src="./assets/img/icons/teacher.svg"
+                        alt="img"
+                      />
+                      گواهی پایان دوره
+                    </p>
                   </div>
                 </div>
               </div>

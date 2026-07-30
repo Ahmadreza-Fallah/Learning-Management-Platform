@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { all_routes } from "../../router/all_routes";
+import Breadcrumb from "../../../core/common/Breadcrumb/breadcrumb";
 import courseService, {
   Category,
   Level,
@@ -40,7 +41,7 @@ const AddNewCourse = () => {
         setCategories(cats);
         setLevels(lvls);
       } catch {
-        toast.error("Failed to load categories or levels");
+        toast.error("بارگذاری دسته‌بندی‌ها یا سطوح با خطا مواجه شد.");
       }
     };
     fetchData();
@@ -63,140 +64,155 @@ const AddNewCourse = () => {
     switch (currentStep) {
       case 0:
         return (
-          <div className="add-course-item">
-            <CourseInformation
-              categories={categories}
-              levels={levels}
-              initialData={courseData}
-              onComplete={handleCourseCreated}
-            />
-          </div>
+          <CourseInformation
+            categories={categories}
+            levels={levels}
+            initialData={courseData}
+            onComplete={handleCourseCreated}
+          />
         );
       case 1:
         return (
-          <div className="add-course-item">
-            <div className="wizard-form-card">
-              <div className="title d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">سرفصل های دوره</h5>
-                <button
-                  className="btn btn-sm btn-outline-secondary"
+          <div className="form-inner wizard-form-card">
+            <div className="title d-flex justify-content-between align-items-center">
+              <h5 className="mb-0">سرفصل های دوره</h5>
+              <Link
+                to="#"
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => setCurrentStep(0)}
+                title="ویرایش اطلاعات دوره"
+              >
+                <i className="fas fa-edit me-1" /> ویرایش دوره
+              </Link>
+            </div>
+            {courseId && <SectionManager courseId={courseId} />}
+            <div className="add-form-btn widget-next-btn submit-btn mb-0">
+              <div className="btn-left">
+                <Link
+                  to="#"
+                  className="btn btn-light main-btn prev_btns"
                   onClick={() => setCurrentStep(0)}
-                  title="Edit course info"
                 >
-                  <i className="fas fa-edit me-1" /> ویرایش دوره
-                </button>
+                  <i className="isax isax-arrow-right-3 me-1" /> قبلی
+                </Link>
               </div>
-              {courseId && <SectionManager courseId={courseId} />}
-              <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-between mb-0">
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => setCurrentStep(0)}
-                >
-                  <i className="fas fa-arrow-right me-1" /> قبلی
-                </button>
-                <button
-                  className="btn btn-primary"
+              <div className="btn-left">
+                <Link
+                  to="#"
+                  className="btn btn-secondary main-btn next_btns"
                   onClick={() => setCurrentStep(2)}
                 >
-                  بعدی: دروس <i className="fas fa-arrow-left ms-1" />
-                </button>
+                  بعدی: دروس <i className="isax isax-arrow-left-2 ms-1" />
+                </Link>
               </div>
             </div>
           </div>
         );
       case 2:
         return (
-          <div className="add-course-item">
-            <div className="wizard-form-card">
-              <div className="title d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">دروس</h5>
-                <button
-                  className="btn btn-sm btn-outline-secondary"
+          <div className="form-inner wizard-form-card">
+            <div className="title d-flex justify-content-between align-items-center">
+              <h5 className="mb-0">دروس</h5>
+              <Link
+                to="#"
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => setCurrentStep(1)}
+              >
+                <i className="fas fa-arrow-left me-1" /> بازگشت به سرفصل ها
+              </Link>
+            </div>
+            {courseId && <SectionManager courseId={courseId} />}
+            <div className="add-form-btn widget-next-btn submit-btn mb-0">
+              <div className="btn-left">
+                <Link
+                  to="#"
+                  className="btn btn-light main-btn prev_btns"
                   onClick={() => setCurrentStep(1)}
                 >
-                  <i className="fas fa-arrow-left me-1" /> بازگشت به سرفصل ها
-                </button>
+                  <i className="isax isax-arrow-right-3 me-1" /> قبلی
+                </Link>
               </div>
-              {courseId && <SectionManager courseId={courseId} />}
-              <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-between mb-0">
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => setCurrentStep(1)}
-                >
-                  <i className="fas fa-arrow-right me-1" /> قبلی
-                </button>
-                <button
-                  className="btn btn-primary"
+              <div className="btn-left">
+                <Link
+                  to="#"
+                  className="btn btn-secondary main-btn next_btns"
                   onClick={() => setCurrentStep(3)}
                 >
-                  بعدی: فایل های دروس <i className="fas fa-arrow-left ms-1" />
-                </button>
+                  بعدی: فایل های دروس{" "}
+                  <i className="isax isax-arrow-left-2 ms-1" />
+                </Link>
               </div>
             </div>
           </div>
         );
       case 3:
         return (
-          <div className="add-course-item">
-            <div className="wizard-form-card">
-              <div className="title d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">فایل های دروس</h5>
-                <button
-                  className="btn btn-sm btn-outline-secondary"
+          <div className="form-inner wizard-form-card">
+            <div className="title d-flex justify-content-between align-items-center">
+              <h5 className="mb-0">فایل های دروس</h5>
+              <Link
+                to="#"
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => setCurrentStep(2)}
+              >
+                <i className="fas fa-arrow-left me-1" /> بازگشت به دروس
+              </Link>
+            </div>
+            <p className="text-muted mb-3">
+              فایل‌های مربوط به هر درس را مدیریت کنید. سرفصل ها را باز کنید تا
+              درس‌ها را ببینید، سپس فایل‌ها را به هر درس اضافه کنید.
+            </p>
+            {courseId && <SectionManager courseId={courseId} />}
+            <div className="add-form-btn widget-next-btn submit-btn mb-0">
+              <div className="btn-left">
+                <Link
+                  to="#"
+                  className="btn btn-light main-btn prev_btns"
                   onClick={() => setCurrentStep(2)}
                 >
-                  <i className="fas fa-arrow-left me-1" /> بازگشت به دروس
-                </button>
+                  <i className="isax isax-arrow-right-3 me-1" /> قبلی
+                </Link>
               </div>
-              <p className="text-muted mb-3">
-                فایل‌های مربوط به هر درس را مدیریت کنید. سرفصل ها را باز کنید تا
-                درس‌ها را ببینید، سپس فایل‌ها را به هر درس اضافه کنید.
-              </p>
-              {courseId && <SectionManager courseId={courseId} />}
-              <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-between mb-0">
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => setCurrentStep(2)}
-                >
-                  <i className="fas fa-arrow-right me-1" /> قبلی
-                </button>
-                <button
-                  className="btn btn-primary"
+              <div className="btn-left">
+                <Link
+                  to="#"
+                  className="btn btn-secondary main-btn next_btns"
                   onClick={() => setCurrentStep(4)}
                 >
-                  بعدی: انتشار <i className="fas fa-arrow-Left ms-1" />
-                </button>
+                  بعدی: انتشار <i className="isax isax-arrow-left-2 ms-1" />
+                </Link>
               </div>
             </div>
           </div>
         );
       case 4:
         return (
-          <div className="add-course-item">
-            <div className="wizard-form-card">
-              <div className="title d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">انتشار دوره</h5>
-                <button
-                  className="btn btn-sm btn-outline-secondary"
+          <div className="form-inner wizard-form-card">
+            <div className="title d-flex justify-content-between align-items-center">
+              <h5 className="mb-0">انتشار دوره</h5>
+              <Link
+                to="#"
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => setCurrentStep(3)}
+              >
+                <i className="fas fa-arrow-left me-1" /> بازگشت به فایل های دروس
+              </Link>
+            </div>
+            {courseId && (
+              <CourseSummary
+                courseId={courseId}
+                onPublished={handlePublished}
+              />
+            )}
+            <div className="add-form-btn widget-next-btn submit-btn mb-0">
+              <div className="btn-left">
+                <Link
+                  to="#"
+                  className="btn btn-light main-btn prev_btns"
                   onClick={() => setCurrentStep(3)}
                 >
-                  <i className="fas fa-arrow-left me-1" /> بازگشت به فایل های
-                  دروس
-                </button>
-              </div>
-              {courseId && (
-                <CourseSummary
-                  courseId={courseId}
-                  onPublished={handlePublished}
-                />
-              )}
-              <div className="add-form-btn widget-next-btn submit-btn d-flex justify-content-start mb-0">
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => setCurrentStep(3)}
-                >
-                  <i className="fas fa-arrow-right me-1" /> قبلی
-                </button>
+                  <i className="isax isax-arrow-right-3 me-1" /> قبلی
+                </Link>
               </div>
             </div>
           </div>
@@ -211,8 +227,10 @@ const AddNewCourse = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-10 mx-auto">
-              <Stepper steps={STEPS} currentStep={currentStep} />
-              {renderStep()}
+              <div className="add-course-item">
+                <Stepper steps={STEPS} currentStep={currentStep} />
+                <div className="initialization-form-set">{renderStep()}</div>
+              </div>
             </div>
           </div>
         </div>

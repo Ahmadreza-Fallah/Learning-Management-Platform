@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import DefaultEditor from "react-simple-wysiwyg";
 import courseService, {
   Category,
   Level,
@@ -88,15 +89,15 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
     e.preventDefault();
 
     if (!title.trim()) {
-      toast.error("Course title is required");
+      toast.error("عنوان دوره اجباری است.");
       return;
     }
     if (!categoryId) {
-      toast.error("Please select a category");
+      toast.error("لطفاً یک دسته‌بندی انتخاب کنید.");
       return;
     }
     if (!price || Number(price) < 0) {
-      toast.error("Please enter a valid price");
+      toast.error("لطفاً یک قیمت معتبر وارد کنید.");
       return;
     }
 
@@ -120,7 +121,7 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
             : undefined,
           thumbnail: thumbnail.trim() || undefined,
         });
-        toast.success("Course updated successfully!");
+        toast.success("دوره با موفقیت بروزرسانی شد.");
         onComplete(initialData.Id);
       } else {
         const course = await courseService.createCourse({
@@ -136,11 +137,11 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
             : undefined,
           thumbnail: thumbnail.trim() || undefined,
         });
-        toast.success("Course created successfully!");
+        toast.success("دوره با موفقیت ایجاد شد.");
         onComplete(course.Id);
       }
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "Failed to save course";
+      const msg = err?.response?.data?.message || "ذخیره دوره با خطا مواجه شد.";
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setSubmitting(false);
@@ -157,8 +158,7 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           <div className="col-md-12">
             <div className="input-block">
               <label className="form-label">
-                <span className="text-danger ms-1"> * </span>
-                عنوان دوره
+                عنوان دوره<span className="text-danger ms-1">*</span>
               </label>
               <input
                 type="text"
@@ -173,8 +173,7 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           <div className="col-md-6">
             <div className="input-block">
               <label className="form-label">
-                <span className="text-danger ms-1"> * </span>
-                دسته بندی
+                دسته بندی<span className="text-danger ms-1">*</span>
               </label>
               <select
                 className="form-control"
@@ -211,7 +210,9 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           </div>
           <div className="col-md-12">
             <div className="input-block">
-              <label className="form-label">معرفی دوره</label>
+              <label className="form-label">
+                معرفی دوره<span className="text-danger ms-1">*</span>
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -224,21 +225,20 @@ const CourseInformation: React.FC<CourseInformationProps> = ({
           </div>
           <div className="col-md-12">
             <div className="input-block">
-              <label className="form-label">توضیحات</label>
-              <textarea
-                className="form-control"
-                rows={6}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="توضیحات کامل دوره را وارد کنید"
-                disabled={submitting}
-              />
+              <label className="form-label">توضیحات دوره</label>
+              <div className="summernote">
+                <DefaultEditor
+                  value={description}
+                  onChange={(e: any) => setDescription(e.target.value)}
+                  disabled={submitting}
+                />
+              </div>
             </div>
           </div>
           <div className="col-md-4">
             <div className="input-block">
               <label className="form-label">
-                <span className="text-danger ms-1">*</span> هزینه (ریال)
+                هزینه (ریال)<span className="text-danger ms-1">*</span>
               </label>
               <input
                 type="number"
