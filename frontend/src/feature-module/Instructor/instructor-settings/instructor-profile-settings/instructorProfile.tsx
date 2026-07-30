@@ -1,351 +1,449 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Breadcrumb from "../../../../core/common/Breadcrumb/breadcrumb";
 import ImageWithBasePath from "../../../../core/common/imageWithBasePath";
 import ProfileCard from "../../common/profileCard";
 import InstructorSidebar from "../../common/instructorSidebar";
 import InstructorSettingsLink from "../settings-link/instructorSettingsLink";
-import { Link } from "react-router-dom";
-import { all_routes } from "../../../router/all_routes";
-import { DatePicker } from "antd";
+import toast from "react-hot-toast";
+import userService from "../../../../services/user.service";
+
+interface UserProfile {
+  id: number;
+  FirstName: string;
+  LastName: string;
+  UserName: string;
+  Email: string;
+  Mobile: string;
+  Sex_Id: number;
+  Avatar: string;
+  Role_Id: number;
+}
 
 const InstructorProfileSettings = () => {
-  const route = all_routes;
-  const getModalContainer = () => {
-    const modalElement = document.getElementById("add_assignment");
-    return modalElement ? modalElement : document.body; // Fallback to document.body if modalElement is null
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [editProfile, setEditProfile] = useState({
+    firstName: "",
+    lastName: "",
+    userName: "",
+    email: "",
+    mobile: "",
+    sexId: 1,
+    avatar: "",
+  });
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const data = await userService.getProfile();
+        setProfile(data);
+
+        if (data) {
+          setEditProfile({
+            firstName: data.FirstName || "",
+            lastName: data.LastName || "",
+            userName: data.UserName || "",
+            email: data.Email || "",
+            mobile: data.Mobile || "",
+            sexId: data.Sex_Id || 1,
+            avatar: data.Avatar || "",
+          });
+        }
+      } catch (err) {
+        console.error("❌ خطا در بارگذاری پروفایل:", err);
+        toast.error("خطا در دریافت اطلاعات پروفایل");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, []);
+
+  // تابع برای باز کردن دیالوگ انتخاب فایل
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
+
+  // تابع آپلود آواتار
+  // تابع فشرده‌سازی عکس
+  const compressImage = (
+    base64: string,
+    quality: number = 0.6,
+    maxWidth: number = 150,
+    maxHeight: number = 150,
+  ): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = base64;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        // محدود کردن اندازه
+        if (width > height) {
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        // تبدیل به JPEG با کیفیت پایین‌تر
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+    });
+  };
+
+  // تابع آپلود آواتار اصلاح شده
+  const handleAvatarUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // محدودیت حجم 500KB
+    if (file.size > 500 * 1024) {
+      toast.error("حجم فایل باید کمتر از ۵۰۰ کیلوبایت باشد");
+      return;
+    }
+
+    setUploadingAvatar(true);
+    try {
+      // تبدیل به base64
+      const base64 = await convertToBase64(file);
+
+      // فشرده‌سازی عکس
+      const compressed = await compressImage(base64, 0.5, 150, 150);
+
+      setEditProfile((prev) => ({
+        ...prev,
+        avatar: compressed,
+      }));
+
+      toast.success("آواتار با موفقیت آپلود شد");
+    } catch (error) {
+      console.error("خطا در آپلود:", error);
+      toast.error("خطا در آپلود آواتار");
+    } finally {
+      setUploadingAvatar(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  // تابع تبدیل فایل به base64
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // تابع حذف آواتار
+  const handleDeleteAvatar = () => {
+    setEditProfile((prev) => ({
+      ...prev,
+      avatar: "",
+    }));
+    toast.success("آواتار با موفقیت حذف شد");
+  };
+
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    debugger;
+    e.preventDefault();
+    setIsUpdating(true);
+
+    try {
+      const updatedUser = await userService.updateProfile(editProfile);
+      if (updatedUser?.user) {
+        setProfile(updatedUser.user);
+        const existingUser = JSON.parse(localStorage.getItem("user") || "{}");
+        const updatedUserData = {
+          ...existingUser,
+          firstName: updatedUser.user.FirstName,
+          lastName: updatedUser.user.LastName,
+          email: updatedUser.user.Email,
+          mobile: updatedUser.user.Mobile,
+          userName: updatedUser.user.UserName,
+          avatar: updatedUser.user.Avatar,
+        };
+        localStorage.setItem("user", JSON.stringify(updatedUserData));
+
+        toast.success("پروفایل با موفقیت به‌روزرسانی شد!");
+      } else {
+        toast.error(" خطا در به‌روزرسانی پروفایل");
+      }
+    } catch (err: any) {
+      console.error("❌ خطای کامل:", err);
+      console.error("❌ پاسخ خطا:", err?.response);
+      console.error("❌ داده‌های خطا:", err?.response?.data);
+      console.error("❌ وضعیت خطا:", err?.response?.status);
+
+      toast.error(err?.response?.data?.message || "خطا در به‌روزرسانی پروفایل");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  // تابع کمکی برای تغییرات فیلدها
+  const handleInputChange = (field: string, value: any) => {
+    setEditProfile((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  if (loading) {
+    return (
+      <>
+        <div className="content mt-5">
+          <div className="container">
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">در حال بارگذاری...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
-      <Breadcrumb title="My Profile" />
-      <div className="content">
+      <div className="content mt-5">
         <div className="container">
           <ProfileCard />
           <div className="row">
-            {/* Sidebar */}
             <InstructorSidebar />
-            {/* /Sidebar */}
             <div className="col-lg-9">
               <div className="mb-3">
-                <h5>Settings</h5>
+                <h5>تنظیمات</h5>
               </div>
               <InstructorSettingsLink />
-              <form>
+
+              <form onSubmit={handleUpdateProfile}>
                 <div className="card">
                   <div className="card-body">
+                    {/* بخش آواتار */}
                     <div className="profile-upload-group">
                       <div className="d-flex align-items-center">
-                        <Link
-                          to={route.studentProfile}
-                          className="avatar flex-shrink-0 avatar-xxxl avatar-rounded border me-3"
-                        >
+                        <div className="avatar flex-shrink-0 avatar-xxxl avatar-rounded border me-3 position-relative">
                           <ImageWithBasePath
-                            src="assets/img/user/user-01.jpg"
-                            alt="Img"
+                            src={
+                              editProfile.avatar ||
+                              "assets/img/user/user-01.jpg"
+                            }
+                            alt="آواتار"
                             className="img-fluid"
                           />
-                        </Link>
+                          {uploadingAvatar && (
+                            <div className="position-absolute top-50 start-50 translate-middle bg-dark bg-opacity-50 rounded-circle p-3">
+                              <div
+                                className="spinner-border text-light"
+                                style={{ width: "1.5rem", height: "1.5rem" }}
+                              />
+                            </div>
+                          )}
+                        </div>
                         <div className="profile-upload-head">
-                          <h6>
-                            <Link to={route.studentProfile}>Your Avatar</Link>
-                          </h6>
+                          <h6>آواتار شما</h6>
                           <p className="fs-14 mb-0">
-                            PNG or JPG no bigger than 800px width and height
+                            PNG یا JPG با حداکثر عرض و ارتفاع ۸۰۰ پیکسل
                           </p>
                           <div className="new-employee-field">
                             <div className="d-flex align-items-center mt-2">
-                              <div className="image-upload position-relative mb-0 me-2">
-                                <input type="file" />
-                                <Link
-                                  to="#"
-                                  className="btn bg-gray-100 btn-sm rounded-pill image-uploads"
-                                >
-                                  Upload
-                                </Link>
-                              </div>
-                              <div className="img-delete">
-                                <Link
-                                  to="#"
-                                  className="btn btn-secondary btn-sm rounded-pill"
-                                >
-                                  Delete
-                                </Link>
-                              </div>
+                              {/* input مخفی */}
+                              <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/jpeg,image/jpg,image/png"
+                                onChange={handleAvatarUpload}
+                                style={{ display: "none" }}
+                              />
+
+                              {/* دکمه آپلود */}
+                              <button
+                                type="button"
+                                className="btn bg-gray-100 btn-sm rounded-pill me-2"
+                                onClick={handleUploadClick}
+                                disabled={uploadingAvatar}
+                              >
+                                {uploadingAvatar ? "در حال آپلود..." : "آپلود"}
+                              </button>
+
+                              {/* دکمه حذف */}
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm rounded-pill"
+                                onClick={handleDeleteAvatar}
+                                disabled={
+                                  !editProfile.avatar || uploadingAvatar
+                                }
+                              >
+                                حذف
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+
+                    {/* اطلاعات شخصی */}
                     <div>
                       <div className="edit-profile-info mb-3">
-                        <h5 className="mb-1 fs-18">Personal Details</h5>
-                        <p>Edit your personal information</p>
+                        <h5 className="mb-1 fs-18">اطلاعات شخصی</h5>
+                        <p>اطلاعات شخصی خود را ویرایش کنید</p>
                       </div>
+
                       <div className="row">
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="form-label">
-                              First Name <span className="text-danger"> *</span>
+                              نام <span className="text-danger"> *</span>
                             </label>
                             <input
                               type="text"
                               className="form-control"
-                              defaultValue="Eugene"
+                              value={editProfile.firstName}
+                              onChange={(e) =>
+                                handleInputChange("firstName", e.target.value)
+                              }
+                              required
                             />
                           </div>
                         </div>
+
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="form-label">
-                              Last Name <span className="text-danger"> *</span>
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue="Andre"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="mb-3">
-                            <label className="form-label">
-                              User Name <span className="text-danger"> *</span>
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue="instructordemo"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="mb-3">
-                            <label className="form-label">
-                              Phone Number{" "}
+                              نام خانوادگی{" "}
                               <span className="text-danger"> *</span>
                             </label>
                             <input
                               type="text"
                               className="form-control"
-                              defaultValue="90154-91036"
+                              value={editProfile.lastName}
+                              onChange={(e) =>
+                                handleInputChange("lastName", e.target.value)
+                              }
+                              required
                             />
                           </div>
                         </div>
+
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label className="form-label">
+                              نام کاربری <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={editProfile.userName}
+                              onChange={(e) =>
+                                handleInputChange("userName", e.target.value)
+                              }
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label className="form-label">
+                              شماره موبایل{" "}
+                              <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={editProfile.mobile}
+                              onChange={(e) =>
+                                handleInputChange("mobile", e.target.value)
+                              }
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-12">
+                          <div className="mb-3">
+                            <label className="form-label">
+                              ایمیل <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="email"
+                              className="form-control"
+                              value={editProfile.email}
+                              onChange={(e) =>
+                                handleInputChange("email", e.target.value)
+                              }
+                              required
+                            />
+                          </div>
+                        </div>
+
                         <div className="col-md-12">
                           <div className="mb-4">
                             <label className="form-label">
-                              Bio <span className="text-danger"> *</span>
+                              جنسیت <span className="text-danger"> *</span>
                             </label>
-                            <textarea
-                              rows={4}
-                              className="form-control"
-                              defaultValue={
-                                "I am a web developer with a vast array of knowledge in many different front end and back end languages, responsive frameworks, databases, and best code practices."
+                            <select
+                              className="form-select"
+                              value={editProfile.sexId}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  "sexId",
+                                  Number(e.target.value),
+                                )
                               }
-                            />
+                              required
+                            >
+                              <option value={1}>مرد</option>
+                              <option value={2}>زن</option>
+                            </select>
                           </div>
                         </div>
-                        <div className="mt-3 mb-3">
-                          <h5 className="mb-1 fs-18">Educational Details</h5>
-                          <p>Edit your Educational information</p>
-                        </div>
-                        <div className="col-md-12">
-                          <div className="row">
-                            <div className="col-xl-7">
-                              <div className="row">
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label className="form-label">
-                                      Degree
-                                      <span className="text-danger"> *</span>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      defaultValue=""
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label className="form-label">
-                                      University
-                                      <span className="text-danger"> *</span>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      defaultValue=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-5">
-                              <div className="row">
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label className="form-label">
-                                      From Date
-                                      <span className="text-danger"> *</span>
-                                    </label>
-                                    <div className="input-icon position-relative calender-input">
-                                      <span className="input-icon-addon">
-                                        <i className="isax isax-calendar z-1" />
-                                      </span>
-                                      <DatePicker
-                                        className="form-control datetimepicker"
-                                        getPopupContainer={getModalContainer}
-                                        placeholder="dd/mm/yyyy"
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label className="form-label">
-                                      To Date
-                                      <span className="text-danger"> *</span>
-                                    </label>
-                                    <div className="input-icon position-relative calender-input">
-                                      <span className="input-icon-addon calender-input">
-                                        <i className="isax isax-calendar z-1" />
-                                      </span>
-                                      <DatePicker
-                                        className="form-control datetimepicker"
-                                        getPopupContainer={getModalContainer}
-                                        placeholder="dd/mm/yyyy"
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <Link
-                            to="#"
-                            className="d-inline-flex align-items-center text-secondary fw-medium mb-3"
-                            id="add-new-topic-btn"
-                          >
-                            <i className="isax isax-add me-1" /> Add New
-                          </Link>
-                        </div>
-                        <div className="mt-3 mb-3">
-                          <h5 className="mb-1 fs-18">Experience</h5>
-                          <p>Edit your Experience</p>
-                        </div>
-                        <div className="col-md-12">
-                          <div className="row">
-                            <div className="col-xl-7">
-                              <div className="row">
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label className="form-label">
-                                      Company
-                                      <span className="text-danger"> *</span>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      defaultValue=""
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label className="form-label">
-                                      Position
-                                      <span className="text-danger"> *</span>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      defaultValue=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-5">
-                              <div className="row">
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label className="form-label">
-                                      From Date
-                                      <span className="text-danger"> *</span>
-                                    </label>
-                                    <div className="input-icon position-relative calender-input">
-                                      <span className="input-icon-addon">
-                                        <i className="isax isax-calendar z-1" />
-                                      </span>
-                                      <DatePicker
-                                        className="form-control datetimepicker"
-                                        getPopupContainer={getModalContainer}
-                                        placeholder="dd/mm/yyyy"
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="mb-3">
-                                    <label className="form-label">
-                                      To Date
-                                      <span className="text-danger"> *</span>
-                                    </label>
-                                    <div className="input-icon position-relative calender-input">
-                                      <span className="input-icon-addon calender-input">
-                                        <i className="isax isax-calendar z-1" />
-                                      </span>
-                                      <DatePicker
-                                        className="form-control datetimepicker"
-                                        getPopupContainer={getModalContainer}
-                                        placeholder="dd/mm/yyyy"
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <Link
-                            to="#"
-                            className="d-inline-flex align-items-center text-secondary fw-medium mb-3"
-                            id="add-new-topic-btn2"
-                          >
-                            <i className="isax isax-add me-1" /> Add New
-                          </Link>
-                        </div>
+
                         <div className="col-md-12">
                           <button
                             className="btn btn-secondary rounded-pill"
                             type="submit"
+                            disabled={isUpdating || uploadingAvatar}
                           >
-                            Update Profile
+                            {isUpdating ? (
+                              <>
+                                <span className="spinner-border spinner-border-sm me-2" />
+                                در حال به‌روزرسانی...
+                              </>
+                            ) : (
+                              "به‌روزرسانی پروفایل"
+                            )}
                           </button>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div className="card mb-0">
-                  <div className="card-body">
-                    <h5 className="fs-18 mb-3">Delete Account</h5>
-                    <h6 className="mb-1">
-                      Are you sure you want to delete your account?
-                    </h6>
-                    <p className="mb-3">
-                      Refers to the action of permanently removing a user's
-                      account and associated data from a system, service and
-                      platform.
-                    </p>
-                    <Link
-                      to="#"
-                      className="btn btn-secondary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#delete_account"
-                    >
-                      Delete Account
-                    </Link>
                   </div>
                 </div>
               </form>

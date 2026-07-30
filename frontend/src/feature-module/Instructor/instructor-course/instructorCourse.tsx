@@ -109,8 +109,7 @@ const InstructorCourse = () => {
   ];
   return (
     <>
-      <Breadcrumb title="Courses" />
-      <div className="content">
+      <div className="content mt-5">
         <div className="container">
           <ProfileCard />
           <div className="row">
@@ -123,19 +122,9 @@ const InstructorCourse = () => {
                   <div className="card bg-success">
                     <div className="card-body">
                       <h6 className="fw-medium mb-1 text-white">
-                        Active Courses
+                        دوره های فعال
                       </h6>
                       <h4 className="fw-bold text-white">45</h4>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-xxl col-lg-4 col-md-6">
-                  <div className="card bg-secondary">
-                    <div className="card-body">
-                      <h6 className="fw-medium mb-1 text-white">
-                        Pending Courses
-                      </h6>
-                      <h4 className="fw-bold text-white">21</h4>
                     </div>
                   </div>
                 </div>
@@ -171,15 +160,7 @@ const InstructorCourse = () => {
                 </div>
               </div>
               <div className="page-title d-flex align-items-center justify-content-between">
-                <h5 className="fw-bold">Courses</h5>
-                <div className="d-flex align-items-center list-icons">
-                  <Link to="#" className="active me-2">
-                    <i className="isax isax-task" />
-                  </Link>
-                  <Link to={all_routes.instructorCourseGrid}>
-                    <i className="isax isax-element-3" />
-                  </Link>
-                </div>
+                <h5 className="fw-bold">دوره ها</h5>
               </div>
               <div className="row">
                 <div className="col-md-8">

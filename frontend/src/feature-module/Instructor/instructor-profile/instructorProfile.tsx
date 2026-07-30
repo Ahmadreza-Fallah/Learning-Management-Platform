@@ -17,8 +17,6 @@ interface UserProfile {
   Role_Id: number;
 }
 const StudentProfile = () => {
-  const route = all_routes;
-
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -80,7 +78,7 @@ const StudentProfile = () => {
       <div className="content mt-5">
         <div className="container">
           {/* profile box */}
-          <ProfileCard/>
+          <ProfileCard />
           {/* profile box */}
           <div className="row">
             {/* sidebar */}
@@ -113,9 +111,7 @@ const StudentProfile = () => {
               </div>
               <div className="card mb-0">
                 <div className="card-body">
-                  <h6 className="fs-18 page-title fw-bold">
-                    اطلاعات شخصی 
-                  </h6>
+                  <h6 className="fs-18 page-title fw-bold">اطلاعات شخصی</h6>
                   <div className="row">
                     <div className="col-md-4">
                       <div className="mb-3">

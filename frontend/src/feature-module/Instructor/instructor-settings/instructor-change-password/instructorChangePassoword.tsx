@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Breadcrumb from "../../../../core/common/Breadcrumb/breadcrumb";
+
 import ProfileCard from "../../common/profileCard";
-import InstructorSidebar from "../../common/instructorSidebar";
-import InstructorSettingsLink from "../settings-link/instructorSettingsLink";
+
 import ImageWithBasePath from "../../../../core/common/imageWithBasePath";
 import { Link } from "react-router-dom";
+import userService from "../../../../services/user.service";
+import InstructorSidebar from "../../common/instructorSidebar";
+import InstructorSettingsLink from "../settings-link/instructorSettingsLink";
 
 const hasNumber = (value: string): boolean => {
   return /[0-9]/.test(value);
@@ -26,10 +28,10 @@ const strengthColor = (count: number): string => {
   return "poor"; // Default return to ensure it's always a string
 };
 
-const InstructorChangePassoword = () => {
-
+const StudentChangePassword = () => {
   const [eye, setEye] = useState<boolean>(true);
   const [password, setPassword] = useState<string>("");
+  const [currentPassword, setCurrentPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [validationError, setValidationError] = useState<number>(0);
   const [strength, setStrength] = useState<string>("");
@@ -46,9 +48,24 @@ const InstructorChangePassoword = () => {
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    debugger;
     const newPassword = event.target.value;
     setPassword(newPassword);
     validatePassword(newPassword);
+  };
+
+  const onsubmitPasswordChange = async (e: any) => {
+    debugger;
+    const Parameters = {
+      currentPassword: currentPassword,
+      newPassword: confirmPassword,
+    };
+    try {
+      const response = await userService.changePassword(Parameters);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const validatePassword = (value: string) => {
@@ -159,18 +176,19 @@ const InstructorChangePassoword = () => {
   }, [password]);
 
   return (
-    <div>
-      <Breadcrumb title="Settings" />
-      <div className="content">
+    <>
+      <div className="content mt-5">
         <div className="container">
+          {/* profile box */}
           <ProfileCard />
+          {/* profile box */}
           <div className="row">
-            {/* Sidebar */}
+            {/* sidebar */}
             <InstructorSidebar />
-            {/* /Sidebar */}
+            {/* sidebar */}
             <div className="col-lg-9">
               <div className="mb-3">
-                <h5>Settings</h5>
+                <h5>تنظیمات</h5>
               </div>
               <InstructorSettingsLink />
               <div className="card mb-0">
@@ -179,7 +197,7 @@ const InstructorChangePassoword = () => {
                     <div className="row">
                       <div className="col-md-8">
                         <div className="mb-3">
-                          <h5 className="mb-1 fs-18">Change Password</h5>
+                          <h5 className="mb-1 fs-18">تغییر رمز عبور</h5>
                           <p>
                             Can't remember your current password?&nbsp;
                             <Link to="#" className="text-decoration-underline">
@@ -187,16 +205,20 @@ const InstructorChangePassoword = () => {
                             </Link>
                           </p>
                         </div>
-                        <form>
+                        <form onSubmit={onsubmitPasswordChange}>
                           <div className="mb-3 position-relative">
                             <label className="form-label">
-                              Current Password{" "}
+                              رمز عبور فعلی شما{" "}
                               <span className="text-danger"> *</span>
                             </label>
                             <div className="position-relative">
                               <input
+                                value={currentPassword}
                                 type={isPasswordVisible ? "text" : "password"}
                                 className="form-control form-control-lg pass-input"
+                                onChange={(e) =>
+                                  setCurrentPassword(e.target.value)
+                                }
                               />
                               <span
                                 className={`input-icon-addon toggle-password fs-14`}
@@ -214,7 +236,7 @@ const InstructorChangePassoword = () => {
                           </div>
                           <div className="mb-3 position-relative">
                             <label className="form-label">
-                              New Password{" "}
+                              رمز عبور جدید{" "}
                               <span className="text-danger"> *</span>
                             </label>
                             <div
@@ -240,12 +262,12 @@ const InstructorChangePassoword = () => {
                                 strength === "poor"
                                   ? "poor-active"
                                   : strength === "weak"
-                                  ? "avg-active"
-                                  : strength === "strong"
-                                  ? "strong-active"
-                                  : strength === "heavy"
-                                  ? "heavy-active"
-                                  : ""
+                                    ? "avg-active"
+                                    : strength === "strong"
+                                      ? "strong-active"
+                                      : strength === "heavy"
+                                        ? "heavy-active"
+                                        : ""
                               }`}
                             >
                               <span id="poor" className="active"></span>
@@ -257,7 +279,7 @@ const InstructorChangePassoword = () => {
                           </div>
                           <div className="mb-3 position-relative">
                             <label className="form-label">
-                              Confirm Password{" "}
+                              تکرار رمز عبور جدید{" "}
                               <span className="text-danger"> *</span>
                             </label>
                             <div className="position-relative">
@@ -290,38 +312,11 @@ const InstructorChangePassoword = () => {
                           </div>
                           <div>
                             <button className="btn btn-secondary" type="submit">
-                              Change Password
+                              تغییر رمز عبور
                             </button>
                           </div>
                         </form>
                       </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-8">
-                      <div className="mb-3">
-                        <h5 className="mb-1 fs-18">Change Email</h5>
-                        <p>
-                          Your current email address is&nbsp;
-                          <Link to="#" className="fw-semibold">
-                            richard@example.com
-                          </Link>
-                        </p>
-                      </div>
-                      <form>
-                        <div className="mb-3">
-                          <label className="form-label">
-                            New Email Address{" "}
-                            <span className="text-danger"> *</span>
-                          </label>
-                          <input type="text" className="form-control" />
-                        </div>
-                        <div>
-                          <button className="btn btn-secondary" type="submit">
-                            Save Changes
-                          </button>
-                        </div>
-                      </form>
                     </div>
                   </div>
                 </div>
@@ -330,8 +325,8 @@ const InstructorChangePassoword = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default InstructorChangePassoword;
+export default StudentChangePassword;
