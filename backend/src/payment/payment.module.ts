@@ -1,10 +1,10 @@
-// --- ADD to imports ---
-import { CartModule } from '../cart/cart.module';
+import { Module } from '@nestjs/common';
+import { PaymentController } from './payment.controller';
+import { PaymentService } from './payment.service';
 
-// --- ADD CartModule alongside whatever is already in the imports array ---
 @Module({
-  imports: [PrismaModule, CartModule],
   controllers: [PaymentController],
   providers: [PaymentService],
+  exports: [PaymentService],
 })
 export class PaymentModule {}

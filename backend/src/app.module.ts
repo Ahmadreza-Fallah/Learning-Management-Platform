@@ -12,8 +12,9 @@ import { CourseSectionsModule } from './course-sections/course-sections.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LessonFilesModule } from './lesson-files/lesson-files.module';
 import { UploadModule } from './upload/upload.module';
-// --- ADD to imports ---
 import { CartModule } from './cart/cart.module';
+import { PaymentModule } from './payment/payment.module';
+// --- ADD to imports ---
 
 // --- ADD CartModule to the imports array, alongside your existing modules ---
 @Module({
@@ -30,6 +31,7 @@ import { CartModule } from './cart/cart.module';
     LessonFilesModule,
     UploadModule,
     CartModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumb from "../../../core/common/Breadcrumb/breadcrumb";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import VideoModal from "../../HomePages/home-one/section/videoModal";
 import { all_routes } from "../../router/all_routes";
 import courseService, { Course } from "../../../services/course.service";
+import cartService from "../../../services/cart.service";
 import { api_base_url } from "../../../environment";
 
 const CourseDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const [showModal, setShowModal] = useState(false);
+
+  const [addingToCart, setAddingToCart] = useState(false);
+  const [cartError, setCartError] = useState("");
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -21,7 +27,7 @@ const CourseDetails = () => {
   useEffect(() => {
     loadCourse();
   }, [id]);
-  const isEnrolled = true;
+  const isEnrolled = false;
   const totalSections = course?.CourseSections?.length ?? 0;
   const totalLessons =
     course?.CourseSections?.reduce(
@@ -40,7 +46,6 @@ const CourseDetails = () => {
     ) ?? 0;
   const loadCourse = async () => {
     try {
-      debugger;
       setLoading(true);
 
       const data = await courseService.getCourse(Number(id));
@@ -52,6 +57,25 @@ const CourseDetails = () => {
       setLoading(false);
     }
   };
+
+  const handleAddToCart = async () => {
+    if (!course) return;
+
+    try {
+      setAddingToCart(true);
+      setCartError("");
+      await cartService.addToCart(course.Id);
+      setAddedToCart(true);
+      navigate(route.courseCart);
+    } catch (err: any) {
+      setCartError(
+        err?.response?.data?.message || "خطا در افزودن دوره به سبد خرید",
+      );
+    } finally {
+      setAddingToCart(false);
+    }
+  };
+
   const route = all_routes;
 
   return (
@@ -408,12 +432,35 @@ const CourseDetails = () => {
                         {course?.Price} ریال
                       </p>
                     </div>
-                    <Link
-                      to={route.courseCart}
-                      className="btn btn-primary w-100 mt-3 btn-enroll"
-                    >
-                      خرید دوره
-                    </Link>
+                    {cartError && (
+                      <div
+                        className="alert alert-danger py-2 fs-14"
+                        role="alert"
+                      >
+                        {cartError}
+                      </div>
+                    )}
+                    {isEnrolled ? (
+                      <Link
+                        to={`/learn/${course?.Id}`}
+                        className="btn btn-primary w-100 mt-3 btn-enroll"
+                      >
+                        ادامه یادگیری
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn btn-primary w-100 mt-3 btn-enroll"
+                        onClick={handleAddToCart}
+                        disabled={addingToCart || !course}
+                      >
+                        {addingToCart
+                          ? "در حال افزودن..."
+                          : addedToCart
+                            ? "افزوده شد ✓"
+                            : "خرید دوره"}
+                      </button>
+                    )}
                   </div>
                 </div>
                 <div className="card">

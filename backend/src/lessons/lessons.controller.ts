@@ -22,6 +22,7 @@ import {
   ApiBearerAuth,
   ApiResponse,
 } from '@nestjs/swagger';
+import { EnrollmentGuard } from '../auth/guards/enrollment.guard';
 
 @ApiTags('Lessons')
 @Controller()

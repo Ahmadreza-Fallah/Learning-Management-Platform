@@ -1,114 +1,79 @@
 import {
-  BadRequestException,
-  ConflictException,
   Injectable,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CartResponseDto } from './dto/cart-item-response.dto';
 
 @Injectable()
 export class CartService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
-  async getCart(userId: number): Promise<CartResponseDto> {
-    const items = await this.prisma.carts.findMany({
+  async getCart(userId: number) {
+    return this.prisma.carts.findMany({
       where: { User_Id: userId },
-      include: { Courses: true },
+      include: {
+        Courses: {
+          select: {
+            Id: true,
+            Title: true,
+            Thumbnail: true,
+            Price: true,
+            DiscountPrice: true,
+            Slug: true,
+            ShortDescription: true,
+          },
+        },
+      },
       orderBy: { CreatedAt: 'desc' },
     });
-
-    const mapped = items.map((item) => ({
-      id: item.Id,
-      courseId: item.Course_Id,
-      title: item.Courses.Title,
-      thumbnailUrl: item.Courses.Thumbnail ?? null,
-      // Prisma returns Decimal fields as a Decimal.js object, not a plain
-      // number — convert before it hits JSON serialization.
-      price: Number(item.Courses.DiscountPrice ?? item.Courses.Price),
-      createdAt: item.CreatedAt,
-    }));
-
-    const totalPrice = mapped.reduce((sum, i) => sum + i.price, 0);
-
-    return {
-      items: mapped,
-      totalItems: mapped.length,
-      totalPrice,
-    };
   }
 
-  async addToCart(userId: number, courseId: number): Promise<CartResponseDto> {
+  async addToCart(userId: number, courseId: number) {
     const course = await this.prisma.courses.findUnique({
       where: { Id: courseId },
     });
-
-    if (!course || !course.IsPublished) {
+    if (!course) {
       throw new NotFoundException('Course not found');
     }
+    if (!course.IsPublished) {
+      throw new BadRequestException('Course is not available for purchase');
+    }
 
-    const alreadyEnrolled = await this.prisma.enrollments.findFirst({
+    const existingEnrollment = await this.prisma.enrollments.findFirst({
       where: { Student_Id: userId, Course_Id: courseId },
     });
-
-    if (alreadyEnrolled) {
+    if (existingEnrollment) {
       throw new BadRequestException('You are already enrolled in this course');
     }
 
     const existingCartItem = await this.prisma.carts.findUnique({
       where: {
-        User_Id_Course_Id: {
-          User_Id: userId,
-          Course_Id: courseId,
-        },
+        User_Id_Course_Id: { User_Id: userId, Course_Id: courseId },
       },
     });
-
     if (existingCartItem) {
-      throw new ConflictException('Course is already in your cart');
+      return existingCartItem;
     }
 
-    await this.prisma.carts.create({
-      data: {
-        User_Id: userId,
-        Course_Id: courseId,
-      },
+    return this.prisma.carts.create({
+      data: { User_Id: userId, Course_Id: courseId },
     });
-
-    return this.getCart(userId);
   }
 
-  async removeFromCart(
-    userId: number,
-    courseId: number,
-  ): Promise<CartResponseDto> {
-    const existingCartItem = await this.prisma.carts.findUnique({
-      where: {
-        User_Id_Course_Id: {
-          User_Id: userId,
-          Course_Id: courseId,
-        },
-      },
+  async removeFromCart(userId: number, courseId: number) {
+    const item = await this.prisma.carts.findUnique({
+      where: { User_Id_Course_Id: { User_Id: userId, Course_Id: courseId } },
     });
-
-    if (!existingCartItem) {
+    if (!item) {
       throw new NotFoundException('Course not found in cart');
     }
-
-    await this.prisma.carts.delete({
-      where: {
-        User_Id_Course_Id: {
-          User_Id: userId,
-          Course_Id: courseId,
-        },
-      },
-    });
-
-    return this.getCart(userId);
+    await this.prisma.carts.delete({ where: { Id: item.Id } });
+    return { message: 'Course removed from cart' };
   }
 
-  async clearCart(userId: number): Promise<{ message: string }> {
+  async clearCart(userId: number) {
     await this.prisma.carts.deleteMany({ where: { User_Id: userId } });
-    return { message: 'Cart cleared successfully' };
+    return { message: 'Cart cleared' };
   }
 }
