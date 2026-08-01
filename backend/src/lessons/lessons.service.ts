@@ -48,7 +48,7 @@ export class LessonsService {
       select: { SortOrder: true },
     });
 
-    const sortOrder = dto.displayOrder ?? ((maxOrder?.SortOrder ?? 0) + 1);
+    const sortOrder = dto.displayOrder ?? (maxOrder?.SortOrder ?? 0) + 1;
 
     return this.prisma.lessons.create({
       data: {
@@ -113,5 +113,19 @@ export class LessonsService {
 
     await this.prisma.lessons.delete({ where: { Id: id } });
     return { message: 'Lesson deleted successfully' };
+  }
+  async findOne(id: number) {
+    const lesson = await this.prisma.lessons.findUnique({
+      where: { Id: id },
+      include: {
+        LessonFiles: true,
+      },
+    });
+
+    if (!lesson) {
+      throw new NotFoundException('Lesson not found');
+    }
+
+    return lesson;
   }
 }

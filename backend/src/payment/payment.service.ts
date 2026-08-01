@@ -1,87 +1,66 @@
-// --- ADD to imports at the top of the file ---
-import { BadRequestException } from '@nestjs/common'; // skip if already imported
-import { CartService } from '../cart/cart.service';
-import { randomUUID } from 'crypto';
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { Payments, Enrollments } from '@prisma/client';
 
-// --- ADD to the constructor ---
-constructor(
-  private readonly prisma: PrismaService,
-  private readonly cartService: CartService, // NEW
-) {}
-
-// --- ADD these constants near the top of the class (or a shared constants file) ---
-// TODO: replace with your app's real status values once confirmed.
 const PAYMENT_STATUS_SUCCESS = 1;
-const ENROLLMENT_STATUS_ACTIVE = 1;
 
-// --- ADD this method to the class ---
-async checkout(userId: number) {
-  const cartItems = await this.prisma.carts.findMany({
-    where: { User_Id: userId },
-    include: { Courses: true },
-  });
+@Injectable()
+export class PaymentService {
+  constructor(private prisma: PrismaService) {}
 
-  if (cartItems.length === 0) {
-    throw new BadRequestException('Your cart is empty');
-  }
+  async checkout(userId: number) {
+    const cartItems = await this.prisma.carts.findMany({
+      where: { User_Id: userId },
+      include: { Courses: true },
+    });
 
-  // One RefNumber ties all the per-course Payments rows from this
-  // checkout together, since Payments has no order-level table.
-  const refNumber = `CHK-${randomUUID()}`;
+    if (cartItems.length === 0) {
+      throw new BadRequestException('Your cart is empty');
+    }
 
-  const result = await this.prisma.$transaction(async (tx) => {
-    const payments = [];
-    const enrollments = [];
+    const payments: Payments[] = [];
+    const enrollments: Enrollments[] = [];
 
     for (const item of cartItems) {
-      const amount = item.Courses.DiscountPrice ?? item.Courses.Price;
+      const course = item.Courses;
+      const amount = course.DiscountPrice ?? course.Price;
 
-      const payment = await tx.payments.create({
+      const payment = await this.prisma.payments.create({
         data: {
           User_Id: userId,
-          Course_Id: item.Course_Id,
+          Course_Id: course.Id,
           Amount: amount,
-          RefNumber: refNumber,
+          RefNumber: `SIM-${Date.now()}-${course.Id}`,
           Status: PAYMENT_STATUS_SUCCESS,
         },
       });
       payments.push(payment);
 
-      const existingEnrollment = await tx.enrollments.findFirst({
-        where: { Student_Id: userId, Course_Id: item.Course_Id },
+      const existingEnrollment = await this.prisma.enrollments.findFirst({
+        where: { Student_Id: userId, Course_Id: course.Id },
       });
 
       if (!existingEnrollment) {
-        const enrollment = await tx.enrollments.create({
+        const enrollment = await this.prisma.enrollments.create({
           data: {
             Student_Id: userId,
-            Course_Id: item.Course_Id,
-            Status: ENROLLMENT_STATUS_ACTIVE,
+            Course_Id: course.Id,
+            Status: PAYMENT_STATUS_SUCCESS,
           },
         });
         enrollments.push(enrollment);
-      } else {
-        enrollments.push(existingEnrollment);
       }
     }
 
-    await tx.carts.deleteMany({ where: { User_Id: userId } });
+    const total = payments.reduce((sum, p) => sum + Number(p.Amount), 0);
 
-    return { payments, enrollments };
-  });
+    await this.prisma.carts.deleteMany({ where: { User_Id: userId } });
 
-  const totalAmount = result.payments.reduce(
-    (sum, p) => sum + Number(p.Amount),
-    0,
-  );
-
-  return {
-    success: true,
-    refNumber,
-    totalAmount,
-    paymentIds: result.payments.map((p) => p.Id),
-    status: PAYMENT_STATUS_SUCCESS,
-    enrolledCourseIds: result.enrollments.map((e) => e.Course_Id),
-    message: 'Payment successful. You are now enrolled in your course(s).',
-  };
+    return {
+      message: 'Payment successful',
+      total,
+      payments,
+      enrollments,
+    };
+  }
 }
