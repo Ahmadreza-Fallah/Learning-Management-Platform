@@ -20,7 +20,7 @@ const HomeOne = () => {
       {/* <Community /> */}
       <Clinet />
       <Howitworks />
-      <Featureinstructor />
+      {/* <Featureinstructor /> */}
       {/* <Testimonials /> */}
       {/* <Faq /> */}
       <Footer />
