@@ -35,6 +35,7 @@ class UserService {
   }
 
   async updateProfile(data: UpdateProfileRequest) {
+    debugger;
     const response = await api.put("/users/profile", data);
     return response.data;
   }
