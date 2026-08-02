@@ -109,8 +109,7 @@ const InstructorCourse = () => {
   ];
   return (
     <>
-      <Breadcrumb title="Courses" />
-      <div className="content">
+      <div className="content mt-5">
         <div className="container">
           <ProfileCard />
           <div className="row">
