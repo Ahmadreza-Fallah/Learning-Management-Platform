@@ -17,7 +17,8 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-
+import { SaveLearningOutcomesDto } from './dto/save-learning-outcomes.dto';
+import { SavePrerequisitesDto } from './dto/save-prerequisites.dto';
 import {
   ApiTags,
   ApiOperation,
@@ -137,5 +138,31 @@ export class CoursesController {
     @CurrentUser() user: any,
   ) {
     return this.coursesService.publish(id, user.id);
+  }
+
+  @Get(':id/learning-outcomes')
+  getLearningOutcomes(@Param('id', ParseIntPipe) id: number) {
+    return this.coursesService.getLearningOutcomes(id);
+  }
+
+  @Put(':id/learning-outcomes')
+  saveLearningOutcomes(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: SaveLearningOutcomesDto,
+  ) {
+    return this.coursesService.saveLearningOutcomes(id, dto);
+  }
+
+  @Get(':id/prerequisites')
+  getPrerequisites(@Param('id', ParseIntPipe) id: number) {
+    return this.coursesService.getPrerequisites(id);
+  }
+
+  @Put(':id/prerequisites')
+  savePrerequisites(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: SavePrerequisitesDto,
+  ) {
+    return this.coursesService.savePrerequisites(id, dto);
   }
 }

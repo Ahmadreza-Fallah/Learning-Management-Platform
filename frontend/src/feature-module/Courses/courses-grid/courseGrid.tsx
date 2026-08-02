@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import type { SliderSingleProps } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 import { all_routes } from "../../router/all_routes";
 import courseService, {
@@ -13,7 +13,7 @@ import { api_base_url } from "../../../environment";
 const CourseGrid = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(false);
-
+  const [initialized, setInitialized] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [levels, setLevels] = useState<Level[]>([]);
 
@@ -29,7 +29,7 @@ const CourseGrid = () => {
     number | undefined
   >();
   const [selectedLevel, setSelectedLevel] = useState<number | undefined>();
-
+  const [searchParams] = useSearchParams();
   const [sortBy, setSortBy] = useState("newest");
   useEffect(() => {
     const loadFilters = async () => {
@@ -49,8 +49,19 @@ const CourseGrid = () => {
     loadFilters();
   }, []);
   useEffect(() => {
+    const search = searchParams.get("search");
+    const categoryId = searchParams.get("categoryId");
+
+    setSearch(search ?? "");
+    setSelectedCategory(categoryId ? Number(categoryId) : undefined);
+
+    setInitialized(true);
+  }, [searchParams]);
+  useEffect(() => {
+    if (!initialized) return;
+
     loadCourses();
-  }, [page, search, selectedCategory, selectedLevel]);
+  }, [initialized, page, search, selectedCategory, selectedLevel]);
 
   const loadCourses = async () => {
     try {
@@ -74,9 +85,7 @@ const CourseGrid = () => {
       setLoading(false);
     }
   };
-  const formatter: NonNullable<SliderSingleProps["tooltip"]>["formatter"] = (
-    value,
-  ) => `$${value}`;
+
   return (
     <>
       {/* Course */}
@@ -250,7 +259,7 @@ const CourseGrid = () => {
               <div className="row">
                 {courses?.map((course) => {
                   return (
-                    <div className="col-xl-4 col-md-6">
+                    <div key={course.Id} className="col-xl-4 col-md-6">
                       <Link to={`${all_routes.courseDetails}/${course.Id}`}>
                         <div className="course-item-two course-item mx-0 h-100 shadow-sm border-0 rounded-4 overflow-hidden transition-all">
                           <div className="course-img position-relative overflow-hidden">

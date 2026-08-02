@@ -8,7 +8,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { BrowseCoursesDto } from './dto/browsw-course.dto';
-
+import { SaveLearningOutcomesDto } from './dto/save-learning-outcomes.dto';
+import { SavePrerequisitesDto } from './dto/save-prerequisites.dto';
 @Injectable()
 export class CoursesService {
   constructor(private prisma: PrismaService) {}
@@ -201,6 +202,7 @@ export class CoursesService {
       where: { Id: id },
       include: {
         ...this.courseInclude(),
+
         Users: {
           select: {
             Id: true,
@@ -208,12 +210,29 @@ export class CoursesService {
             LastName: true,
           },
         },
+
         CourseSections: {
-          orderBy: { DisplayOrder: 'asc' },
+          orderBy: {
+            DisplayOrder: 'asc',
+          },
           include: {
             Lessons: {
-              orderBy: { SortOrder: 'asc' },
+              orderBy: {
+                SortOrder: 'asc',
+              },
             },
+          },
+        },
+
+        CourseLearningOutcomes: {
+          orderBy: {
+            DisplayOrder: 'asc',
+          },
+        },
+
+        CoursePrequisties: {
+          orderBy: {
+            DisplayOrder: 'asc',
           },
         },
       },
@@ -290,6 +309,90 @@ export class CoursesService {
       where: { Id: id },
       data: { IsPublished: true, UpdatedAt: new Date() },
       include: this.courseInclude(),
+    });
+  }
+  async saveLearningOutcomes(courseId: number, dto: SaveLearningOutcomesDto) {
+    const course = await this.prisma.courses.findUnique({
+      where: {
+        Id: courseId,
+      },
+    });
+
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    await this.prisma.courseLearningOutcomes.deleteMany({
+      where: {
+        Course_Id: courseId,
+      },
+    });
+
+    const items = dto.items.map((x) => x.trim()).filter((x) => x.length > 0);
+
+    if (items.length > 0) {
+      await this.prisma.courseLearningOutcomes.createMany({
+        data: items.map((title, index) => ({
+          Course_Id: courseId,
+          Title: title,
+          DisplayOrder: index + 1,
+        })),
+      });
+    }
+
+    return this.getLearningOutcomes(courseId);
+  }
+
+  async getLearningOutcomes(courseId: number) {
+    return this.prisma.courseLearningOutcomes.findMany({
+      where: {
+        Course_Id: courseId,
+      },
+      orderBy: {
+        DisplayOrder: 'asc',
+      },
+    });
+  }
+  async savePrerequisites(courseId: number, dto: SavePrerequisitesDto) {
+    const course = await this.prisma.courses.findUnique({
+      where: {
+        Id: courseId,
+      },
+    });
+
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    await this.prisma.coursePrequisties.deleteMany({
+      where: {
+        Course_ID: courseId,
+      },
+    });
+
+    const items = dto.items.map((x) => x.trim()).filter((x) => x.length > 0);
+
+    if (items.length > 0) {
+      await this.prisma.coursePrequisties.createMany({
+        data: items.map((title, index) => ({
+          Course_ID: courseId,
+          Title: title,
+          DisplayOrder: index + 1,
+        })),
+      });
+    }
+
+    return this.getPrerequisites(courseId);
+  }
+
+  async getPrerequisites(courseId: number) {
+    return this.prisma.coursePrequisties.findMany({
+      where: {
+        Course_ID: courseId,
+      },
+      orderBy: {
+        DisplayOrder: 'asc',
+      },
     });
   }
 }

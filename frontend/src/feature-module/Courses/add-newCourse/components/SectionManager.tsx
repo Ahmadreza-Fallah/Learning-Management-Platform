@@ -142,7 +142,6 @@ const SectionManager: React.FC<SectionManagerProps> = ({ courseId }) => {
     <>
       <div className="card">
         <div className="card-header d-flex justify-content-between align-items-center">
-          <h5 className="mb-0">سرفصل های دوره</h5>
           <button
             className="btn btn-primary btn-sm"
             onClick={() => {
