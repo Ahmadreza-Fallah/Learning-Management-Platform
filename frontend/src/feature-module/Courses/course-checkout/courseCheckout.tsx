@@ -90,19 +90,17 @@ const CourseCheckout = () => {
       setPaying(true);
       setError(null);
       const result = await paymentService.checkout();
-      // Pass the result forward so the success page can show a summary
-      // without making another request.
-      // navigate(route.paymentSuccess, { state: { result } })
+      navigate(route.paymentSuccess, { state: { result } });
     } catch (err: any) {
-      setError(
+      const message =
         err?.response?.data?.message ||
-          "پرداخت با مشکل مواجه شد. دوباره تلاش کنید.",
-      );
+        "پرداخت با مشکل مواجه شد. دوباره تلاش کنید.";
+      setError(message);
+      navigate(route.paymentFailure, { state: { message } });
     } finally {
       setPaying(false);
     }
   };
-
   if (loading) {
     return (
       <>
