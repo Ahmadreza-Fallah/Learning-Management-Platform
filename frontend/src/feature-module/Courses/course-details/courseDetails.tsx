@@ -16,7 +16,7 @@ const CourseDetails = () => {
   const [error, setError] = useState("");
 
   const [showModal, setShowModal] = useState(false);
-
+  const [isEnrolled, setIsEnrolled] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
   const [cartError, setCartError] = useState("");
   const [addedToCart, setAddedToCart] = useState(false);
@@ -27,7 +27,6 @@ const CourseDetails = () => {
   useEffect(() => {
     loadCourse();
   }, [id]);
-  const isEnrolled = false;
   const totalSections = course?.CourseSections?.length ?? 0;
   const totalLessons =
     course?.CourseSections?.reduce(
@@ -45,6 +44,7 @@ const CourseDetails = () => {
       0,
     ) ?? 0;
   const loadCourse = async () => {
+    debugger;
     try {
       setLoading(true);
 
