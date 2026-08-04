@@ -87,6 +87,8 @@ export interface Course {
   Users?: { Id: number; FirstName: string; LastName: string };
   CourseSections?: Section[];
   isEnrolled: boolean;
+  CoursePrequisties: [];
+  CourseLearningOutcomes: [];
 }
 
 export interface Section {
