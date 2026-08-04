@@ -197,12 +197,11 @@ export class CoursesService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, userId?: number) {
     const course = await this.prisma.courses.findUnique({
       where: { Id: id },
       include: {
         ...this.courseInclude(),
-
         Users: {
           select: {
             Id: true,
@@ -210,30 +209,19 @@ export class CoursesService {
             LastName: true,
           },
         },
-
         CourseSections: {
-          orderBy: {
-            DisplayOrder: 'asc',
-          },
+          orderBy: { DisplayOrder: 'asc' },
           include: {
             Lessons: {
-              orderBy: {
-                SortOrder: 'asc',
-              },
+              orderBy: { SortOrder: 'asc' },
             },
           },
         },
-
         CourseLearningOutcomes: {
-          orderBy: {
-            DisplayOrder: 'asc',
-          },
+          orderBy: { DisplayOrder: 'asc' },
         },
-
         CoursePrequisties: {
-          orderBy: {
-            DisplayOrder: 'asc',
-          },
+          orderBy: { DisplayOrder: 'asc' },
         },
       },
     });
@@ -242,7 +230,22 @@ export class CoursesService {
       throw new NotFoundException('Course not found');
     }
 
-    return course;
+    let isEnrolled = false;
+
+    if (userId) {
+      const enrollment = await this.prisma.enrollments.findFirst({
+        where: {
+          Course_Id: id,
+          Student_Id: userId,
+        },
+      });
+      isEnrolled = !!enrollment;
+    }
+
+    return {
+      ...course,
+      isEnrolled,
+    };
   }
 
   async update(id: number, userId: number, dto: UpdateCourseDto) {
