@@ -13,7 +13,7 @@ const SettingsLinks = () => {
             to={route.studentSettings}
             className={`${location.pathname === "/student-settings" ? "active" : ""}`}
           >
-            Edit Profile
+             ویرایش پروفایل
           </Link>
         </li>
         <li>
@@ -21,31 +21,7 @@ const SettingsLinks = () => {
             to={route.studentChangePassword}
             className={`${location.pathname === "/student-change-password" ? "active" : ""}`}
           >
-            Security
-          </Link>
-        </li>
-        <li>
-          <Link
-            to={route.studentSocialProfile}
-            className={`${location.pathname === "/student-social-profile" ? "active" : ""}`}
-          >
-            Social Profiles
-          </Link>
-        </li>
-        <li>
-          <Link
-            to={route.studentLinkedAccounts}
-            className={`${location.pathname === "/student-linked-accounts" ? "active" : ""}`}
-          >
-            Linked Accounts
-          </Link>
-        </li>
-        <li>
-          <Link
-            to={route.studentNotification}
-            className={`${location.pathname === "/student-notifications" ? "active" : ""}`}
-          >
-            Notifications
+             تغییر رمز عبور
           </Link>
         </li>
       </ul>

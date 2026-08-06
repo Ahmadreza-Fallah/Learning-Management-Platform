@@ -21,8 +21,7 @@ const StudentSettings = () => {
 
   return (
     <>
-      <Breadcrumb title="Settings" />
-      <div className="content">
+      <div className="content mt-5">
         <div className="container">
           {/* profile box */}
           <ProfileCard />
@@ -33,12 +32,12 @@ const StudentSettings = () => {
             {/* sidebar */}
             <div className="col-lg-9">
               <div className="mb-3">
-                <h5>Settings</h5>
+                <h5>تنظیمات</h5>
               </div>
               <SettingsLinks />
               <div className="card">
                 <div className="card-body">
-                  <form >
+                  <form>
                     <div className="profile-upload-group">
                       <div className="d-flex align-items-center">
                         <Link
