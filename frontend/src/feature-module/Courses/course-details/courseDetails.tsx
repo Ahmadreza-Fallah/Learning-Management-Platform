@@ -175,7 +175,11 @@ const CourseDetails = () => {
                 <div className="card mb-4">
                   <div className="card-body">
                     <h6 className="mb-2">توضیحات دوره</h6>
-                    <p>{course?.Description}</p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: course?.Description ?? "-",
+                      }}
+                    />
 
                     <h6 className="mb-2">
                       چه چیزهایی در این دوره فرا خواهید گرفت

@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { all_routes } from "../../../router/all_routes";
 
 const SettingsLinks = () => {
+  debugger;
   const route = all_routes;
   const location = useLocation();
   return (
@@ -11,17 +12,17 @@ const SettingsLinks = () => {
         <li>
           <Link
             to={route.studentSettings}
-            className={`${location.pathname === "/student-settings" ? "active" : ""}`}
+            className={`${location.pathname === "/student/student-settings" ? "active" : ""}`}
           >
-             ویرایش پروفایل
+            ویرایش پروفایل
           </Link>
         </li>
         <li>
           <Link
             to={route.studentChangePassword}
-            className={`${location.pathname === "/student-change-password" ? "active" : ""}`}
+            className={`${location.pathname === "/student/student-change-password" ? "active" : ""}`}
           >
-             تغییر رمز عبور
+            تغییر رمز عبور
           </Link>
         </li>
       </ul>

@@ -1,10 +1,25 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { studentSidebarData } from "../../../core/common/data/json/student-sidebar";
 import { all_routes } from "../../router/all_routes";
+import { useAuth } from "../../../context/AuthContext";
+import toast from "react-hot-toast";
 
 const StudentSidebar = () => {
   const location = useLocation();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  async function handlelogout() {
+    debugger;
+    try {
+      await logout();
+    } catch (err) {
+      toast.error("خطا در خروج از حساب کاربری");
+    } finally {
+      toast.success("از حساب کاربری خود خارج شدید");
+      navigate("/login");
+    }
+  }
   return (
     <div className="col-lg-3 ">
       <div className="settings-sidebar theiaStickySidebar">
@@ -36,13 +51,13 @@ const StudentSidebar = () => {
               </Link>
             </li>
             <li>
-              <Link
-                to={all_routes.login}
-                className="d-inline-flex align-items-center"
+              <button
+                onClick={handlelogout}
+                className="d-inline-flex align-items-center btn btn-secondary"
               >
                 <i className="isax isax-logout5 me-2" />
                 خروج
-              </Link>
+              </button>
             </li>
           </ul>
         </div>
