@@ -57,11 +57,4 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 /generated/prisma
 # Add these lines to .gitignore
-backend/uploads/videos/
-backend/uploads/
-*.mp4
-*.mov
-*.avi
-*.mkv
-*.zip
-*.tar.gz
+/uploads/videos/
